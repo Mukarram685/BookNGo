@@ -4,6 +4,7 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import SplashScreen from 'react-native-splash-screen';
 import i18n from './src/i18n/i18n';
+import Radio from './src/assets/svg/radio_selected_circle.svg';
 
 const App = () => {
   useEffect(() => {
@@ -20,6 +21,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
+      <Radio />
       <Text style={styles.title}>{t('welcome')}</Text>
 
       <TouchableOpacity
