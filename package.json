@@ -11,8 +11,12 @@
   },
   "dependencies": {
     "@react-native/new-app-screen": "0.82.0",
+    "i18next": "^25.6.0",
     "react": "19.1.1",
+    "react-i18next": "^16.0.1",
     "react-native": "0.82.0",
+    "react-native-localize": "^3.5.4",
+    "react-native-restart": "^0.0.27",
     "react-native-safe-area-context": "^5.5.2",
     "react-native-size-matters": "^0.4.2",
     "react-native-splash-screen": "^3.3.0"
