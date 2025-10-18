@@ -6,6 +6,9 @@ import { store, persistor } from './src/store/store';
 import Test from './src/screens/main/Test';
 import { PersistGate } from 'redux-persist/integration/react';
 import Toast from 'react-native-toast-message';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
@@ -17,10 +20,11 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Test />
-        <Toast />
+        <QueryClientProvider client={queryClient}>
+          <Test />
+          <Toast />
+        </QueryClientProvider>
       </PersistGate>
-
     </Provider>
   );
 };
