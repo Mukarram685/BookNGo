@@ -1,9 +1,10 @@
 import './src/i18n/i18n';
-import React, {  useEffect } from 'react';
+import React, { useEffect } from 'react';
 import SplashScreen from 'react-native-splash-screen';
 import { Provider } from 'react-redux';
-import store from './src/store/store';
+import  {store, persistor } from './src/store/store';
 import Test from './src/screens/main/Test';
+import { PersistGate } from 'redux-persist/integration/react';
 
 const App = () => {
   useEffect(() => {
@@ -12,11 +13,13 @@ const App = () => {
     }, 2000);
   }, []);
 
-
-
   return (
-    <Provider store={store }>
-      <Test/>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+
+        <Test />
+      </PersistGate>
+
     </Provider>
   );
 };
