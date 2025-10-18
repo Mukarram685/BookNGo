@@ -8,6 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Toast from 'react-native-toast-message';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+
 const queryClient = new QueryClient();
 
 const App = () => {

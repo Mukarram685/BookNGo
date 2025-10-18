@@ -1,32 +1,33 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n/i18n';
 import Radio from '../../assets/svg/radio_selected_circle.svg';
 import Toast from 'react-native-toast-message';
 import DatePicker from './DatePicker';
+import NetworkStatus from './NetworkStatus';
 
 const Test = () => {
-    const user = useSelector((state: any) => state.auth.user);
-    console.log('Current User:', user);
+  const user = useSelector((state: any) => state.auth.user);
+  console.log('Current User:', user);
 
-    const { t } = useTranslation();
+  const { t } = useTranslation();
 
-    const changelanguage = (lng: string) => {
-        i18n.changeLanguage(lng);
-    };
+  const changelanguage = (lng: string) => {
+    i18n.changeLanguage(lng);
+  };
 
-    const showToast = () => {
-        Toast.show({
-          type: 'success',
-          text1: 'Hello',
-          text2: 'This is a toast message 👋'
-        });
-    }
+  const showToast = () => {
+    Toast.show({
+      type: 'success',
+      text1: 'Hello',
+      text2: 'This is a toast message 👋'
+    });
+  }
 
-    return (
-         <View style={styles.container}>
+  return (
+    <View style={styles.container}>
       <Radio />
       <Text style={styles.title}>{t('welcome')}</Text>
 
@@ -53,9 +54,13 @@ const Test = () => {
         <Text style={styles.buttonText}>Toast Show</Text>
       </TouchableOpacity>
 
-      <DatePicker/>
+      <NetworkStatus/>
+
+      <DatePicker />
+
+
     </View>
-    )
+  )
 }
 
 export default Test
