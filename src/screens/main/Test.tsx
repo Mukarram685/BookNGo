@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n/i18n';
 import Radio from '../../assets/svg/radio_selected_circle.svg';
 import Toast from 'react-native-toast-message';
+import DatePicker from './DatePicker';
 
 const Test = () => {
     const user = useSelector((state: any) => state.auth.user);
@@ -51,6 +52,8 @@ const Test = () => {
       >
         <Text style={styles.buttonText}>Toast Show</Text>
       </TouchableOpacity>
+
+      <DatePicker/>
     </View>
     )
 }
