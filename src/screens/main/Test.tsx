@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n/i18n';
 import Radio from '../../assets/svg/radio_selected_circle.svg';
+import Toast from 'react-native-toast-message';
 
 const Test = () => {
     const user = useSelector((state: any) => state.auth.user);
@@ -14,6 +15,15 @@ const Test = () => {
     const changelanguage = (lng: string) => {
         i18n.changeLanguage(lng);
     };
+
+    const showToast = () => {
+        Toast.show({
+          type: 'success',
+          text1: 'Hello',
+          text2: 'This is a toast message 👋'
+        });
+    }
+
     return (
          <View style={styles.container}>
       <Radio />
@@ -33,6 +43,13 @@ const Test = () => {
         accessibilityLabel="Switch to English"
       >
         <Text style={styles.buttonText}>{t('english')}</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={showToast}
+      >
+        <Text style={styles.buttonText}>Toast Show</Text>
       </TouchableOpacity>
     </View>
     )
