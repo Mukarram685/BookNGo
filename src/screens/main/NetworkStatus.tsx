@@ -16,7 +16,7 @@ const NetworkStatus = () => {
     return () => unsubscribe();
   }, []);
 
-  if (isConnected) {
+  if (!isConnected) {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>No Internet Connection</Text>
