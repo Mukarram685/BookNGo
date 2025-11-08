@@ -1,0 +1,1 @@
+export const oneSignalAppId = "a13cde05-841f-4644-925b-ed550788d016";

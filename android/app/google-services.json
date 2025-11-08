@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "814580309534",
+    "project_id": "notification-a262f",
+    "storage_bucket": "notification-a262f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:814580309534:android:0f85d1255b54baa25b180f",
+        "android_client_info": {
+          "package_name": "com.bookngo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuuit2plH13YbfyFEPjIfSAkmpr-zJrnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
