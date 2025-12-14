@@ -1,10 +1,11 @@
 {
-    "welcome": "Welcome to BookNGo",
-    "order_confirmation": "Order Confirmation",
-    "select_address": "Select Address",
-    "add_new_address": "Add New Address",
-    "close": "Close",
-    "english": "English",
-    "french": "French",
-    "arabic": "Arabic"
+  "welcome": "Welcome to BookNGo",
+  "order_confirmation": "Order Confirmation",
+  "select_address": "Select Address",
+  "add_new_address": "Add New Address",
+  "close": "Close",
+  "english": "English",
+  "french": "French",
+  "arabic": "Arabic",
+  "selected": "Selected:"
 }

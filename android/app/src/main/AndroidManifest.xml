@@ -12,6 +12,11 @@
       android:theme="@style/AppTheme"
       android:usesCleartextTraffic="${usesCleartextTraffic}"
       android:supportsRtl="true">
+
+<meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDVfzEibW_Gj_qGDjTU8LR4fNWH1m6P-VU" />
+
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

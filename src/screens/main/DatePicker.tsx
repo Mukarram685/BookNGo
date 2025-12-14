@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Button, Text, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { t } from 'i18next';
 
 const DatePicker = () => {
   const [date, setDate] = useState(new Date());
@@ -21,7 +22,7 @@ const DatePicker = () => {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Button title="Select Travel Date" onPress={showDatePicker} />
       <Text style={{ marginTop: 15 }}>
-        Selected: {date.toDateString()}
+        {t('selected')} {date.toDateString()}
       </Text>
 
       {show && (
@@ -30,7 +31,7 @@ const DatePicker = () => {
           mode="date"
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           onChange={onChange}
-          minimumDate={new Date()} // disables past dates
+          minimumDate={new Date()}
         />
       )}
     </View>

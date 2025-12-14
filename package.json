@@ -23,6 +23,7 @@
     "react-i18next": "^16.0.1",
     "react-native": "0.82.0",
     "react-native-localize": "^3.5.4",
+    "react-native-maps": "^1.26.18",
     "react-native-onesignal": "^5.2.13",
     "react-native-restart": "^0.0.27",
     "react-native-safe-area-context": "^5.5.2",
