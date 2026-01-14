@@ -43,45 +43,41 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
       </View>
     )}
 
-    {isLoading && (
-      <View style={styles.loadingContainer}>
-        <AppLoader />
+    {isScrollable ? (
+      <ScrollView
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingHorizontal },
+          contentStyle,
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
+        {children}
+      </ScrollView>
+    ) : (
+      <View
+        style={[
+          styles.nonScrollContent,
+          { paddingHorizontal },
+          contentStyle,
+        ]}
+      >
+        {children}
       </View>
     )}
 
-    {!isLoading && (
-      <>
-        {isScrollable ? (
-          <ScrollView
-            contentContainerStyle={[
-              styles.scrollContent,
-              { paddingHorizontal },
-              contentStyle,
-            ]}
-            showsVerticalScrollIndicator={false}
-          >
-            {children}
-          </ScrollView>
-        ) : (
-          <View
-            style={[
-              styles.nonScrollContent,
-              { paddingHorizontal },
-              contentStyle,
-            ]}
-          >
-            {children}
-          </View>
-        )}
+    {footer && (
+      <View
+       style={[styles.footer, footerAbsolute && styles.absoluteFooter]}
+       >
+        {footer}
+      </View>
+    )}
 
-        {footer && (
-          <View
-            style={[styles.footer, footerAbsolute && styles.absoluteFooter]}
-          >
-            {footer}
-          </View>
-        )}
-      </>
+    {isLoading && (
+      <View style={styles.loaderOverlay}>
+        <AppLoader />
+      </View>
     )}
   </SafeAreaView>
 );
@@ -131,6 +127,17 @@ const styles = StyleSheet.create({
     left: scale(0),
     right: scale(0),
     zIndex: moderateScale(10),
+  },
+  loaderOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(75, 74, 74, 0.8)', // light gray glass tint
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: moderateScale(100),
   },
 });
 
