@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import i18n from '../../i18n/i18n';
@@ -7,8 +7,13 @@ import Radio from '../../assets/svg/radio_selected_circle.svg';
 import Toast from 'react-native-toast-message';
 import DatePicker from './DatePicker';
 import NetworkStatus from './NetworkStatus';
+import ScreenWrapper from '../../component/common/ScreenWrapper';
 
 const Test = () => {
+  console.log('Test Screen Rendered');
+
+  const [loading, setLoading] = React.useState(false);
+
   const user = useSelector((state: any) => state.auth.user);
   console.log('Current User:', user);
 
@@ -24,17 +29,29 @@ const Test = () => {
       text1: 'Hello',
       text2: 'This is a toast message 👋'
     });
-  }
+  };
+
+  // 🔥 Simulate API Loading
+  const testLoading = () => {
+    setLoading(true);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000); // 3 seconds fake API delay
+  };
 
   return (
-    <View style={styles.container}>
+    <ScreenWrapper
+      isLoading={loading}     // ✅ THIS is the key line
+      contentStyle={styles.container}
+    >
       <Radio />
+
       <Text style={styles.title}>{t('welcome')}</Text>
 
       <TouchableOpacity
         style={styles.button}
         onPress={() => changelanguage('fr')}
-        accessibilityLabel="Switch to French"
       >
         <Text style={styles.buttonText}>{t('french')}</Text>
       </TouchableOpacity>
@@ -42,7 +59,6 @@ const Test = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => changelanguage('en')}
-        accessibilityLabel="Switch to English"
       >
         <Text style={styles.buttonText}>{t('english')}</Text>
       </TouchableOpacity>
@@ -54,16 +70,22 @@ const Test = () => {
         <Text style={styles.buttonText}>Toast Show</Text>
       </TouchableOpacity>
 
-      <NetworkStatus/>
+      {/* 🔥 TEST LOADING BUTTON */}
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: '#ff9500' }]}
+        onPress={testLoading}
+      >
+        <Text style={styles.buttonText}>Test Loading Screen</Text>
+      </TouchableOpacity>
 
+      <NetworkStatus />
       <DatePicker />
+    </ScreenWrapper>
+  );
+};
 
+export default Test;
 
-    </View>
-  )
-}
-
-export default Test
 
 const styles = StyleSheet.create({
   container: {

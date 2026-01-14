@@ -9,7 +9,7 @@ import Toast from 'react-native-toast-message';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { oneSignalAppId } from './src/config/env.config';
 import { OneSignal, LogLevel } from 'react-native-onesignal';
-import MapScreen from './src/screens/main/Map';
+// import MapScreen from './src/screens/main/Map';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,8 +52,8 @@ const App = () => {
         onBeforeLift={onBeforeLift}
       >
         <QueryClientProvider client={queryClient}>
-          {/* <Test /> */}
-          <MapScreen />
+          <Test />
+          {/* <MapScreen /> */}
           <Toast />
         </QueryClientProvider>
       </PersistGate>
