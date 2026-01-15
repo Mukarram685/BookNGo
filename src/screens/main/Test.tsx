@@ -8,11 +8,13 @@ import Toast from 'react-native-toast-message';
 import DatePicker from './DatePicker';
 import NetworkStatus from './NetworkStatus';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
+import AppInput from '../../component/TextInput/TextInput';
 
 const Test = () => {
   console.log('Test Screen Rendered');
 
   const [loading, setLoading] = React.useState(false);
+  const [email, setEmail] = React.useState('');
 
   const user = useSelector((state: any) => state.auth.user);
   console.log('Current User:', user);
@@ -46,6 +48,8 @@ const Test = () => {
       contentStyle={styles.container}
     >
       <Radio />
+      
+
 
       <Text style={styles.title}>{t('welcome')}</Text>
 
@@ -79,6 +83,21 @@ const Test = () => {
       </TouchableOpacity>
 
       <NetworkStatus />
+      <AppInput
+        label="Email"
+        placeholder="Enter your email"
+        keyboardType="email-address"
+        value={email}
+        onChangeText={setEmail}
+      />
+
+      <AppInput
+        label="Password"
+        placeholder="Enter password"
+        secureTextEntry
+        error="Password is required"
+        isPassword
+      />
       <DatePicker />
     </ScreenWrapper>
   );

@@ -1,6 +1,6 @@
 const Colors = {
   IPP_ORANGE: '#E88817', // Primary
-  IPP_GREY: '#414649', // Secondary
+  PLACEHOLDER: '#414649', // Secondary
   BLACK: '#000000',
   BORDER_GREY: '#DFDFDF', // For Borders
   DARK_GRAY: '#616161', // Secondary Texts
