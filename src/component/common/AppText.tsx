@@ -1,0 +1,53 @@
+import React from 'react';
+import {
+  Text,
+  StyleSheet,
+  TextProps,
+  TextStyle,
+} from 'react-native';
+import { scale } from 'react-native-size-matters';
+import Colors from '../../utils/Colors.util';
+
+type AppTextProps = TextProps & {
+  size?: number;
+  color?: string;
+  weight?: TextStyle['fontWeight'];
+  align?: TextStyle['textAlign'];
+  style?: TextStyle;
+};
+
+const AppText: React.FC<AppTextProps> = ({
+  size = scale(14),
+  color = Colors.BLACK,
+  weight = 'normal',
+  align = 'left',
+  style,
+  children,
+  ...props
+}) => {
+  return (
+    <Text
+      {...props}
+      style={[
+        styles.text,
+        {
+          fontSize: scale(size),
+          color,
+          fontWeight: weight,
+          textAlign: align,
+        },
+        style,
+      ]}
+    >
+      {children}
+    </Text>
+  );
+};
+
+export default AppText;
+
+const styles = StyleSheet.create({
+  text: {
+    lineHeight: scale(20),
+  },
+});

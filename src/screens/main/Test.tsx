@@ -9,6 +9,7 @@ import DatePicker from './DatePicker';
 import NetworkStatus from './NetworkStatus';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
 import AppInput from '../../component/TextInput/TextInput';
+import AppText from '../../component/common/AppText';
 
 const Test = () => {
   console.log('Test Screen Rendered');
@@ -98,6 +99,7 @@ const Test = () => {
         error="Password is required"
         isPassword
       />
+      <AppText>hy this is my app text component</AppText>
       <DatePicker />
     </ScreenWrapper>
   );

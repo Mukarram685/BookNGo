@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: scale(14),
         color: Colors.BLACK,
-        paddingVertical: 0, // Android fix
+        paddingVertical: 0,
     },
     iconContainer: {
         paddingLeft: scale(8),
