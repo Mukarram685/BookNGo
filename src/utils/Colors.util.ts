@@ -1,5 +1,5 @@
 const Colors = {
-  IPP_ORANGE: '#E88817', // Primary
+  PRIMARY: '#2196F3', // Primary (Blue)
   PLACEHOLDER: '#414649', // Secondary
   BLACK: '#000000',
   BORDER_GREY: '#DFDFDF', // For Borders

@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(40),
   },
   button: {
-    backgroundColor: Colors.IPP_ORANGE,
+    backgroundColor: Colors.PRIMARY,
     paddingVertical: verticalScale(12),
     borderRadius: scale(8),
     alignItems: 'center',
