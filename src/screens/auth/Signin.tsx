@@ -27,7 +27,7 @@ const Signin = () => {
           touched,
         }) => (
           <View style={styles.container}>
-            <AppText size={24} weight="700" color={Colors.IPP_ORANGE} style={styles.title}>
+            <AppText size={24} weight="700" color={Colors.PRIMARY} style={styles.title}>
               Login
             </AppText>
 
