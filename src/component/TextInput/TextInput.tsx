@@ -17,6 +17,8 @@ type AppInputProps = TextInputProps & {
     containerStyle?: any;
     inputStyle?: any;
     isPassword?: boolean;
+    LeftIcon?: React.FC<any>;
+    labelStyle?: any;
 };
 
 const AppInput: React.FC<AppInputProps> = ({
@@ -24,8 +26,10 @@ const AppInput: React.FC<AppInputProps> = ({
     error,
     containerStyle,
     inputStyle,
+    labelStyle,
     isPassword = false,
     secureTextEntry,
+    LeftIcon,
     ...props
 }) => {
     const [hidePassword, setHidePassword] = useState(
@@ -34,19 +38,26 @@ const AppInput: React.FC<AppInputProps> = ({
 
     return (
         <View style={[styles.container, containerStyle]}>
-            {label && <Text style={styles.label}>{label}</Text>}
+            {label && <Text style={[styles.label, props.placeholderTextColor ? { color: Colors.TEXT_GREY } : {}, labelStyle]}>{label}</Text>}
 
             <View
                 style={[
                     styles.inputWrapper,
                     error && styles.inputError,
+
+                    inputStyle && inputStyle.backgroundColor ? { backgroundColor: inputStyle.backgroundColor, borderColor: inputStyle.borderColor } : {}
                 ]}
             >
+                {LeftIcon && (
+                    <View style={styles.leftIconContainer}>
+                        <LeftIcon width={scale(20)} height={scale(20)} />
+                    </View>
+                )}
                 <TextInput
                     {...props}
                     secureTextEntry={hidePassword}
-                    placeholderTextColor={alpha(Colors.PLACEHOLDER, 0.5)}
-                    style={[styles.input, inputStyle]}
+                    placeholderTextColor={props.placeholderTextColor || alpha(Colors.PLACEHOLDER, 0.5)}
+                    style={[styles.input, inputStyle, { color: props.style ? (props.style as any).color : Colors.WHITE }]}
                 />
 
                 {isPassword && (
@@ -90,11 +101,14 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         fontSize: scale(14),
-        color: Colors.BLACK,
+        color: Colors.WHITE,
         paddingVertical: 0,
     },
     iconContainer: {
         paddingLeft: scale(8),
+    },
+    leftIconContainer: {
+        paddingRight: scale(8),
     },
     inputError: {
         borderColor: Colors.RED,

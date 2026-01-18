@@ -11,7 +11,11 @@ const Colors = {
   DARK_BLUE: '#2196F3',
   RED: '#FF3B31',
   YELLOW: '#FFC107',
-  DARK_GREEN: '#4caf50'
+  DARK_GREEN: '#4caf50',
+  DARK_BG: '#08101F',
+  INPUT_BG: '#1B2636',
+  BRIGHT_BLUE: '#00B0FF',
+  TEXT_GREY: '#8F9BB3',
 };
 
 export default Colors;
