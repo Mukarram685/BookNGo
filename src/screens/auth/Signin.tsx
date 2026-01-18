@@ -61,7 +61,6 @@ const Signin = () => {
               LeftIcon={User}
               placeholderTextColor={Colors.TEXT_GREY}
               inputStyle={styles.inputStyle}
-              labelStyle={styles.labelStyle}
               containerStyle={styles.inputContainer}
             />
 
@@ -76,7 +75,6 @@ const Signin = () => {
               LeftIcon={Lock}
               placeholderTextColor={Colors.TEXT_GREY}
               inputStyle={styles.inputStyle}
-              labelStyle={styles.labelStyle}
               containerStyle={styles.inputContainer}
             />
 
@@ -130,7 +128,8 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(30),
   },
   welcomeText: {
-    marginBottom: verticalScale(8),
+    paddingVertical: verticalScale(8),
+    height: verticalScale(50),
   },
   inputContainer: {
     marginBottom: verticalScale(20),
@@ -140,9 +139,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     color: Colors.WHITE,
     borderRadius: scale(12),
-  },
-  labelStyle: {
-    color: Colors.WHITE,
   },
   forgotPassword: {
     alignSelf: 'center',

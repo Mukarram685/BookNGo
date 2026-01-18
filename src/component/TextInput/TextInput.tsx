@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: scale(13),
-        color: Colors.BLACK,
+        color: Colors.TEXT_GREY,
         marginBottom: verticalScale(4),
     },
     inputWrapper: {

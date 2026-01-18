@@ -60,7 +60,6 @@ const Signup = () => {
                             LeftIcon={User}
                             placeholderTextColor={Colors.TEXT_GREY}
                             inputStyle={styles.inputStyle}
-                            labelStyle={styles.labelStyle}
                             containerStyle={styles.inputContainer}
                         />
 
@@ -75,7 +74,6 @@ const Signup = () => {
                             LeftIcon={Mail}
                             placeholderTextColor={Colors.TEXT_GREY}
                             inputStyle={styles.inputStyle}
-                            labelStyle={styles.labelStyle}
                             containerStyle={styles.inputContainer}
                         />
 
@@ -90,7 +88,6 @@ const Signup = () => {
                             LeftIcon={Phone}
                             placeholderTextColor={Colors.TEXT_GREY}
                             inputStyle={styles.inputStyle}
-                            labelStyle={styles.labelStyle}
                             containerStyle={styles.inputContainer}
                         />
 
@@ -105,7 +102,6 @@ const Signup = () => {
                             LeftIcon={Lock}
                             placeholderTextColor={Colors.TEXT_GREY}
                             inputStyle={styles.inputStyle}
-                            labelStyle={styles.labelStyle}
                             containerStyle={styles.inputContainer}
                         />
 
@@ -164,9 +160,6 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         color: Colors.WHITE,
         borderRadius: scale(12),
-    },
-    labelStyle: {
-        color: Colors.WHITE,
     },
     button: {
         backgroundColor: Colors.BRIGHT_BLUE,
