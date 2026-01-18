@@ -2,14 +2,19 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { Formik } from 'formik';
 import { scale, verticalScale } from 'react-native-size-matters';
+import { useTranslation } from 'react-i18next';
 import { loginSchema } from '../../helpers/auth.helper';
 import AppText from '../../component/common/AppText';
 import AppInput from '../../component/TextInput/TextInput';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
 import Colors from '../../utils/Colors.util';
 import { Bus, Lock, User } from '../../assets/svg';
+import { useNavigation } from '@react-navigation/native';
 
 const Signin = () => {
+  const navigation = useNavigation<any>();
+  const { t } = useTranslation();
+
   return (
     <ScreenWrapper backgroundColor={Colors.DARK_BG}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
@@ -32,22 +37,22 @@ const Signin = () => {
             <View style={styles.headerContainer}>
               <Bus width={scale(40)} height={scale(40)} />
               <AppText size={28} weight="700" color={Colors.WHITE} style={styles.brandName}>
-                BOOK&GO
+                {t('common_brandName')}
               </AppText>
             </View>
 
             <View style={styles.titleContainer}>
               <AppText size={32} weight="700" color={Colors.WHITE} style={styles.welcomeText}>
-                Welcome Back
+                {t('auth_signin_title')}
               </AppText>
               <AppText size={16} color={Colors.TEXT_GREY} weight="500">
-                Sign in to continue your journey
+                {t('auth_signin_subtitle')}
               </AppText>
             </View>
 
             <AppInput
-              label="Email or Phone Number"
-              placeholder="Enter your email or phone"
+              label={t('auth_signin_emailPhoneLabel')}
+              placeholder={t('auth_signin_emailPhonePlaceholder')}
               value={values.email}
               onChangeText={handleChange('email')}
               onBlur={handleBlur('email')}
@@ -61,8 +66,8 @@ const Signin = () => {
             />
 
             <AppInput
-              label="Password"
-              placeholder="Enter your password"
+              label={t('auth_signin_passwordLabel')}
+              placeholder={t('auth_signin_passwordPlaceholder')}
               isPassword
               value={values.password}
               onChangeText={handleChange('password')}
@@ -77,23 +82,23 @@ const Signin = () => {
 
             <TouchableOpacity style={styles.forgotPassword} activeOpacity={0.7}>
               <AppText size={14} weight="600" color={Colors.BRIGHT_BLUE}>
-                Forgot Password?
+                {t('auth_signin_forgotPassword')}
               </AppText>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.button} onPress={handleSubmit as any} activeOpacity={0.8}>
               <AppText size={16} weight="700" color={Colors.WHITE}>
-                Login
+                {t('auth_signin_button')}
               </AppText>
             </TouchableOpacity>
 
             <View style={styles.footer}>
               <AppText size={14} color={Colors.TEXT_GREY}>
-                Don't have an account?{' '}
+                {t('auth_signin_footer')}{' '}
               </AppText>
-              <TouchableOpacity activeOpacity={0.7}>
+              <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Signup')}>
                 <AppText size={14} weight="700" color={Colors.BRIGHT_BLUE}>
-                  Sign Up
+                  {t('auth_signin_signupLink')}
                 </AppText>
               </TouchableOpacity>
             </View>

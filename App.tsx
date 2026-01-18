@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { oneSignalAppId } from './src/config/env.config';
 import { OneSignal, LogLevel } from 'react-native-onesignal';
 import RootNavigator from './src/navigation';
+import './src/i18n/i18n';
 
 const queryClient = new QueryClient({
   defaultOptions: {
