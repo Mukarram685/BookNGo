@@ -10,19 +10,27 @@ import AppInput from '../../component/TextInput/TextInput';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
 import Colors from '../../utils/Colors.util';
 import { Bus, Lock, User, Mail, Phone } from '../../assets/svg';
+import { useRegister } from '../../hooks/useAuth';
+import AppLoader from '../../component/common/AppLoader';
 
 const Signup = () => {
     const navigation = useNavigation<any>();
     const { t } = useTranslation();
+    const { mutate: register, isPending } = useRegister();
 
     return (
         <ScreenWrapper backgroundColor={Colors.DARK_BG}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
+            {isPending && <AppLoader />}
             <Formik
-                initialValues={{ name: '', email: '', phoneNumber: '', password: '' }}
+                initialValues={{ name: '', email: '', phoneNumber: '', password: '', role: 'user' }}
                 validationSchema={signupSchema}
                 onSubmit={(values) => {
-                    console.log(values);
+                    register(values, {
+                        onSuccess: () => {
+                            navigation.navigate('Signin');
+                        }
+                    });
                 }}
             >
                 {({
