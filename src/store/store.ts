@@ -6,12 +6,11 @@ import authSlice from './slice/auth.slice';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['user'],
+  whitelist: ['auth'],
 };
 
 const rootReducer = combineReducers({
   auth: authSlice,
-  // bus: busReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

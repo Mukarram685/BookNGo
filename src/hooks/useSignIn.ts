@@ -1,0 +1,31 @@
+import { useMutation } from '@tanstack/react-query';
+import { useDispatch } from "react-redux";
+import axiosInstance from "../utils/axiosInstance";
+import Toast from "react-native-toast-message";
+import { setCredentials } from "../store/slice/auth.slice";
+
+export const useLogin = () => {
+    const dispatch = useDispatch();
+    return useMutation({
+        mutationFn: async (data: any) => {
+            const response = await axiosInstance.post('login', data);
+            return response;
+        },
+        onSuccess: (data) => {
+            console.log('data is ', data)
+            Toast.show({
+                type: 'success',
+                text1: 'Login Successful',
+                text2: 'Welcome back!',
+            });
+            dispatch(setCredentials({ user: data?.user, token: data?.token }));
+        },
+        onError: (error: any) => {
+            Toast.show({
+                type: 'error',
+                text1: 'Login Failed',
+                text2: error?.response?.data?.message || 'Invalid credentials',
+            });
+        },
+    });
+};

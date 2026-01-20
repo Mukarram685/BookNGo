@@ -11,18 +11,25 @@ import Colors from '../../utils/Colors.util';
 import { Bus, Lock, User } from '../../assets/svg';
 import { useNavigation } from '@react-navigation/native';
 
+import { useLogin } from '../../hooks/useSignUp';
+
 const Signin = () => {
   const navigation = useNavigation<any>();
   const { t } = useTranslation();
+  const { mutate: login, isPending } = useLogin();
 
   return (
-    <ScreenWrapper backgroundColor={Colors.DARK_BG}>
+    <ScreenWrapper backgroundColor={Colors.DARK_BG} isLoading={isPending}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={loginSchema}
         onSubmit={(values) => {
-          console.log(values);
+          login(values, {
+            onSuccess: () => {
+              // navigation.navigate('Home');
+            }
+          });
         }}
       >
         {({

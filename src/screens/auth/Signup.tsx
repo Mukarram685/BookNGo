@@ -10,7 +10,7 @@ import AppInput from '../../component/TextInput/TextInput';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
 import Colors from '../../utils/Colors.util';
 import { Bus, Lock, User, Mail, Phone } from '../../assets/svg';
-import { useRegister } from '../../hooks/useAuth';
+import { useRegister } from '../../hooks/useSignUp';
 
 
 const Signup = () => {
