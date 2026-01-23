@@ -7,6 +7,7 @@ import AppText from '../../../component/common/AppText';
 import AppInput from '../../../component/TextInput/TextInput';
 import Colors from '../../../utils/Colors.util';
 import { Radio } from '../../../assets/svg';
+import { SearchSchema } from '../../../helpers/bus.helper';
 
 interface HomeSearchProps {
     onSearch: (params: { fromCity: string; toCity: string; date: string }) => void;
@@ -22,6 +23,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                 to: '',
                 date: new Date(),
             }}
+            validationSchema={SearchSchema}
             onSubmit={(values) => {
                 const formattedDate = values.date
                     .toISOString()
@@ -34,7 +36,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                 });
             }}
         >
-            {({ values, setFieldValue, handleSubmit }) => (
+            {({ values, setFieldValue, handleSubmit, errors, touched, setFieldTouched }) => (
                 <View style={styles.searchContainer}>
                     <AppInput
                         placeholder="From"
@@ -42,6 +44,8 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         onChangeText={(text) =>
                             setFieldValue('from', text)
                         }
+                        onBlur={() => setFieldTouched('from')}
+                        error={touched.from && errors.from ? errors.from : ''}
                         LeftIcon={Radio}
                         inputStyle={styles.inputStyle}
                         containerStyle={styles.inputContainer}
@@ -54,6 +58,8 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         onChangeText={(text) =>
                             setFieldValue('to', text)
                         }
+                        onBlur={() => setFieldTouched('to')}
+                        error={touched.to && errors.to ? errors.to : ''}
                         LeftIcon={Radio}
                         inputStyle={styles.inputStyle}
                         containerStyle={styles.inputContainer}
@@ -72,6 +78,11 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                             {values.date.toDateString()}
                         </AppText>
                     </TouchableOpacity>
+                    {(touched.date && errors.date) && (
+                        <AppText size={12} color={Colors.RED} style={{ marginTop: -10, marginBottom: 10 }}>
+                            {errors.date as string}
+                        </AppText>
+                    )}
 
                     {showDatePicker && (
                         <DateTimePicker
