@@ -4,13 +4,10 @@ import NetInfo from '@react-native-community/netinfo';
 
 const NetworkStatus = () => {
   const [isConnected, setIsConnected] = useState(true);
-  const [text, setText] = useState('');
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
       setIsConnected(state.isConnected);
-        setText(state.isConnected ? 'Online' : 'Offline');
-      
     });
 
     return () => unsubscribe();
@@ -20,7 +17,6 @@ const NetworkStatus = () => {
     return (
       <View style={styles.container}>
         <Text style={styles.text}>No Internet Connection</Text>
-        <Text style={styles.text}> is Connected: {text}</Text>
       </View>
     );
   }

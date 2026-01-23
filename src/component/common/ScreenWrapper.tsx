@@ -10,6 +10,7 @@ import {
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import Colors from '../../utils/Colors.util';
 import AppLoader from './AppLoader';
+import NetworkStatus from './NetworkStatus';
 
 type ScreenWrapperProps = {
   children: ReactNode;
@@ -37,6 +38,7 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   footerAbsolute = false,
 }) => (
   <SafeAreaView style={[styles.container, { backgroundColor }]}>
+    <NetworkStatus />
     {header && (
       <View style={[styles.header, headerAbsolute && styles.absoluteHeader]}>
         {header}
@@ -68,8 +70,8 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
 
     {footer && (
       <View
-       style={[styles.footer, footerAbsolute && styles.absoluteFooter]}
-       >
+        style={[styles.footer, footerAbsolute && styles.absoluteFooter]}
+      >
         {footer}
       </View>
     )}

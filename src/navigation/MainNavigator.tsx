@@ -2,7 +2,7 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomTabNavigator from './BottomTabNavigator';
 import DatePicker from '../screens/main/DatePicker';
-import NetworkStatus from '../screens/main/NetworkStatus';
+import NetworkStatus from '../component/common/NetworkStatus';
 import Home from '../screens/main/Home/Home';
 
 const Stack = createNativeStackNavigator();
