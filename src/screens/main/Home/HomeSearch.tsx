@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Formik } from 'formik';
 import AppText from '../../../component/common/AppText';
 import AppInput from '../../../component/TextInput/TextInput';
 import Colors from '../../../utils/Colors.util';
@@ -12,78 +13,98 @@ interface HomeSearchProps {
 }
 
 const HomeSearch = ({ onSearch }: HomeSearchProps) => {
-    const [from, setFrom] = useState('');
-    const [to, setTo] = useState('');
-    const [date, setDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
 
-    const handleSearch = () => {
-        const formattedDate = date.toISOString().split('T')[0]; // "YYYY-MM-DD"
-        onSearch({ fromCity: from, toCity: to, date: formattedDate });
-    };
-
-    const onDateChange = (event: any, selectedDate?: Date) => {
-        setShowDatePicker(Platform.OS === 'ios');
-        if (selectedDate) {
-            setDate(selectedDate);
-        }
-    };
-
     return (
-        <View style={styles.searchContainer}>
-            <AppInput
-                placeholder="From"
-                value={from}
-                onChangeText={setFrom}
-                LeftIcon={Radio}
-                inputStyle={styles.inputStyle}
-                containerStyle={styles.inputContainer}
-                placeholderTextColor={Colors.TEXT_GREY}
-            />
-            <AppInput
-                placeholder="To"
-                value={to}
-                onChangeText={setTo}
-                LeftIcon={Radio}
-                inputStyle={styles.inputStyle}
-                containerStyle={styles.inputContainer}
-                placeholderTextColor={Colors.TEXT_GREY}
-            />
+        <Formik
+            initialValues={{
+                from: '',
+                to: '',
+                date: new Date(),
+            }}
+            onSubmit={(values) => {
+                const formattedDate = values.date
+                    .toISOString()
+                    .split('T')[0];
 
-            {/* Date Picker Input */}
-            <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => setShowDatePicker(true)}
-                style={[styles.inputContainer, styles.dateInputContainer]}
-            >
-                <View style={styles.leftIconContainer}>
-                    <Radio width={scale(20)} height={scale(20)} />
+                onSearch({
+                    fromCity: values.from,
+                    toCity: values.to,
+                    date: formattedDate,
+                });
+            }}
+        >
+            {({ values, setFieldValue, handleSubmit }) => (
+                <View style={styles.searchContainer}>
+                    <AppInput
+                        placeholder="From"
+                        value={values.from}
+                        onChangeText={(text) =>
+                            setFieldValue('from', text)
+                        }
+                        LeftIcon={Radio}
+                        inputStyle={styles.inputStyle}
+                        containerStyle={styles.inputContainer}
+                        placeholderTextColor={Colors.TEXT_GREY}
+                    />
+
+                    <AppInput
+                        placeholder="To"
+                        value={values.to}
+                        onChangeText={(text) =>
+                            setFieldValue('to', text)
+                        }
+                        LeftIcon={Radio}
+                        inputStyle={styles.inputStyle}
+                        containerStyle={styles.inputContainer}
+                        placeholderTextColor={Colors.TEXT_GREY}
+                    />
+
+                    <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={() => setShowDatePicker(true)}
+                        style={[styles.inputContainer, styles.dateInputContainer]}
+                    >
+                        <View style={styles.leftIconContainer}>
+                            <Radio width={scale(20)} height={scale(20)} />
+                        </View>
+                        <AppText size={14} color={Colors.WHITE} style={styles.dateText}>
+                            {values.date.toDateString()}
+                        </AppText>
+                    </TouchableOpacity>
+
+                    {showDatePicker && (
+                        <DateTimePicker
+                            value={values.date}
+                            mode="date"
+                            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                            minimumDate={new Date()}
+                            onChange={(event, selectedDate) => {
+                                setShowDatePicker(
+                                    Platform.OS === 'ios'
+                                );
+                                if (selectedDate) {
+                                    setFieldValue(
+                                        'date',
+                                        selectedDate
+                                    );
+                                }
+                            }}
+                        />
+                    )}
+
+                    <TouchableOpacity
+                        style={styles.searchButton}
+                        activeOpacity={0.8}
+                        onPress={() => handleSubmit()}
+                    >
+                        <AppText size={16} weight="700" color={Colors.WHITE}>
+                            Search Buses
+                        </AppText>
+                    </TouchableOpacity>
                 </View>
-                <AppText size={14} color={Colors.WHITE} style={styles.dateText}>
-                    {date.toDateString()}
-                </AppText>
-            </TouchableOpacity>
-
-            {showDatePicker && (
-                <DateTimePicker
-                    value={date}
-                    mode="date"
-                    display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                    onChange={onDateChange}
-                    minimumDate={new Date()}
-                />
             )}
-
-            <TouchableOpacity
-                style={styles.searchButton}
-                activeOpacity={0.8}
-                onPress={handleSearch}
-            >
-                <AppText size={16} weight="700" color={Colors.WHITE}>
-                    Search Buses
-                </AppText>
-            </TouchableOpacity>
-        </View>
+        </Formik>
     );
 };
 
@@ -117,9 +138,8 @@ const styles = StyleSheet.create({
     },
     dateText: {
         flex: 1,
-        paddingLeft: scale(0), // removed extra padding
+        paddingLeft: scale(0),
     },
-
     leftIconContainer: {
         paddingRight: scale(8),
     },
