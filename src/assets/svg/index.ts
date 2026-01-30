@@ -7,6 +7,12 @@ import Bus from './bus.svg';
 import Mail from './mail.svg';
 import Phone from './phone.svg';
 import Arrow from './arrow_back.svg';
+import Wifi from './wifi.svg';
+import Charger from './charger.svg';
+import Food from './food.svg';
+import Drink from './drink.svg';
+import Seat from './seat.svg';
+import AC from './ac.svg';
 
 export {
     Radio,
@@ -18,4 +24,11 @@ export {
     Mail,
     Phone,
     Arrow,
+    Wifi,
+    Charger,
+    Food,
+    Drink,
+    Seat,
+    AC,
 }
+

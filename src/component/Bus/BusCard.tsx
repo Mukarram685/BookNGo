@@ -4,107 +4,124 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import AppText from '../common/AppText';
 import Colors from '../../utils/Colors.util';
 import { BusSchedule } from '../../interface/bus.interface';
-import { Bus as BusIcon } from '../../assets/svg';
+import { Bus as BusIcon, Radio, Wifi, Charger, Food, Drink, Seat, AC } from '../../assets/svg';
 
 interface BusCardProps {
   item: BusSchedule;
   onBookPress: (item: BusSchedule) => void;
 }
 
+const amenityIcons: Record<string, React.FC<any>> = {
+  'Wifi': Wifi,
+  'Charging Point': Charger,
+  'Food': Food,
+  'Water': Drink,
+  'Comfortable Seats': Seat,
+  'AC': AC,
+  'Snacks': Food,
+  'Water Bottle': Drink,
+};
+
 const BusCard = ({ item, onBookPress }: BusCardProps) => {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.headerRow}>
-        <View
-          style={[
-            styles.statusBadge,
-            {
-              backgroundColor:
-                item.status === 'AVAILABLE' ? Colors.BRIGHT_BLUE : Colors.RED,
-            },
-          ]}
-        >
-          <AppText size={10} weight="700" color={Colors.WHITE}>
-            {item.status}
-          </AppText>
+        <View style={styles.companyInfoContainer}>
+          <Image
+            source={
+              item.image
+                ? { uri: item.image }
+                : require('../../assets/png/buslogo-removebg-preview.png')
+            }
+            style={styles.logo}
+            resizeMode="cover"
+          />
+          <View style={styles.nameAndClass}>
+            <AppText size={16} weight="700" color={Colors.WHITE} numberOfLines={1}>
+              {item.busName}
+            </AppText>
+            <View style={styles.classBadge}>
+              <AppText size={10} weight="500" color={Colors.GREEN_TEXT}>
+                {item.busType}
+              </AppText>
+            </View>
+          </View>
         </View>
-        <View style={{ backgroundColor: Colors.DARK_GREEN, padding: 4, borderRadius: 4 }}>
-          <AppText size={14} color={Colors.WHITE}>
-            {new Date(item.date).toDateString()}
+
+        <View style={styles.priceContainer}>
+          <AppText size={18} weight="700" color={Colors.BRIGHT_BLUE}>
+            Rs. {item.price.toLocaleString()}
+          </AppText>
+          <AppText size={10} color={Colors.TEXT_GREY}>
+            Per seat
           </AppText>
         </View>
       </View>
-      <View style={styles.divider} />
 
       <View style={styles.routeRow}>
-        <AppText size={20} weight="700" color={Colors.WHITE}>
-          {item.fromCity}
-        </AppText>
-        <View style={styles.busIconContainer}>
-          <BusIcon width={scale(20)} height={scale(20)} fill={Colors.WHITE} />
+        <View style={styles.timeLocContainer}>
+          <AppText size={18} weight="700" color={Colors.WHITE}>
+            {item.departureTime}
+          </AppText>
+          <AppText size={12} color={Colors.TEXT_GREY} numberOfLines={1}>
+            {item.fromCity} Terminal
+          </AppText>
         </View>
-        <AppText size={20} weight="700" color={Colors.WHITE}>
-          {item.toCity}
-        </AppText>
-      </View>
 
-      <View style={{ alignItems: 'center', marginBottom: verticalScale(5) }}>
-        <AppText size={16} weight="600" color={Colors.BRIGHT_BLUE}>
-          {item.busName}
-        </AppText>
-      </View>
+        <View style={styles.durationContainer}>
+          <AppText size={10} weight="600" color={Colors.TEXT_GREY} style={{ marginBottom: 4 }}>
+            {item.duration}
+          </AppText>
+          <View style={styles.lineGraphic}>
+            <View style={styles.dot} />
+            <View style={styles.line} />
+            <View style={styles.dot} />
+          </View>
+          <AppText size={10} weight="600" color={Colors.BRIGHT_BLUE} style={{ marginTop: 4 }}>
+            Direct
+          </AppText>
+        </View>
 
-      <View style={styles.bodyRow}>
-        <Image
-          source={
-            item.image
-              ? { uri: item.image }
-              : require('../../assets/png/buslogo-removebg-preview.png')
-          }
-          style={styles.busImage}
-          resizeMode="contain"
-        />
-
-        <View style={styles.detailsColumn}>
-          <DetailItem label="Departure" value={item.departureTime} />
-          <DetailItem label="Arrival" value={item.arrivalTime} />
-          <DetailItem label="Duration" value={item.duration} />
-          <DetailItem
-            label="Seats Available"
-            value={`${item.seatsAvailable}`}
-          />
+        <View style={[styles.timeLocContainer, { alignItems: 'flex-end' }]}>
+          <AppText size={18} weight="700" color={Colors.WHITE}>
+            {item.arrivalTime}
+          </AppText>
+          <AppText size={12} color={Colors.TEXT_GREY} numberOfLines={1}>
+            {item.toCity} Terminal
+          </AppText>
         </View>
       </View>
 
       <View style={styles.divider} />
 
       <View style={styles.footerRow}>
-        <View style={styles.footerInfo}>
-          <AppText size={12} color={Colors.WHITE} style={styles.amenityText}>
-            {item.busType}
-          </AppText>
-          {item.amenities && item.amenities.length > 0 && (
-            <AppText size={12} color={Colors.WHITE} style={styles.amenityText}>
-              • {item.amenities.join(', ')}
+        <View style={styles.leftFooter}>
+          <View style={styles.amenitiesContainer}>
+            {item.amenities && item.amenities.map((amenity, i) => {
+              const Icon = amenityIcons[amenity];
+              if (!Icon) return null;
+              return (
+                <View key={i} style={{ marginRight: scale(8), opacity: 0.8 }}>
+                  <Icon width={scale(16)} height={scale(16)} />
+                </View>
+              );
+            })}
+          </View>
+
+          {item.seatsAvailable < 10 && (
+            <AppText size={10} weight="600" color="#FF6B00" style={{ marginTop: verticalScale(5) }}>
+              Only {item.seatsAvailable} seats left at this price!
             </AppText>
           )}
-          <AppText
-            size={18}
-            weight="700"
-            color={Colors.WHITE}
-            style={styles.priceText}
-          >
-            PKR {item.price.toFixed(2)}
-          </AppText>
         </View>
 
         <TouchableOpacity
-          style={styles.bookButton}
+          style={styles.selectButton}
           activeOpacity={0.8}
           onPress={() => onBookPress(item)}
         >
           <AppText size={14} weight="700" color={Colors.WHITE}>
-            Book Now
+            Select
           </AppText>
         </TouchableOpacity>
       </View>
@@ -112,93 +129,107 @@ const BusCard = ({ item, onBookPress }: BusCardProps) => {
   );
 };
 
-const DetailItem = ({ label, value }: { label: string; value: string }) => (
-  <View style={styles.detailItem}>
-    <AppText size={12} color={Colors.TEXT_GREY} style={{ width: scale(90) }}>
-      {label}:
-    </AppText>
-    <AppText size={12} weight="600" color={Colors.WHITE}>
-      {value}
-    </AppText>
-  </View>
-);
-
 const styles = StyleSheet.create({
   cardContainer: {
     backgroundColor: Colors.INPUT_BG,
-    borderRadius: scale(15),
-    padding: scale(15),
-    marginVertical: verticalScale(10),
+    borderRadius: scale(16),
+    padding: scale(16),
+    marginVertical: verticalScale(8),
     shadowColor: Colors.BLACK,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
-    borderWidth: 1,
-    borderColor: '#2A3C52',
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 6,
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: verticalScale(10),
+    alignItems: 'flex-start',
+    marginBottom: verticalScale(20),
   },
-  statusBadge: {
-    paddingHorizontal: scale(8),
-    paddingVertical: verticalScale(4),
-    borderRadius: scale(5),
+  companyInfoContainer: {
+    flexDirection: 'row',
+    flex: 1,
+    marginRight: scale(10),
+  },
+  logo: {
+    width: scale(40),
+    height: scale(40),
+    borderRadius: scale(8),
+    backgroundColor: Colors.WHITE,
+    marginRight: scale(12),
+  },
+  nameAndClass: {
+    justifyContent: 'center',
+  },
+  classBadge: {
+    backgroundColor: '#E0F2F1',
+    paddingHorizontal: scale(6),
+    paddingVertical: verticalScale(2),
+    borderRadius: scale(4),
+    alignSelf: 'flex-start',
+    marginTop: verticalScale(4),
+  },
+  priceContainer: {
+    alignItems: 'flex-end',
   },
   routeRow: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: verticalScale(5),
+    marginBottom: verticalScale(20),
   },
-  busIconContainer: {
-    marginHorizontal: scale(10),
-  },
-  bodyRow: {
-    flexDirection: 'row',
-    marginBottom: verticalScale(10),
-  },
-  busImage: {
-    width: scale(100),
-    height: verticalScale(80),
-    marginRight: scale(10),
-  },
-  detailsColumn: {
+  timeLocContainer: {
     flex: 1,
-    justifyContent: 'space-around',
   },
-  detailItem: {
+  durationContainer: {
+    flex: 2,
+    alignItems: 'center',
+    paddingHorizontal: scale(10),
+  },
+  lineGraphic: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: '100%',
+  },
+  dot: {
+    width: scale(8),
+    height: scale(8),
+    borderRadius: scale(4),
+    borderWidth: 1.5,
+    borderColor: Colors.BRIGHT_BLUE,
+    backgroundColor: Colors.INPUT_BG,
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: Colors.TEXT_GREY,
+    opacity: 0.5,
   },
   divider: {
     height: 1,
     backgroundColor: Colors.TEXT_GREY,
-    opacity: 0.2,
-    marginBottom: verticalScale(5),
+    opacity: 0.1,
+    marginBottom: verticalScale(15),
   },
   footerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-end',
   },
-  footerInfo: {
+  leftFooter: {
     flex: 1,
+    justifyContent: 'center',
   },
-  amenityText: {
+  amenitiesContainer: {
+    flexDirection: 'row',
     marginBottom: verticalScale(4),
   },
-  priceText: {
-    marginTop: verticalScale(4),
-  },
-  bookButton: {
-    backgroundColor: '#FF6B00',
-    paddingHorizontal: scale(20),
+  selectButton: {
+    backgroundColor: Colors.BRIGHT_BLUE,
     paddingVertical: verticalScale(10),
-    borderRadius: scale(8),
+    paddingHorizontal: scale(30),
+    borderRadius: scale(10),
   },
 });
 
