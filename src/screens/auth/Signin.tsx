@@ -10,8 +10,7 @@ import ScreenWrapper from '../../component/common/ScreenWrapper';
 import Colors from '../../utils/Colors.util';
 import { Bus, Lock, User } from '../../assets/svg';
 import { useNavigation } from '@react-navigation/native';
-
-import { useLogin } from '../../hooks/useSignUp';
+import { useLogin } from '../../hooks/useSignIn';
 
 const Signin = () => {
   const navigation = useNavigation<any>();

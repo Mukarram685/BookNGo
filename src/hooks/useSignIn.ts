@@ -9,7 +9,7 @@ export const useLogin = () => {
     return useMutation({
         mutationFn: async (data: any) => {
             const response = await axiosInstance.post('login', data);
-            return response;
+            return response as any;
         },
         onSuccess: (data) => {
             console.log('data is ', data)
@@ -18,7 +18,7 @@ export const useLogin = () => {
                 text1: 'Login Successful',
                 text2: 'Welcome back!',
             });
-            dispatch(setCredentials({ user: data?.user, token: data?.token }));
+            dispatch(setCredentials({ user: data?.user, token: data?.accessToken }));
         },
         onError: (error: any) => {
             Toast.show({
