@@ -13,6 +13,9 @@ import Food from './food.svg';
 import Drink from './drink.svg';
 import Seat from './seat.svg';
 import AC from './ac.svg';
+import Home from './home.svg';
+import Bookings from './bookings.svg';
+import Profile from './profile.svg';
 
 export {
     Radio,
@@ -30,5 +33,8 @@ export {
     Drink,
     Seat,
     AC,
+    Home,
+    Bookings,
+    Profile,
 }
 

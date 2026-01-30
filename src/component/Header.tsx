@@ -8,20 +8,23 @@ import { Arrow } from '../assets/svg';
 interface HeaderProps {
   title: string;
   action?: any;
+  showBack?: boolean;
 }
 
-function Header({ title, action }: HeaderProps) {
+function Header({ title, action, showBack = true }: HeaderProps) {
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <TouchableOpacity
-          style={styles.back}
-          onPress={() => navigation.goBack()}
-        >
-          <Arrow />
-        </TouchableOpacity>
+        {showBack && (
+          <TouchableOpacity
+            style={styles.back}
+            onPress={() => navigation.goBack()}
+          >
+            <Arrow />
+          </TouchableOpacity>
+        )}
         <Text style={[styles.title]}>{title}</Text>
       </View>
       <View style={styles.iconContainer}>{action}</View>
