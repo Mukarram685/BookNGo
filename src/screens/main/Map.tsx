@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import MapView, { Marker } from 'react-native-maps';
 const MapScreen = () => {
- const initialRegion = {
+  const { t } = useTranslation();
+  const initialRegion = {
    latitude: 37.78825, // Initial latitude
    longitude: -122.4324, // Initial longitude
    latitudeDelta: 0.0922, // Zoom level
@@ -16,8 +18,8 @@ const MapScreen = () => {
            latitude: initialRegion.latitude,
            longitude: initialRegion.longitude,
          }}
-         title="Your Location"
-         description="This is your current location"
+         title={t('map_locationTitle')}
+         description={t('map_locationDescription')}
        />
      </MapView>
    </View>
