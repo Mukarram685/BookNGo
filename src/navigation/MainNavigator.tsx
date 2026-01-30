@@ -5,6 +5,8 @@ import DatePicker from '../screens/main/DatePicker';
 import NetworkStatus from '../component/common/NetworkStatus';
 import Home from '../screens/main/Home/Home';
 
+import SearchResults from '../screens/main/SearchResults/SearchResults';
+
 const Stack = createNativeStackNavigator();
 
 const MainNavigator = () => {
@@ -12,6 +14,7 @@ const MainNavigator = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="BottomTabs" component={BottomTabNavigator} />
             <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="SearchResults" component={SearchResults} />
             <Stack.Screen name="DatePicker" component={DatePicker} />
             <Stack.Screen name="NetworkStatus" component={NetworkStatus} />
         </Stack.Navigator>

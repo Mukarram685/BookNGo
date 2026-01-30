@@ -6,6 +6,7 @@ import Lock from './lock.svg';
 import Bus from './bus.svg';
 import Mail from './mail.svg';
 import Phone from './phone.svg';
+import Arrow from './arrow_back.svg';
 
 export {
     Radio,
@@ -16,4 +17,5 @@ export {
     Bus,
     Mail,
     Phone,
+    Arrow,
 }
