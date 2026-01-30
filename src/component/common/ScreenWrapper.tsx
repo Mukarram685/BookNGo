@@ -87,11 +87,11 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.BACKGROUND,
+    backgroundColor: Colors.DARK_BG,
     position: 'relative',
   },
   header: {
-    backgroundColor: Colors.WHITE,
+    backgroundColor: Colors.DARK_BG,
     padding: moderateScale(16),
     borderBottomLeftRadius: scale(20),
     borderBottomRightRadius: scale(20),
