@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import AppText from '../../../component/common/AppText';
 import AppInput from '../../../component/TextInput/TextInput';
 import Colors from '../../../utils/Colors.util';
-import { Radio } from '../../../assets/svg';
+import { Radio, From, To, Calendar } from '../../../assets/svg';
 import { SearchSchema } from '../../../helpers/bus.helper';
 
 interface HomeSearchProps {
@@ -46,7 +46,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         }
                         onBlur={() => setFieldTouched('from')}
                         error={touched.from && errors.from ? errors.from : ''}
-                        LeftIcon={Radio}
+                        LeftIcon={From}
                         inputStyle={styles.inputStyle}
                         containerStyle={styles.inputContainer}
                         placeholderTextColor={Colors.TEXT_GREY}
@@ -60,7 +60,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         }
                         onBlur={() => setFieldTouched('to')}
                         error={touched.to && errors.to ? errors.to : ''}
-                        LeftIcon={Radio}
+                        LeftIcon={To}
                         inputStyle={styles.inputStyle}
                         containerStyle={styles.inputContainer}
                         placeholderTextColor={Colors.TEXT_GREY}
@@ -72,7 +72,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         style={[styles.inputContainer, styles.dateInputContainer]}
                     >
                         <View style={styles.leftIconContainer}>
-                            <Radio width={scale(20)} height={scale(20)} />
+                            <Calendar width={scale(20)} height={scale(20)} />
                         </View>
                         <AppText size={14} color={Colors.WHITE} style={styles.dateText}>
                             {values.date.toDateString()}

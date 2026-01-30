@@ -16,6 +16,9 @@ import AC from './ac.svg';
 import Home from './home.svg';
 import Bookings from './bookings.svg';
 import Profile from './profile.svg';
+import From from './from.svg';
+import To from './to.svg';
+import Calendar from './calendar.svg';
 
 export {
     Radio,
@@ -36,5 +39,8 @@ export {
     Home,
     Bookings,
     Profile,
+    From,
+    To,
+    Calendar,
 }
 
