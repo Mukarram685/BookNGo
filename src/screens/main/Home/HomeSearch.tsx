@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import AppText from '../../../component/common/AppText';
 import AppInput from '../../../component/TextInput/TextInput';
 import Colors from '../../../utils/Colors.util';
-import { Radio, From, To, Calendar } from '../../../assets/svg';
+import { From, To, Calendar } from '../../../assets/svg';
 import { SearchSchema } from '../../../helpers/bus.helper';
 
 interface HomeSearchProps {
@@ -91,15 +91,9 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                             display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                             minimumDate={new Date()}
                             onChange={(event, selectedDate) => {
-                                setShowDatePicker(
-                                    Platform.OS === 'ios'
-                                );
-                                if (selectedDate) {
-                                    setFieldValue(
-                                        'date',
-                                        selectedDate
-                                    );
-                                }
+                                const currentDate = selectedDate || values.date;
+                                setShowDatePicker(Platform.OS === 'ios');
+                                setFieldValue('date', currentDate);
                             }}
                         />
                     )}

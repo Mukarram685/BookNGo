@@ -8,6 +8,7 @@ import Colors from '../../../utils/Colors.util';
 import BusCard from '../../../component/Bus/BusCard';
 import { BusSchedule } from '../../../interface/bus.interface';
 import { useSearchBuses } from '../../../hooks/useSearchBuses';
+import Header from '../../../component/Header';
 
 type RootStackParamList = {
     SearchResults: {
@@ -27,7 +28,6 @@ const SearchResults = () => {
     const [busList, setBusList] = useState<BusSchedule[]>([]);
 
     useEffect(() => {
-        // Trigger search on mount
         search({ fromCity, toCity, date });
     }, [fromCity, toCity, date]);
 
@@ -71,7 +71,7 @@ const SearchResults = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.DARK_BG} isLoading={isPending}>
+        <ScreenWrapper header={<Header title="Available Buses" />} isLoading={isPending}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
             <View style={styles.container}>
                 <View style={styles.header}>
