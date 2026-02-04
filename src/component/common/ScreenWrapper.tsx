@@ -30,7 +30,7 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   header,
   footer,
   isLoading = false,
-  backgroundColor = Colors.BACKGROUND,
+  backgroundColor = Colors.DARK_BG,
   isScrollable = true,
   paddingHorizontal = scale(16),
   contentStyle,
