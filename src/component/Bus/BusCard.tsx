@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
 import AppText from '../common/AppText';
 import Colors from '../../utils/Colors.util';
 import { BusSchedule } from '../../interface/bus.interface';
@@ -22,7 +23,13 @@ const amenityIcons: Record<string, React.FC<any>> = {
   'Water Bottle': Drink,
 };
 
-const BusCard = ({ item, onBookPress }: BusCardProps) => {
+const BusCard = ({ item }: BusCardProps) => {
+  const navigation = useNavigation<any>();
+
+  const handleBookPress = () => {
+    navigation.navigate('SeatSelection', { schedule: item });
+  };
+
   return (
     <View style={styles.cardContainer}>
       <View style={styles.headerRow}>
@@ -118,7 +125,7 @@ const BusCard = ({ item, onBookPress }: BusCardProps) => {
         <TouchableOpacity
           style={styles.selectButton}
           activeOpacity={0.8}
-          onPress={() => onBookPress(item)}
+          onPress={handleBookPress}
         >
           <AppText size={14} weight="700" color={Colors.WHITE}>
             Select

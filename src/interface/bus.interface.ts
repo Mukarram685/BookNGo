@@ -1,7 +1,8 @@
 export interface BusSchedule {
     _id: string;
-    busName: string; // Mapped from company.name or bus.name
-    busType: string; // e.g., "AC Sleeper Coach"
+    busId: string;
+    busName: string;
+    busType: string;
     busNumber: string;
     fromCity: string;
     toCity: string;
@@ -12,6 +13,8 @@ export interface BusSchedule {
     price: number;
     seatsAvailable: number;
     totalSeats: number;
+    seatLayout: '2x2' | '2x1' | '3x2' | 'sleeper';
+    bookedSeats: number[];
     amenities: string[];   // e.g., ["Free Wi-Fi", "Charging Point"]
     status: 'AVAILABLE' | 'FULL' | 'CANCELLED';
     image?: string;        // URL or local asset path

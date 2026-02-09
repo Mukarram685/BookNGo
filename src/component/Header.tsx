@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.DARK_BG,
     flexDirection: 'row',
-    paddingVertical: moderateScale(6),
+    paddingVertical: moderateScale(10),
     alignItems: 'center',
     columnGap: verticalScale(0),
     justifyContent: 'space-between'
