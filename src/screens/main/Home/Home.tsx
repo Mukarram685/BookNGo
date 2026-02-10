@@ -7,7 +7,7 @@ import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Colors from '../../../utils/Colors.util';
 import HomeSearch from './HomeSearch';
-import Header from '../../../component/Header';
+import Header from '../../../component/Header'; 
 
 const Home = () => {
   const { t } = useTranslation();
