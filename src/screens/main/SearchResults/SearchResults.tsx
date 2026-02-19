@@ -32,17 +32,19 @@ const SearchResults = () => {
     }, [fromCity, toCity, date]);
 
     useEffect(() => {
+        const searchData = data as any;
         let rawData: any[] = [];
 
-        if (data?.schedules) {
-            rawData = Array.isArray(data.schedules) ? data.schedules : [];
-        } else if (data?.data) {
-            rawData = Array.isArray(data.data) ? data.data : [];
+        if (searchData?.schedules) {
+            rawData = Array.isArray(searchData.schedules) ? searchData.schedules : [];
+        } else if (searchData?.data) {
+            rawData = Array.isArray(searchData.data) ? searchData.data : [];
         }
 
         if (rawData && rawData.length > 0) {
             const mappedData: BusSchedule[] = rawData.map((item: any) => ({
                 _id: item._id,
+                busId: item.bus?._id || item.busId || '',
                 busName: item.company?.name || item.bus?.name || 'Bus Service',
                 busType: item.bus?.type || 'Standard',
                 busNumber: item.bus?.busNumber || 'N/A',
@@ -55,10 +57,16 @@ const SearchResults = () => {
                 price: item.fare || item.price || 0,
                 seatsAvailable: item.availableSeats || 0,
                 totalSeats: item.bus?.totalSeats || 0,
+                bookedSeats: item.bookedSeats || [],
+                seatLayout: item.bus?.seatLayout || '2x2',
                 amenities: item.bus?.amenities || [],
                 status: (item.status === 'active' ? 'AVAILABLE' : item.status) || 'AVAILABLE',
                 image: item.bus?.image,
             }));
+            console.log('--- Search Results Debug ---');
+            console.log('Raw Item Keys:', Object.keys(rawData[0] || {}));
+            console.log('Raw Item bookedSeats:', rawData[0]?.bookedSeats);
+            console.log('Mapped Item bookedSeats:', mappedData[0]?.bookedSeats);
             setBusList(mappedData);
         } else {
             setBusList([]);

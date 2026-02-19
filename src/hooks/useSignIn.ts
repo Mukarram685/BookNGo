@@ -18,7 +18,11 @@ export const useLogin = () => {
                 text1: 'Login Successful',
                 text2: 'Welcome back!',
             });
-            dispatch(setCredentials({ user: data?.user, token: data?.accessToken }));
+            dispatch(setCredentials({
+                user: data?.user,
+                token: data?.accessToken,
+                refreshToken: data?.refreshToken
+            }));
         },
         onError: (error: any) => {
             Toast.show({

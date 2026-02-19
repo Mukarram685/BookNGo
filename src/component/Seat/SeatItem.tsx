@@ -16,7 +16,7 @@ const SeatItem: React.FC<SeatItemProps> = ({ seatNumber, status, onPress }) => {
             case 'selected':
                 return Colors.BRIGHT_BLUE;
             case 'booked':
-                return '#2C3E50';
+                return alpha(Colors.RED, 0.1);
             default:
                 return Colors.INPUT_BG;
         }
@@ -27,7 +27,7 @@ const SeatItem: React.FC<SeatItemProps> = ({ seatNumber, status, onPress }) => {
             case 'selected':
                 return Colors.BRIGHT_BLUE;
             case 'booked':
-                return '#2C3E50';
+                return alpha(Colors.RED, 0.5);
             default:
                 return alpha(Colors.BRIGHT_BLUE, 0.4);
         }
@@ -38,7 +38,7 @@ const SeatItem: React.FC<SeatItemProps> = ({ seatNumber, status, onPress }) => {
             case 'selected':
                 return Colors.WHITE;
             case 'booked':
-                return '#5D6D7E';
+                return Colors.RED;
             default:
                 return Colors.WHITE;
         }
