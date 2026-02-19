@@ -17,7 +17,10 @@ const SeatSelection = () => {
 
     const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
 
-    const bookedSeats = schedule?.bookedSeats || [2, 10, 15, 22]; // Fallback mock
+    const bookedSeats = schedule?.bookedSeats || [];
+    console.log('--- Seat Selection Debug ---');
+    console.log('Schedule ID:', schedule?._id);
+    console.log('Booked Seats received:', bookedSeats);
 
     const toggleSeat = useCallback((seatNumber: number) => {
         setSelectedSeats(prev => {
@@ -123,7 +126,7 @@ const SeatSelection = () => {
                     <View style={styles.legendWrapper}>
                         <LegendItem label="Available" color={Colors.INPUT_BG} dot={Colors.BRIGHT_BLUE} />
                         <LegendItem label="Selected" color={Colors.BRIGHT_BLUE} dot={Colors.WHITE} />
-                        <LegendItem label="Booked" color="#2C3E50" dot="#5D6D7E" />
+                        <LegendItem label="Booked" color="#2C3E50" dot={Colors.RED} />
                     </View>
 
                     <View style={styles.busCabin}>
@@ -152,7 +155,7 @@ const SeatSelection = () => {
                         <TouchableOpacity
                             style={[styles.payButton, selectedSeats.length === 0 && { opacity: 0.5 }]}
                             disabled={selectedSeats.length === 0}
-                            onPress={() => console.log('Proceed', selectedSeats)}
+                            onPress={() => navigation.navigate('PassengerDetails', { schedule, selectedSeats })}
                         >
                             <AppText size={16} weight="700" color={Colors.WHITE}>Proceed</AppText>
                         </TouchableOpacity>
