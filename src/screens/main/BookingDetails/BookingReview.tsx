@@ -36,7 +36,6 @@ const BookingReview = () => {
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
 
-                    {/* Summary Card */}
                     <View style={styles.summaryCard}>
                         <AppText size={18} weight="700" color={Colors.WHITE} style={{ marginBottom: verticalScale(15) }}>
                             {t('bookingReview_tripSummary')}
@@ -82,7 +81,6 @@ const BookingReview = () => {
                         </View>
                     </View>
 
-                    {/* Payment Methods */}
                     <AppText size={16} weight="700" color={Colors.WHITE} style={styles.sectionTitle}>
                         {t('bookingReview_paymentMethod')}
                     </AppText>

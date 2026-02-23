@@ -21,7 +21,7 @@ export interface BusSchedule {
     image?: string;        // URL or local asset path
 }
 
-export const amenityIcons: Record<string, React.FC<any>> = {
+export const amenityIcons = {
   'Wifi': Wifi,
   'Charging Point': Charger,
   'Food': Food,

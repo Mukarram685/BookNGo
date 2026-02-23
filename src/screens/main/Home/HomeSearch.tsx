@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import AppText from '../../../component/common/AppText';
 import AppInput from '../../../component/TextInput/TextInput';
 import Colors from '../../../utils/Colors.util';
-import { Radio, From, To, Calendar } from '../../../assets/svg';
+import { From, To, Calendar } from '../../../assets/svg';
 import { SearchSchema } from '../../../helpers/bus.helper';
 
 interface HomeSearchProps {

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { View, Button, Text, Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { t } from 'i18next';
 
 const DatePicker = () => {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
 
-  const onChange = (event: any, selectedDate: any) => {
+  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     setShow(Platform.OS === 'ios');
     if (selectedDate) {
       setDate(selectedDate);
