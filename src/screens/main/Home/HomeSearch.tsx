@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import AppText from '../../../component/common/AppText';
 import AppInput from '../../../component/TextInput/TextInput';
 import Colors from '../../../utils/Colors.util';
@@ -14,6 +15,7 @@ interface HomeSearchProps {
 }
 
 const HomeSearch = ({ onSearch }: HomeSearchProps) => {
+    const { t } = useTranslation();
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     return (
@@ -39,7 +41,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
             {({ values, setFieldValue, handleSubmit, errors, touched, setFieldTouched }) => (
                 <View style={styles.searchContainer}>
                     <AppInput
-                        placeholder="From"
+                        placeholder={t('search_fromPlaceholder')}
                         value={values.from}
                         onChangeText={(text) =>
                             setFieldValue('from', text)
@@ -53,7 +55,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                     />
 
                     <AppInput
-                        placeholder="To"
+                        placeholder={t('search_toPlaceholder')}
                         value={values.to}
                         onChangeText={(text) =>
                             setFieldValue('to', text)
@@ -110,7 +112,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         onPress={() => handleSubmit()}
                     >
                         <AppText size={16} weight="700" color={Colors.WHITE}>
-                            Search Buses
+                            {t('search_button')}
                         </AppText>
                     </TouchableOpacity>
                 </View>

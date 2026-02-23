@@ -2,6 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Header from '../../../component/Header';
@@ -14,6 +15,7 @@ const SeatSelection = () => {
     const navigation = useNavigation<any>();
     const route = useRoute<any>();
     const { schedule }: { schedule: BusSchedule } = route.params;
+    const { t } = useTranslation();
 
     const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
 
@@ -105,7 +107,7 @@ const SeatSelection = () => {
     }, [schedule, bookedSeats, selectedSeats, toggleSeat]);
 
     return (
-        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="Choose Seat" showBack={true} />}>
+        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title={t('seatSelection_title')} showBack={true} />}>
             <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
             <View style={styles.content}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
@@ -113,20 +115,20 @@ const SeatSelection = () => {
                         <AppText size={14} color={Colors.TEXT_GREY}>{schedule.fromCity} → {schedule.toCity}</AppText>
                         <View style={styles.busMeta}>
                             <View style={styles.metaItem}>
-                                <AppText size={10} color={Colors.TEXT_GREY}>COMPANY</AppText>
+                                <AppText size={10} color={Colors.TEXT_GREY}>{t('seatSelection_company')}</AppText>
                                 <AppText size={14} weight="700" color={Colors.WHITE}>{schedule.busName}</AppText>
                             </View>
                             <View style={styles.metaItem}>
-                                <AppText size={10} color={Colors.TEXT_GREY}>DATE</AppText>
+                                <AppText size={10} color={Colors.TEXT_GREY}>{t('seatSelection_date')}</AppText>
                                 <AppText size={14} weight="700" color={Colors.WHITE}>{new Date(schedule.date).toDateString()}</AppText>
                             </View>
                         </View>
                     </View>
 
                     <View style={styles.legendWrapper}>
-                        <LegendItem label="Available" color={Colors.INPUT_BG} dot={Colors.BRIGHT_BLUE} />
-                        <LegendItem label="Selected" color={Colors.BRIGHT_BLUE} dot={Colors.WHITE} />
-                        <LegendItem label="Booked" color="#2C3E50" dot={Colors.RED} />
+                        <LegendItem label={t('seatSelection_available')} color={Colors.INPUT_BG} dot={Colors.BRIGHT_BLUE} />
+                        <LegendItem label={t('seatSelection_selected')} color={Colors.BRIGHT_BLUE} dot={Colors.WHITE} />
+                        <LegendItem label={t('seatSelection_booked')} color="#2C3E50" dot={Colors.RED} />
                     </View>
 
                     <View style={styles.busCabin}>
@@ -147,9 +149,9 @@ const SeatSelection = () => {
                 <View style={styles.checkoutWrapper}>
                     <View style={styles.checkoutContent}>
                         <View>
-                            <AppText size={12} color={Colors.TEXT_GREY}>SELECTED SEATS ({selectedSeats.length})</AppText>
+                            <AppText size={12} color={Colors.TEXT_GREY}>{t('seatSelection_selectedSeats', { count: selectedSeats.length })}</AppText>
                             <AppText size={20} weight="800" color={Colors.WHITE}>
-                                PKR {(selectedSeats.length * schedule.price).toLocaleString()}
+                                {'PKR ' + (selectedSeats.length * schedule.price).toLocaleString()}
                             </AppText>
                         </View>
                         <TouchableOpacity
@@ -157,7 +159,7 @@ const SeatSelection = () => {
                             disabled={selectedSeats.length === 0}
                             onPress={() => navigation.navigate('PassengerDetails', { schedule, selectedSeats })}
                         >
-                            <AppText size={16} weight="700" color={Colors.WHITE}>Proceed</AppText>
+                            <AppText size={16} weight="700" color={Colors.WHITE}>{t('seatSelection_proceed')}</AppText>
                         </TouchableOpacity>
                     </View>
                 </View>

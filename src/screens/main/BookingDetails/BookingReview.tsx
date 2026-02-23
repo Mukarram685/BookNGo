@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Header from '../../../component/Header';
@@ -14,6 +15,7 @@ const BookingReview = () => {
     const navigation = useNavigation<any>();
     const route = useRoute<any>();
     const { schedule, passengers, totalAmount }: { schedule: BusSchedule; passengers: PassengerDetail[]; totalAmount: number } = route.params;
+    const { t } = useTranslation();
 
     const [paymentMethod, setPaymentMethod] = useState<'JazzCash' | 'EasyPaisa' | 'CreditCard'>('JazzCash');
     const { mutate: book, isPending } = useBookSeats();
@@ -30,32 +32,32 @@ const BookingReview = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="Review Booking" />} isLoading={isPending}>
+        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title={t('bookingReview_title')} />} isLoading={isPending}>
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
 
                     {/* Summary Card */}
                     <View style={styles.summaryCard}>
                         <AppText size={18} weight="700" color={Colors.WHITE} style={{ marginBottom: verticalScale(15) }}>
-                            Trip Summary
+                            {t('bookingReview_tripSummary')}
                         </AppText>
                         <View style={styles.row}>
-                            <AppText color={Colors.TEXT_GREY}>Route</AppText>
+                            <AppText color={Colors.TEXT_GREY}>{t('bookingReview_route')}</AppText>
                             <AppText color={Colors.WHITE} weight="600">{schedule.fromCity} → {schedule.toCity}</AppText>
                         </View>
                         <View style={styles.row}>
-                            <AppText color={Colors.TEXT_GREY}>Company</AppText>
+                            <AppText color={Colors.TEXT_GREY}>{t('bookingReview_company')}</AppText>
                             <AppText color={Colors.WHITE} weight="600">{schedule.busName}</AppText>
                         </View>
                         <View style={styles.row}>
-                            <AppText color={Colors.TEXT_GREY}>Departure</AppText>
+                            <AppText color={Colors.TEXT_GREY}>{t('bookingReview_departure')}</AppText>
                             <AppText color={Colors.WHITE} weight="600">{schedule.departureTime}</AppText>
                         </View>
 
                         <View style={styles.divider} />
 
                         <AppText size={16} weight="700" color={Colors.WHITE} style={{ marginBottom: verticalScale(10) }}>
-                            Passengers ({passengers.length})
+                            {t('bookingReview_passengers', { count: passengers.length })}
                         </AppText>
                         {passengers.map((p, index) => (
                             <View key={index} style={styles.passengerItem}>
@@ -75,30 +77,30 @@ const BookingReview = () => {
                         <View style={styles.divider} />
 
                         <View style={[styles.row, { marginBottom: 0 }]}>
-                            <AppText size={16} weight="700" color={Colors.WHITE}>Total Amount</AppText>
-                            <AppText size={20} weight="800" color={Colors.BRIGHT_BLUE}>PKR {totalAmount.toLocaleString()}</AppText>
+                            <AppText size={16} weight="700" color={Colors.WHITE}>{t('bookingReview_totalAmount')}</AppText>
+                            <AppText size={20} weight="800" color={Colors.BRIGHT_BLUE}>{'PKR ' + totalAmount.toLocaleString()}</AppText>
                         </View>
                     </View>
 
                     {/* Payment Methods */}
                     <AppText size={16} weight="700" color={Colors.WHITE} style={styles.sectionTitle}>
-                        Payment Method
+                        {t('bookingReview_paymentMethod')}
                     </AppText>
 
                     <PaymentOption
-                        title="JazzCash"
+                        title={t('bookingReview_jazzCash')}
                         selected={paymentMethod === 'JazzCash'}
                         onSelect={() => setPaymentMethod('JazzCash')}
                         icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6-mX_cE8yX1yGzkV9pL0W0-m0Y0P9Uqf-0A&s"
                     />
                     <PaymentOption
-                        title="EasyPaisa"
+                        title={t('bookingReview_easyPaisa')}
                         selected={paymentMethod === 'EasyPaisa'}
                         onSelect={() => setPaymentMethod('EasyPaisa')}
                         icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6A6sYx0z9r9y7wGf9uHn8N-zVfG9_oWfXfg&s"
                     />
                     <PaymentOption
-                        title="Credit / Debit Card"
+                        title={t('bookingReview_creditCard')}
                         selected={paymentMethod === 'CreditCard'}
                         onSelect={() => setPaymentMethod('CreditCard')}
                     />
@@ -107,7 +109,7 @@ const BookingReview = () => {
 
                 <View style={styles.footer}>
                     <TouchableOpacity style={styles.button} onPress={handlePayment}>
-                        <AppText size={16} weight="700" color={Colors.WHITE}>Confirm Booking</AppText>
+                        <AppText size={16} weight="700" color={Colors.WHITE}>{t('bookingReview_confirmButton')}</AppText>
                     </TouchableOpacity>
                 </View>
             </View>
