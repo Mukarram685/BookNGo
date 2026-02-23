@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import AppText from '../../../component/common/AppText';
 import AppInput from '../../../component/TextInput/TextInput';
 import Colors from '../../../utils/Colors.util';
-import { Radio, From, To, Calendar } from '../../../assets/svg';
+import { From, To, Calendar } from '../../../assets/svg';
 import { SearchSchema } from '../../../helpers/bus.helper';
 
 interface HomeSearchProps {
@@ -85,11 +85,15 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                     )}
 
                     {showDatePicker && (
+                        <View style={styles.datePickerWrapper}>
                         <DateTimePicker
                             value={values.date}
                             mode="date"
                             display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                             minimumDate={new Date()}
+                            textColor={Colors.BLACK}
+                            accentColor={Colors.BRIGHT_BLUE}
+                            themeVariant="light"
                             onChange={(event, selectedDate) => {
                                 setShowDatePicker(
                                     Platform.OS === 'ios'
@@ -102,6 +106,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                                 }
                             }}
                         />
+                         </View>
                     )}
 
                     <TouchableOpacity
@@ -121,43 +126,47 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
 
 const styles = StyleSheet.create({
     searchContainer: {
-        backgroundColor: Colors.INPUT_BG,
         marginVertical: scale(20),
         padding: scale(20),
         borderRadius: scale(20),
-        shadowColor: Colors.BLACK,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 10,
+        borderWidth: 1,
+        borderColor: Colors.BRIGHT_BLUE
+    },
+    datePickerWrapper: {
+        backgroundColor: Colors.RED,
+        borderRadius: 15,
+        padding: 10,
+        marginTop: 10,
+        elevation: 20,
     },
     inputContainer: {
         marginBottom: verticalScale(15),
     },
     inputStyle: {
-        backgroundColor: Colors.DARK_BG,
-        borderRadius: scale(10),
-        borderWidth: 0,
+        borderRadius: scale(12),
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.15)',
     },
     dateInputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: Colors.DARK_BG,
-        borderRadius: scale(10),
+        borderRadius: scale(12),
         height: verticalScale(46),
         paddingHorizontal: scale(12),
+        borderWidth: 1,
+        borderColor: 'rgba(255,255,255,0.15)',
     },
     dateText: {
         flex: 1,
-        paddingLeft: scale(0),
+        paddingLeft: scale(5),
     },
     leftIconContainer: {
         paddingRight: scale(8),
     },
     searchButton: {
-        backgroundColor: Colors.BRIGHT_BLUE,
+        backgroundColor: 'rgba(11, 100, 255, 0.7)',
         paddingVertical: verticalScale(14),
-        borderRadius: scale(10),
+        borderRadius: scale(12),
         alignItems: 'center',
         marginTop: verticalScale(5),
     },

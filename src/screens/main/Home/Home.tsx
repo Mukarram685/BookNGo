@@ -18,14 +18,14 @@ const Home = () => {
   };
 
   return (
-    <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="Home" />}>
+    <ScreenWrapper header={<Header title="Home" />}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
       <View style={styles.container}>
         <View style={styles.header}>
-          <AppText size={24} weight="700" color={Colors.WHITE}>
+          <AppText size={24} weight="700">
             Where to next?
           </AppText>
-          <AppText size={14} color={Colors.TEXT_GREY}>
+          <AppText size={14}>
             Find the best bus rides for your journey.
           </AppText>
         </View>

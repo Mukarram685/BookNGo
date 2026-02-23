@@ -1,5 +1,5 @@
 const Colors = {
-  PRIMARY: '#2196F3', // Primary (Blue)
+  PRIMARY: '#e0eeff', // Primary (Blue)
   PLACEHOLDER: '#414649', // Secondary
   BLACK: '#000000',
   BORDER_GREY: '#DFDFDF', // For Borders

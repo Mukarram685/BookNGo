@@ -34,7 +34,7 @@ function Header({ title, action, showBack = true }: HeaderProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.DARK_BG,
+    backgroundColor: Colors.PRIMARY,
     flexDirection: 'row',
     paddingVertical: moderateScale(10),
     alignItems: 'center',
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: moderateScale(18),
-    color: Colors.WHITE
+    color: Colors.BLACK
   },
   iconContainer: {
     flexDirection: 'row',
