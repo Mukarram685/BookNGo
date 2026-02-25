@@ -45,7 +45,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
 
-    'react-native/no-inline-styles': 'on',
+    'react-native/no-inline-styles': 'off',
     'react-native/sort-styles': 'off',
 
     'react-hooks/rules-of-hooks': 'error',
