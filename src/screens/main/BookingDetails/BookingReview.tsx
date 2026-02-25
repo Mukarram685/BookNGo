@@ -10,6 +10,10 @@ import Colors, { alpha } from '../../../utils/Colors.util';
 import { BusSchedule } from '../../../interface/bus.interface';
 import { PassengerDetail } from '../../../interface/booking.interface';
 import { useBookSeats } from '../../../hooks/useBookSeats';
+import { useCreatePaymentIntent } from '../../../hooks/useCreatePaymentIntent';
+import { useCancelBooking } from '../../../hooks/useCancelBooking';
+import { useStripe } from '@stripe/stripe-react-native';
+import Toast from 'react-native-toast-message';
 
 const BookingReview = () => {
     const navigation = useNavigation<any>();
@@ -18,21 +22,89 @@ const BookingReview = () => {
     const { t } = useTranslation();
 
     const [paymentMethod, setPaymentMethod] = useState<'JazzCash' | 'EasyPaisa' | 'CreditCard'>('JazzCash');
-    const { mutate: book, isPending } = useBookSeats();
+    const { mutate: book, isPending: isBooking } = useBookSeats();
+    const { mutateAsync: createPaymentIntent } = useCreatePaymentIntent();
+    const { mutate: cancelBooking } = useCancelBooking();
+    const { initPaymentSheet, presentPaymentSheet } = useStripe();
+    const [loading, setLoading] = useState(false);
 
-    const handlePayment = () => {
-        book({
-            scheduleId: schedule._id,
-            seats: passengers
-        }, {
-            onSuccess: (data) => {
-                navigation.navigate('BookingSuccess', { ticket: data.ticket });
+    const handlePayment = async () => {
+        if (paymentMethod === 'CreditCard') {
+            setLoading(true);
+            try {
+                book({
+                    scheduleId: schedule._id,
+                    seats: passengers
+                }, {
+                    onSuccess: async (data) => {
+                        try {
+                            // 2. Create Payment Intent
+                            const intentData: any = await createPaymentIntent(data.ticket.bookingId);
+                            // intentData is already response.data because of axiosInstance interceptor
+                            const clientSecret = intentData.clientSecret;
+
+                            if (!clientSecret) {
+                                setLoading(false);
+                                Toast.show({ type: 'error', text1: 'Error', text2: 'Could not get payment secret' });
+                                return;
+                            }
+
+                            // 3. Initialize Payment Sheet
+                            const { error: initError } = await initPaymentSheet({
+                                paymentIntentClientSecret: clientSecret,
+                                merchantDisplayName: 'BookNGo',
+                                returnURL: 'bookngo://stripe-redirect',
+                                defaultBillingDetails: {
+                                    name: passengers[0].passengerName,
+                                },
+                            });
+
+                            if (initError) {
+                                setLoading(false);
+                                Toast.show({ type: 'error', text1: 'Payment status', text2: initError.message });
+                                return;
+                            }
+
+                            // 4. Present Payment Sheet
+                            const { error: presentError } = await presentPaymentSheet();
+
+                            if (presentError) {
+                                setLoading(false);
+                                // If user cancels or payment fails, we cancel the booking to free seats
+                                cancelBooking({
+                                    bookingId: data.ticket.bookingId,
+                                    reason: 'Payment failed or cancelled by user'
+                                });
+                                Toast.show({ type: 'info', text1: 'Payment status', text2: 'Booking cancelled due to payment failure/dismissal' });
+                            } else {
+                                setLoading(false);
+                                navigation.navigate('BookingSuccess', { ticket: data.ticket });
+                            }
+                        } catch (err: any) {
+                            setLoading(false);
+                            Toast.show({ type: 'error', text1: 'Error', text2: err.message || 'Payment initiation failed' });
+                        }
+                    },
+                    onError: () => setLoading(false)
+                });
+            } catch (error) {
+                setLoading(false);
             }
-        });
+        } else {
+            // Simulated JazzCash / EasyPaisa flow
+            book({
+                scheduleId: schedule._id,
+                seats: passengers
+            }, {
+                onSuccess: (data) => {
+                    navigation.navigate('BookingSuccess', { ticket: data.ticket });
+                }
+            });
+        }
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title={t('bookingReview_title')} />} isLoading={isPending}>
+        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title={t('bookingReview_title')} />} isLoading={isBooking || loading}>
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
 
@@ -98,16 +170,19 @@ const BookingReview = () => {
                         icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6A6sYx0z9r9y7wGf9uHn8N-zVfG9_oWfXfg&s"
                     />
                     <PaymentOption
-                        title={t('bookingReview_creditCard')}
+                        title="Stripe"
                         selected={paymentMethod === 'CreditCard'}
                         onSelect={() => setPaymentMethod('CreditCard')}
+                        icon="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/512px-Stripe_Logo%2C_revised_2016.svg.png"
                     />
 
                 </ScrollView>
 
                 <View style={styles.footer}>
-                    <TouchableOpacity style={styles.button} onPress={handlePayment}>
-                        <AppText size={16} weight="700" color={Colors.WHITE}>{t('bookingReview_confirmButton')}</AppText>
+                    <TouchableOpacity style={styles.button} onPress={handlePayment} disabled={isBooking || loading}>
+                        <AppText size={16} weight="700" color={Colors.WHITE}>
+                            {isBooking || loading ? t('bookingReview_processing') : t('bookingReview_confirmButton')}
+                        </AppText>
                     </TouchableOpacity>
                 </View>
             </View>
