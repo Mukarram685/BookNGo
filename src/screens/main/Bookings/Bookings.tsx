@@ -7,7 +7,7 @@ import Header from '../../../component/Header';
 
 const Bookings = () => {
     return (
-        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="My Bookings" showBack={false} />}>
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title="My Bookings" showBack={false} />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
             <View style={styles.container}>
                 <AppText size={16} color={Colors.WHITE} align="center">

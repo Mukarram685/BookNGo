@@ -15,7 +15,7 @@ const Profile = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="Profile" showBack={false} />}>
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title="Profile" showBack={false} />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
             <View style={styles.container}>
                 <TouchableOpacity style={styles.logoutButton} onPress={handleLogout} activeOpacity={0.8}>

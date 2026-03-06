@@ -7,7 +7,7 @@ import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Colors from '../../../utils/Colors.util';
 import HomeSearch from './HomeSearch';
-import Header from '../../../component/Header'; 
+import Header from '../../../component/Header';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -19,13 +19,13 @@ const Home = () => {
 
   return (
     <ScreenWrapper header={<Header title="Home" />}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
+      <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
       <View style={styles.container}>
         <View style={styles.header}>
-          <AppText size={24} weight="700">
+          <AppText size={28} weight="700" color={Colors.PRIMARY} style={{ letterSpacing: -0.5 }}>
             Where to next?
           </AppText>
-          <AppText size={14}>
+          <AppText size={14} color={Colors.DARK_GRAY} style={{ marginTop: 10 }}>
             Find the best bus rides for your journey.
           </AppText>
         </View>
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     paddingBottom: verticalScale(20),
   },
   header: {
-    paddingHorizontal: scale(20),
+    paddingHorizontal: scale(10),
     paddingTop: verticalScale(20),
     marginBottom: verticalScale(10),
   },

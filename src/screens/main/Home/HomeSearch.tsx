@@ -8,6 +8,7 @@ import AppInput from '../../../component/TextInput/TextInput';
 import Colors from '../../../utils/Colors.util';
 import { From, To, Calendar } from '../../../assets/svg';
 import { SearchSchema } from '../../../helpers/bus.helper';
+import CitySelector from '../../../component/Bus/CitySelector';
 
 interface HomeSearchProps {
     onSearch: (params: { fromCity: string; toCity: string; date: string }) => void;
@@ -38,32 +39,22 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
         >
             {({ values, setFieldValue, handleSubmit, errors, touched, setFieldTouched }) => (
                 <View style={styles.searchContainer}>
-                    <AppInput
-                        placeholder="From"
+                    <CitySelector
+                        placeholder="From City"
                         value={values.from}
-                        onChangeText={(text) =>
-                            setFieldValue('from', text)
-                        }
-                        onBlur={() => setFieldTouched('from')}
-                        error={touched.from && errors.from ? errors.from : ''}
+                        onSelect={(city: string) => setFieldValue('from', city)}
                         LeftIcon={From}
-                        inputStyle={styles.inputStyle}
-                        containerStyle={styles.inputContainer}
-                        placeholderTextColor={Colors.TEXT_GREY}
+                        error={touched.from && errors.from ? errors.from : ''}
+                        touched={touched.from}
                     />
 
-                    <AppInput
-                        placeholder="To"
+                    <CitySelector
+                        placeholder="To City"
                         value={values.to}
-                        onChangeText={(text) =>
-                            setFieldValue('to', text)
-                        }
-                        onBlur={() => setFieldTouched('to')}
-                        error={touched.to && errors.to ? errors.to : ''}
+                        onSelect={(city: string) => setFieldValue('to', city)}
                         LeftIcon={To}
-                        inputStyle={styles.inputStyle}
-                        containerStyle={styles.inputContainer}
-                        placeholderTextColor={Colors.TEXT_GREY}
+                        error={touched.to && errors.to ? errors.to : ''}
+                        touched={touched.to}
                     />
 
                     <TouchableOpacity
@@ -74,7 +65,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         <View style={styles.leftIconContainer}>
                             <Calendar width={scale(20)} height={scale(20)} />
                         </View>
-                        <AppText size={14} color={Colors.WHITE} style={styles.dateText}>
+                        <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.dateText}>
                             {values.date.toDateString()}
                         </AppText>
                     </TouchableOpacity>
@@ -86,27 +77,27 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
 
                     {showDatePicker && (
                         <View style={styles.datePickerWrapper}>
-                        <DateTimePicker
-                            value={values.date}
-                            mode="date"
-                            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                            minimumDate={new Date()}
-                            textColor={Colors.BLACK}
-                            accentColor={Colors.BRIGHT_BLUE}
-                            themeVariant="light"
-                            onChange={(event, selectedDate) => {
-                                setShowDatePicker(
-                                    Platform.OS === 'ios'
-                                );
-                                if (selectedDate) {
-                                    setFieldValue(
-                                        'date',
-                                        selectedDate
+                            <DateTimePicker
+                                value={values.date}
+                                mode="date"
+                                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                                minimumDate={new Date()}
+                                textColor={Colors.BLACK}
+                                accentColor={Colors.SECONDARY}
+                                themeVariant="light"
+                                onChange={(event, selectedDate) => {
+                                    setShowDatePicker(
+                                        Platform.OS === 'ios'
                                     );
-                                }
-                            }}
-                        />
-                         </View>
+                                    if (selectedDate) {
+                                        setFieldValue(
+                                            'date',
+                                            selectedDate
+                                        );
+                                    }
+                                }}
+                            />
+                        </View>
                     )}
 
                     <TouchableOpacity
@@ -127,48 +118,62 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
 const styles = StyleSheet.create({
     searchContainer: {
         marginVertical: scale(20),
-        padding: scale(20),
-        borderRadius: scale(20),
+        padding: scale(24),
+        borderRadius: scale(24),
         borderWidth: 1,
-        borderColor: Colors.BRIGHT_BLUE
+        borderColor: Colors.BORDER_GREY,
+        backgroundColor: Colors.SURFACE,
+        shadowColor: Colors.PRIMARY,
+        shadowOffset: { width: 0, height: 10 },
+        shadowOpacity: 0.05,
+        shadowRadius: 15,
+        elevation: 5,
     },
     datePickerWrapper: {
-        backgroundColor: Colors.RED,
+        backgroundColor: Colors.WHITE,
         borderRadius: 15,
         padding: 10,
         marginTop: 10,
+        borderWidth: 1,
+        borderColor: Colors.BORDER_GREY,
         elevation: 20,
     },
     inputContainer: {
-        marginBottom: verticalScale(15),
+        marginBottom: verticalScale(18),
     },
     inputStyle: {
-        borderRadius: scale(12),
-        borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.15)',
+        borderColor: Colors.BORDER_GREY,
+        backgroundColor: Colors.INPUT_BG,
+        color: Colors.PRIMARY,
     },
     dateInputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: scale(12),
-        height: verticalScale(46),
-        paddingHorizontal: scale(12),
+        borderRadius: scale(14),
+        height: verticalScale(52),
+        paddingHorizontal: scale(15),
         borderWidth: 1,
-        borderColor: 'rgba(255,255,255,0.15)',
+        borderColor: Colors.BORDER_GREY,
+        backgroundColor: Colors.INPUT_BG,
     },
     dateText: {
         flex: 1,
-        paddingLeft: scale(5),
+        paddingLeft: scale(8),
     },
     leftIconContainer: {
-        paddingRight: scale(8),
+        paddingRight: scale(10),
     },
     searchButton: {
-        backgroundColor: 'rgba(11, 100, 255, 0.7)',
-        paddingVertical: verticalScale(14),
-        borderRadius: scale(12),
+        backgroundColor: Colors.PRIMARY,
+        paddingVertical: verticalScale(16),
+        borderRadius: scale(14),
         alignItems: 'center',
-        marginTop: verticalScale(5),
+        marginTop: verticalScale(10),
+        shadowColor: Colors.SECONDARY,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 6,
+        elevation: 8,
     },
 });
 
