@@ -18,8 +18,8 @@ const Signin = () => {
   const { mutate: login, isPending } = useLogin();
 
   return (
-    <ScreenWrapper backgroundColor={Colors.DARK_BG} isLoading={isPending}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
+    <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending}>
+      <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
       <Formik
         initialValues={{ email: '', password: '' }}
         validationSchema={loginSchema}
@@ -41,17 +41,17 @@ const Signin = () => {
         }) => (
           <View style={styles.container}>
             <View style={styles.headerContainer}>
-              <Bus width={scale(40)} height={scale(40)} />
-              <AppText size={28} weight="700" color={Colors.WHITE} style={styles.brandName}>
-                {t('common_brandName')}
+              <Bus width={scale(44)} height={scale(44)} color={Colors.PRIMARY} />
+              <AppText size={30} weight="700" color={Colors.PRIMARY} style={styles.brandName}>
+                {t('app_name')}
               </AppText>
             </View>
 
             <View style={styles.titleContainer}>
-              <AppText size={32} weight="700" color={Colors.WHITE} style={styles.welcomeText}>
+              <AppText size={32} weight="700" color={Colors.PRIMARY} style={styles.welcomeText}>
                 {t('auth_signin_title')}
               </AppText>
-              <AppText size={16} color={Colors.TEXT_GREY} weight="500">
+              <AppText size={16} color={Colors.PRIMARY} weight="500">
                 {t('auth_signin_subtitle')}
               </AppText>
             </View>
@@ -85,7 +85,7 @@ const Signin = () => {
             />
 
             <TouchableOpacity style={styles.forgotPassword} activeOpacity={0.7}>
-              <AppText size={14} weight="600" color={Colors.BRIGHT_BLUE}>
+              <AppText size={14} weight="600" color={Colors.PRIMARY}>
                 {t('auth_signin_forgotPassword')}
               </AppText>
             </TouchableOpacity>
@@ -97,11 +97,11 @@ const Signin = () => {
             </TouchableOpacity>
 
             <View style={styles.footer}>
-              <AppText size={14} color={Colors.TEXT_GREY}>
+              <AppText size={14} color={Colors.DARK_GRAY}>
                 {t('auth_signin_footer')}{' '}
               </AppText>
               <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Signup')}>
-                <AppText size={14} weight="700" color={Colors.BRIGHT_BLUE}>
+                <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   {t('auth_signin_signupLink')}
                 </AppText>
               </TouchableOpacity>
@@ -141,28 +141,27 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(20),
   },
   inputStyle: {
-    backgroundColor: Colors.INPUT_BG,
-    borderWidth: 0,
-    color: Colors.WHITE,
-    borderRadius: scale(12),
+    backgroundColor: Colors.SURFACE,
+    borderColor: Colors.BORDER_GREY,
+    color: Colors.PRIMARY,
   },
   forgotPassword: {
     alignSelf: 'center',
     marginBottom: verticalScale(30),
   },
   button: {
-    backgroundColor: Colors.BRIGHT_BLUE,
-    paddingVertical: verticalScale(14),
-    borderRadius: scale(12),
+    backgroundColor: Colors.PRIMARY,
+    paddingVertical: verticalScale(16),
+    borderRadius: scale(14),
     alignItems: 'center',
     marginBottom: verticalScale(30),
-    shadowColor: Colors.BRIGHT_BLUE,
+    shadowColor: Colors.PRIMARY,
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 6,
     },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
     elevation: 8,
   },
   footer: {
