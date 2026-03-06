@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { Eye, EyeOff } from '../../assets/svg';
-import Colors, { alpha } from '../../utils/Colors.util';
+import Colors from '../../utils/Colors.util';
 
 type AppInputProps = TextInputProps & {
     label?: string;
@@ -76,6 +76,11 @@ const AppInput: React.FC<AppInputProps> = ({
         outputRange: [Colors.TEXT_GREY, Colors.SECONDARY],
     });
 
+    const labelTranslateX = animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [LeftIcon ? scale(40) : scale(12), scale(10)],
+    });
+
     const displayLabel = label || props.placeholder;
 
     return (
@@ -94,9 +99,9 @@ const AppInput: React.FC<AppInputProps> = ({
                             styles.label,
                             {
                                 top: labelTranslateY,
+                                left: labelTranslateX,
                                 fontSize: labelFontSize,
                                 color: labelColor,
-                                left: LeftIcon ? scale(40) : scale(12),
                                 backgroundColor: inputStyle?.backgroundColor || Colors.SURFACE,
                             },
                             labelStyle,
@@ -118,11 +123,10 @@ const AppInput: React.FC<AppInputProps> = ({
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     secureTextEntry={hidePassword}
-                    placeholder="" // Hide placeholder to use floating label
+                    placeholder=""
                     style={[
                         styles.input,
                         inputStyle,
-                        { color: Colors.PRIMARY }
                     ]}
                 />
 
@@ -174,9 +178,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         fontSize: scale(15),
-        color: Colors.PRIMARY,
-        paddingVertical: 0,
-        fontWeight: '500',
+        color: Colors.BLACK,
     },
     iconContainer: {
         paddingLeft: scale(8),
