@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
     View,
     TextInput,
@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TextInputProps,
     TouchableOpacity,
+    Animated,
 } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { Eye, EyeOff } from '../../assets/svg';
@@ -30,34 +31,99 @@ const AppInput: React.FC<AppInputProps> = ({
     isPassword = false,
     secureTextEntry,
     LeftIcon,
+    onFocus,
+    onBlur,
+    value,
     ...props
 }) => {
+    const [isFocused, setIsFocused] = useState(false);
     const [hidePassword, setHidePassword] = useState(
         isPassword || secureTextEntry
     );
 
+    const animatedIsFocused = useRef(new Animated.Value(value ? 1 : 0)).current;
+
+    useEffect(() => {
+        Animated.timing(animatedIsFocused, {
+            toValue: (isFocused || value) ? 1 : 0,
+            duration: 200,
+            useNativeDriver: false,
+        }).start();
+    }, [isFocused, value]);
+
+    const handleFocus = (e: any) => {
+        setIsFocused(true);
+        if (onFocus) onFocus(e);
+    };
+
+    const handleBlur = (e: any) => {
+        setIsFocused(false);
+        if (onBlur) onBlur(e);
+    };
+
+    const labelTranslateY = animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [verticalScale(12), verticalScale(-10)],
+    });
+
+    const labelFontSize = animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [scale(14), scale(11)],
+    });
+
+    const labelColor = animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [Colors.TEXT_GREY, Colors.SECONDARY],
+    });
+
+    const displayLabel = label || props.placeholder;
+
     return (
         <View style={[styles.container, containerStyle]}>
-            {label && <Text style={[styles.label, props.placeholderTextColor ? { color: Colors.TEXT_GREY } : {}, labelStyle]}>{label}</Text>}
-
             <View
                 style={[
                     styles.inputWrapper,
+                    isFocused && styles.inputFocused,
                     error && styles.inputError,
-
                     inputStyle && inputStyle.backgroundColor ? { backgroundColor: inputStyle.backgroundColor, borderColor: inputStyle.borderColor } : {}
                 ]}
             >
+                {displayLabel && (
+                    <Animated.Text
+                        style={[
+                            styles.label,
+                            {
+                                top: labelTranslateY,
+                                fontSize: labelFontSize,
+                                color: labelColor,
+                                left: LeftIcon ? scale(40) : scale(12),
+                                backgroundColor: inputStyle?.backgroundColor || Colors.SURFACE,
+                            },
+                            labelStyle,
+                        ]}
+                    >
+                        {displayLabel}
+                    </Animated.Text>
+                )}
+
                 {LeftIcon && (
                     <View style={styles.leftIconContainer}>
-                        <LeftIcon width={scale(20)} height={scale(20)} />
+                        <LeftIcon width={scale(20)} height={scale(20)} color={isFocused ? Colors.SECONDARY : Colors.TEXT_GREY} />
                     </View>
                 )}
+
                 <TextInput
                     {...props}
+                    value={value}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
                     secureTextEntry={hidePassword}
-                    placeholderTextColor={props.placeholderTextColor || alpha(Colors.PLACEHOLDER, 0.5)}
-                    style={[styles.input, inputStyle, { color: props.style ? (props.style as any).color : Colors.WHITE }]}
+                    placeholder="" // Hide placeholder to use floating label
+                    style={[
+                        styles.input,
+                        inputStyle,
+                        { color: Colors.PRIMARY }
+                    ]}
                 />
 
                 {isPassword && (
@@ -66,7 +132,7 @@ const AppInput: React.FC<AppInputProps> = ({
                         style={styles.iconContainer}
                         activeOpacity={0.7}
                     >
-                        {!hidePassword ? <Eye /> : <EyeOff />}
+                        {!hidePassword ? <Eye color={Colors.SECONDARY} /> : <EyeOff color={Colors.TEXT_GREY} />}
                     </TouchableOpacity>
                 )}
             </View>
@@ -84,9 +150,11 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     label: {
-        fontSize: scale(13),
-        color: Colors.TEXT_GREY,
-        marginBottom: verticalScale(4),
+        position: 'absolute',
+        fontWeight: '500',
+        backgroundColor: Colors.SURFACE,
+        paddingHorizontal: scale(4),
+        zIndex: 1,
     },
     inputWrapper: {
         flexDirection: 'row',
@@ -95,20 +163,26 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,
         borderRadius: scale(8),
-        backgroundColor: Colors.WHITE,
+        backgroundColor: Colors.SURFACE,
         paddingHorizontal: scale(12),
+        position: 'relative',
+    },
+    inputFocused: {
+        borderColor: Colors.SECONDARY,
+        borderWidth: 1.5,
     },
     input: {
         flex: 1,
-        fontSize: scale(14),
-        color: Colors.WHITE,
+        fontSize: scale(15),
+        color: Colors.PRIMARY,
         paddingVertical: 0,
+        fontWeight: '500',
     },
     iconContainer: {
         paddingLeft: scale(8),
     },
     leftIconContainer: {
-        paddingRight: scale(8),
+        paddingRight: scale(10),
     },
     inputError: {
         borderColor: Colors.RED,
@@ -117,5 +191,6 @@ const styles = StyleSheet.create({
         marginTop: verticalScale(4),
         color: Colors.RED,
         fontSize: scale(11),
+        fontWeight: '500',
     },
 });
