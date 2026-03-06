@@ -1,21 +1,29 @@
 const Colors = {
-  PRIMARY: '#e0eeff', // Primary (Blue)
-  PLACEHOLDER: '#414649', // Secondary
+  // Brand Colors from Image
+  PRIMARY: '#172C6B',     // Dark Navy (Logo/Headers)
+  SECONDARY: '#268AFF',   // Bright Blue (Buttons/Actions)
+  ACCENT: '#7ED3EF',      // Sky Blue (Highlights)
+  SUCCESS: '#2CC93C',     // Vibrant Green
+
+  // Neutral Palette
   BLACK: '#000000',
-  BORDER_GREY: '#DFDFDF', // For Borders
-  DARK_GRAY: '#616161', // Secondary Texts
-  BACKGROUND: '#F2F2F2', // Screen Background
   WHITE: '#FFFFFF',
-  TRANSPARENT: 'rgba(1,1,1,0)',
-  GREEN_TEXT: '#01383E',
-  DARK_BLUE: '#2196F3',
+  BACKGROUND: '#F8FAFF',  // Very Light Blue Tint
+  SURFACE: '#FFFFFF',
+  BORDER_GREY: '#E2E8F0',
+  DARK_GRAY: '#475569',
+  TEXT_GREY: '#94A3B8',
+
+  // Functional Colors
   RED: '#FF3B31',
   YELLOW: '#FFC107',
-  DARK_GREEN: '#4caf50',
-  DARK_BG: '#08101F',
-  INPUT_BG: '#1B2636',
-  BRIGHT_BLUE: '#00B0FF',
-  TEXT_GREY: '#8F9BB3',
+  DARK_BG: '#0F172A',     // Deep Slate for dark mode elements
+  INPUT_BG: '#F1F5F9',
+  TRANSPARENT: 'rgba(0,0,0,0)',
+
+  // Supporting Image Colors
+  BLUE_MEDIUM: '#253D84',
+  BLUE_LIGHT: '#3B5399',
 };
 
 export default Colors;
