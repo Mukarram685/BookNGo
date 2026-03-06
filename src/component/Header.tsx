@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Colors from '../utils/Colors.util';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { moderateScale, scale } from 'react-native-size-matters';
 import { Arrow } from '../assets/svg';
 
 
@@ -11,7 +11,7 @@ interface HeaderProps {
   showBack?: boolean;
 }
 
-function Header({ title, action, showBack = true }: HeaderProps) {
+function Header({ title, action, showBack = false }: HeaderProps) {
   const navigation = useNavigation();
 
   return (
@@ -36,19 +36,22 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.PRIMARY,
     flexDirection: 'row',
-    paddingVertical: moderateScale(10),
+    paddingVertical: moderateScale(15),
+    paddingHorizontal: scale(16),
     alignItems: 'center',
-    columnGap: verticalScale(0),
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    columnGap: verticalScale(10)
+    columnGap: scale(10)
   },
   title: {
     fontSize: moderateScale(18),
-    color: Colors.BLACK
+    fontWeight: '700',
+    color: Colors.WHITE
   },
   iconContainer: {
     flexDirection: 'row',
@@ -56,7 +59,7 @@ const styles = StyleSheet.create({
     paddingRight: scale(10)
   },
   back: {
-    marginRight: scale(10)
+    marginRight: scale(5)
   }
 });
 
