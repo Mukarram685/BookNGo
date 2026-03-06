@@ -16,17 +16,17 @@ const BottomTabNavigator = () => {
             screenOptions={({ route }) => ({
                 headerShown: false,
                 tabBarShowLabel: false,
+
                 tabBarStyle: {
                     backgroundColor: Colors.INPUT_BG,
                     borderTopWidth: 0,
-                    height: Platform.OS === 'ios' ? verticalScale(80) : verticalScale(60),
+                    height: Platform.OS === 'ios' ? verticalScale(80) : verticalScale(65),
                     paddingTop: verticalScale(10),
                 },
-                tabBarActiveTintColor: Colors.BRIGHT_BLUE,
+                tabBarActiveTintColor: Colors.PRIMARY,
                 tabBarInactiveTintColor: Colors.TEXT_GREY,
                 tabBarIcon: ({ focused, color }) => {
                     let Icon;
-
                     if (route.name === 'Home') {
                         Icon = HomeIcon;
                     } else if (route.name === 'Bookings') {
@@ -37,14 +37,27 @@ const BottomTabNavigator = () => {
 
                     return (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            {Icon && <Icon width={scale(24)} height={scale(24)} stroke={color} />}
-                            <View style={{
-                                height: 4,
-                                width: 4,
-                                borderRadius: 2,
-                                backgroundColor: focused ? Colors.BRIGHT_BLUE : 'transparent',
-                                marginTop: verticalScale(4)
-                            }} />
+
+                            <View
+                                style={{
+                                    height: 6,
+                                    width: 6,
+                                    borderRadius: 3,
+                                    backgroundColor: focused
+                                        ? Colors.PRIMARY
+                                        : 'transparent',
+                                    marginBottom: verticalScale(4),
+                                }}
+                            />
+
+                            {Icon && (
+                                <Icon
+                                    width={scale(24)}
+                                    height={scale(24)}
+                                    color={color}
+                                />
+                            )}
+
                         </View>
                     );
                 },
