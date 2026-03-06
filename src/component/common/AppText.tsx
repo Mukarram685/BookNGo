@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Text,
-  StyleSheet,
   TextProps,
   TextStyle,
 } from 'react-native';
@@ -29,7 +28,6 @@ const AppText: React.FC<AppTextProps> = ({
     <Text
       {...props}
       style={[
-        styles.text,
         {
           fontSize: scale(size),
           color,
@@ -46,8 +44,3 @@ const AppText: React.FC<AppTextProps> = ({
 
 export default AppText;
 
-const styles = StyleSheet.create({
-  text: {
-    lineHeight: scale(20),
-  },
-});

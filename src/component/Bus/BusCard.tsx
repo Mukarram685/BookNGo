@@ -3,9 +3,9 @@ import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import AppText from '../common/AppText';
-import Colors from '../../utils/Colors.util';
+import Colors, { alpha } from '../../utils/Colors.util';
 import { BusSchedule } from '../../interface/bus.interface';
-import { Bus as BusIcon, Radio, Wifi, Charger, Food, Drink, Seat, AC } from '../../assets/svg';
+import { Bus as BusIcon, Wifi, Charger, Food, Drink, Seat, AC } from '../../assets/svg';
 
 interface BusCardProps {
   item: BusSchedule;
@@ -44,11 +44,11 @@ const BusCard = ({ item }: BusCardProps) => {
             resizeMode="cover"
           />
           <View style={styles.nameAndClass}>
-            <AppText size={16} weight="700" color={Colors.WHITE} numberOfLines={1}>
+            <AppText size={16} weight="800" color={Colors.PRIMARY} numberOfLines={1}>
               {item.busName}
             </AppText>
             <View style={styles.classBadge}>
-              <AppText size={10} weight="500" color={Colors.GREEN_TEXT}>
+              <AppText size={10} weight="600" color={Colors.SECONDARY}>
                 {item.busType}
               </AppText>
             </View>
@@ -56,10 +56,10 @@ const BusCard = ({ item }: BusCardProps) => {
         </View>
 
         <View style={styles.priceContainer}>
-          <AppText size={18} weight="700" color={Colors.BRIGHT_BLUE}>
+          <AppText size={18} weight="800" color={Colors.PRIMARY}>
             Rs. {item.price.toLocaleString()}
           </AppText>
-          <AppText size={10} color={Colors.TEXT_GREY}>
+          <AppText size={11} color={Colors.DARK_GRAY} weight="500">
             Per seat
           </AppText>
         </View>
@@ -67,16 +67,16 @@ const BusCard = ({ item }: BusCardProps) => {
 
       <View style={styles.routeRow}>
         <View style={styles.timeLocContainer}>
-          <AppText size={18} weight="700" color={Colors.WHITE}>
+          <AppText size={18} weight="800" color={Colors.PRIMARY}>
             {item.departureTime}
           </AppText>
-          <AppText size={12} color={Colors.TEXT_GREY} numberOfLines={1}>
-            {item.fromCity} Terminal
+          <AppText size={12} color={Colors.DARK_GRAY} weight="500" numberOfLines={1}>
+            {item.fromCity}
           </AppText>
         </View>
 
         <View style={styles.durationContainer}>
-          <AppText size={10} weight="600" color={Colors.TEXT_GREY} style={{ marginBottom: 4 }}>
+          <AppText size={11} weight="700" color={Colors.TEXT_GREY} style={{ marginBottom: 4 }}>
             {item.duration}
           </AppText>
           <View style={styles.lineGraphic}>
@@ -84,17 +84,17 @@ const BusCard = ({ item }: BusCardProps) => {
             <View style={styles.line} />
             <View style={styles.dot} />
           </View>
-          <AppText size={10} weight="600" color={Colors.BRIGHT_BLUE} style={{ marginTop: 4 }}>
+          <AppText size={11} weight="700" color={Colors.SECONDARY} style={{ marginTop: 4 }}>
             Direct
           </AppText>
         </View>
 
         <View style={[styles.timeLocContainer, { alignItems: 'flex-end' }]}>
-          <AppText size={18} weight="700" color={Colors.WHITE}>
+          <AppText size={18} weight="800" color={Colors.PRIMARY}>
             {item.arrivalTime}
           </AppText>
-          <AppText size={12} color={Colors.TEXT_GREY} numberOfLines={1}>
-            {item.toCity} Terminal
+          <AppText size={12} color={Colors.DARK_GRAY} weight="500" numberOfLines={1}>
+            {item.toCity}
           </AppText>
         </View>
       </View>
@@ -108,8 +108,8 @@ const BusCard = ({ item }: BusCardProps) => {
               const Icon = amenityIcons[amenity];
               if (!Icon) return null;
               return (
-                <View key={i} style={{ marginRight: scale(8), opacity: 0.8 }}>
-                  <Icon width={scale(16)} height={scale(16)} />
+                <View key={i} style={{ marginRight: scale(10) }}>
+                  <Icon width={scale(18)} height={scale(18)} color={Colors.PRIMARY} />
                 </View>
               );
             })}
@@ -138,21 +138,24 @@ const BusCard = ({ item }: BusCardProps) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: Colors.INPUT_BG,
-    borderRadius: scale(16),
-    padding: scale(16),
-    marginVertical: verticalScale(8),
-    shadowColor: Colors.BLACK,
+    backgroundColor: Colors.SURFACE,
+    borderRadius: scale(20),
+    padding: scale(18),
+    marginVertical: verticalScale(10),
+    marginHorizontal: scale(16),
+    shadowColor: Colors.PRIMARY,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 6,
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 4,
+    borderWidth: 1,
+    borderColor: Colors.BORDER_GREY,
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(18),
   },
   companyInfoContainer: {
     flexDirection: 'row',
@@ -160,20 +163,20 @@ const styles = StyleSheet.create({
     marginRight: scale(10),
   },
   logo: {
-    width: scale(40),
-    height: scale(40),
-    borderRadius: scale(8),
-    backgroundColor: Colors.WHITE,
+    width: scale(44),
+    height: scale(44),
+    borderRadius: scale(10),
+    backgroundColor: Colors.BACKGROUND,
     marginRight: scale(12),
   },
   nameAndClass: {
     justifyContent: 'center',
   },
   classBadge: {
-    backgroundColor: '#E0F2F1',
-    paddingHorizontal: scale(6),
+    backgroundColor: alpha(Colors.SECONDARY, 0.1),
+    paddingHorizontal: scale(8),
     paddingVertical: verticalScale(2),
-    borderRadius: scale(4),
+    borderRadius: scale(6),
     alignSelf: 'flex-start',
     marginTop: verticalScale(4),
   },
@@ -184,7 +187,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(18),
   },
   timeLocContainer: {
     flex: 1,
@@ -204,19 +207,17 @@ const styles = StyleSheet.create({
     height: scale(8),
     borderRadius: scale(4),
     borderWidth: 1.5,
-    borderColor: Colors.BRIGHT_BLUE,
-    backgroundColor: Colors.INPUT_BG,
+    borderColor: Colors.SECONDARY,
+    backgroundColor: Colors.WHITE,
   },
   line: {
     flex: 1,
-    height: 1,
-    backgroundColor: Colors.TEXT_GREY,
-    opacity: 0.5,
+    height: 1.5,
+    backgroundColor: Colors.BORDER_GREY,
   },
   divider: {
     height: 1,
-    backgroundColor: Colors.TEXT_GREY,
-    opacity: 0.1,
+    backgroundColor: Colors.BORDER_GREY,
     marginBottom: verticalScale(15),
   },
   footerRow: {
@@ -233,10 +234,15 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(4),
   },
   selectButton: {
-    backgroundColor: Colors.BRIGHT_BLUE,
-    paddingVertical: verticalScale(10),
-    paddingHorizontal: scale(30),
-    borderRadius: scale(10),
+    backgroundColor: Colors.SECONDARY,
+    paddingVertical: verticalScale(12),
+    paddingHorizontal: scale(32),
+    borderRadius: scale(12),
+    shadowColor: Colors.SECONDARY,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 4,
   },
 });
 

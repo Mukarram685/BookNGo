@@ -73,7 +73,7 @@ const AppInput: React.FC<AppInputProps> = ({
 
     const labelColor = animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: [Colors.TEXT_GREY, Colors.SECONDARY],
+        outputRange: [Colors.TEXT_GREY, Colors.PRIMARY],
     });
 
     const labelTranslateX = animatedIsFocused.interpolate({
@@ -102,7 +102,7 @@ const AppInput: React.FC<AppInputProps> = ({
                                 left: labelTranslateX,
                                 fontSize: labelFontSize,
                                 color: labelColor,
-                                backgroundColor: inputStyle?.backgroundColor || Colors.SURFACE,
+                                borderBlockColor: Colors.SURFACE,
                             },
                             labelStyle,
                         ]}
@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     label: {
         position: 'absolute',
         fontWeight: '500',
-        backgroundColor: Colors.SURFACE,
         paddingHorizontal: scale(4),
         zIndex: 1,
     },
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     inputFocused: {
-        borderColor: Colors.SECONDARY,
+        // borderColor: Colors.SECONDARY,
         borderWidth: 1.5,
     },
     input: {

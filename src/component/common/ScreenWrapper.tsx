@@ -30,7 +30,7 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   header,
   footer,
   isLoading = false,
-  backgroundColor = Colors.PRIMARY,
+  backgroundColor = Colors.BACKGROUND,
   isScrollable = true,
   paddingHorizontal = scale(16),
   contentStyle,
@@ -87,14 +87,11 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.PRIMARY,
+    backgroundColor: Colors.BACKGROUND,
     position: 'relative',
   },
   header: {
     backgroundColor: Colors.PRIMARY,
-    padding: moderateScale(16),
-    borderBottomLeftRadius: scale(20),
-    borderBottomRightRadius: scale(20),
   },
   absoluteHeader: {
     position: 'absolute',
@@ -136,7 +133,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(75, 74, 74, 0.8)', // light gray glass tint
+    backgroundColor: 'rgba(23, 44, 107, 0.4)', // Dark navy tint
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: moderateScale(100),
