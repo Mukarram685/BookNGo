@@ -105,28 +105,28 @@ const SeatSelection = () => {
     }, [schedule, bookedSeats, selectedSeats, toggleSeat]);
 
     return (
-        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="Choose Seat" showBack={true} />}>
-            <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title="Choose Seat" showBack={true} />}>
+            <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
             <View style={styles.content}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
                     <View style={styles.headerInfo}>
-                        <AppText size={14} color={Colors.TEXT_GREY}>{schedule.fromCity} → {schedule.toCity}</AppText>
+                        <AppText size={14} color={Colors.DARK_GRAY} weight="600">{schedule.fromCity} → {schedule.toCity}</AppText>
                         <View style={styles.busMeta}>
                             <View style={styles.metaItem}>
-                                <AppText size={10} color={Colors.TEXT_GREY}>COMPANY</AppText>
-                                <AppText size={14} weight="700" color={Colors.WHITE}>{schedule.busName}</AppText>
+                                <AppText size={10} color={Colors.TEXT_GREY} weight="700">COMPANY</AppText>
+                                <AppText size={14} weight="800" color={Colors.PRIMARY}>{schedule.busName}</AppText>
                             </View>
                             <View style={styles.metaItem}>
-                                <AppText size={10} color={Colors.TEXT_GREY}>DATE</AppText>
-                                <AppText size={14} weight="700" color={Colors.WHITE}>{new Date(schedule.date).toDateString()}</AppText>
+                                <AppText size={10} color={Colors.TEXT_GREY} weight="700">DATE</AppText>
+                                <AppText size={14} weight="800" color={Colors.PRIMARY}>{new Date(schedule.date).toDateString()}</AppText>
                             </View>
                         </View>
                     </View>
 
                     <View style={styles.legendWrapper}>
-                        <LegendItem label="Available" color={Colors.INPUT_BG} dot={Colors.BRIGHT_BLUE} />
-                        <LegendItem label="Selected" color={Colors.BRIGHT_BLUE} dot={Colors.WHITE} />
-                        <LegendItem label="Booked" color="#2C3E50" dot={Colors.RED} />
+                        <LegendItem label="Available" color={Colors.SURFACE} dot={Colors.SECONDARY} />
+                        <LegendItem label="Selected" color={Colors.SECONDARY} dot={Colors.WHITE} />
+                        <LegendItem label="Booked" color={Colors.BORDER_GREY} dot={Colors.RED} />
                     </View>
 
                     <View style={styles.busCabin}>
@@ -147,8 +147,8 @@ const SeatSelection = () => {
                 <View style={styles.checkoutWrapper}>
                     <View style={styles.checkoutContent}>
                         <View>
-                            <AppText size={12} color={Colors.TEXT_GREY}>SELECTED SEATS ({selectedSeats.length})</AppText>
-                            <AppText size={20} weight="800" color={Colors.WHITE}>
+                            <AppText size={12} color={Colors.TEXT_GREY} weight="700">SELECTED SEATS ({selectedSeats.length})</AppText>
+                            <AppText size={20} weight="800" color={Colors.PRIMARY}>
                                 PKR {(selectedSeats.length * schedule.price).toLocaleString()}
                             </AppText>
                         </View>
@@ -185,11 +185,11 @@ const styles = StyleSheet.create({
     headerInfo: {
         alignItems: 'center',
         marginTop: verticalScale(10),
-        backgroundColor: alpha(Colors.INPUT_BG, 0.4),
-        padding: scale(15),
-        borderRadius: scale(12),
+        backgroundColor: Colors.SURFACE,
+        padding: scale(18),
+        borderRadius: scale(16),
         borderWidth: 1,
-        borderColor: alpha(Colors.WHITE, 0.03),
+        borderColor: Colors.BORDER_GREY,
     },
     busMeta: {
         flexDirection: 'row',
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
         width: '100%',
         marginTop: verticalScale(15),
         borderTopWidth: 1,
-        borderTopColor: alpha(Colors.WHITE, 0.05),
+        borderTopColor: Colors.BORDER_GREY,
         paddingTop: verticalScale(10),
     },
     metaItem: {
@@ -232,19 +232,24 @@ const styles = StyleSheet.create({
         paddingBottom: verticalScale(120),
     },
     busCabin: {
-        marginTop: verticalScale(10),
-        backgroundColor: '#0F1A2E',
-        borderRadius: scale(30),
-        borderWidth: 2,
-        borderColor: alpha(Colors.BRIGHT_BLUE, 0.1),
+        marginTop: verticalScale(15),
+        backgroundColor: Colors.SURFACE,
+        borderRadius: scale(35),
+        borderWidth: 1,
+        borderColor: Colors.BORDER_GREY,
         paddingBottom: verticalScale(20),
+        shadowColor: Colors.PRIMARY,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        elevation: 2,
     },
     driverSection: {
         padding: scale(25),
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderBottomWidth: 1,
-        borderBottomColor: alpha(Colors.WHITE, 0.05),
+        borderBottomColor: Colors.BORDER_GREY,
     },
     dashboard: {
         flexDirection: 'row',
@@ -286,30 +291,30 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     checkoutContent: {
-        backgroundColor: alpha('#1B2636', 0.98),
-        borderRadius: scale(20),
-        padding: scale(20),
+        backgroundColor: Colors.SURFACE,
+        borderRadius: scale(24),
+        padding: scale(22),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: alpha(Colors.WHITE, 0.08),
-        shadowColor: Colors.BLACK,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.5,
-        shadowRadius: 10,
+        borderColor: Colors.BORDER_GREY,
+        shadowColor: Colors.PRIMARY,
+        shadowOffset: { width: 0, height: -10 },
+        shadowOpacity: 0.1,
+        shadowRadius: 15,
         elevation: 10,
     },
     payButton: {
-        backgroundColor: Colors.BRIGHT_BLUE,
-        paddingHorizontal: scale(30),
-        paddingVertical: verticalScale(12),
-        borderRadius: scale(12),
-        shadowColor: Colors.BRIGHT_BLUE,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.4,
+        backgroundColor: Colors.SECONDARY,
+        paddingHorizontal: scale(32),
+        paddingVertical: verticalScale(14),
+        borderRadius: scale(14),
+        shadowColor: Colors.SECONDARY,
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.2,
         shadowRadius: 8,
-        elevation: 5,
+        elevation: 8,
     }
 });
 
