@@ -79,14 +79,14 @@ const SearchResults = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.DARK_BG} isLoading={isPending}>
-            <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending}>
+            <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <AppText size={20} weight="700" color={Colors.WHITE}>
+                    <AppText size={22} weight="800" color={Colors.PRIMARY}>
                         {fromCity} to {toCity}
                     </AppText>
-                    <AppText size={14} color={Colors.TEXT_GREY}>
+                    <AppText size={15} color={Colors.DARK_GRAY} weight="500">
                         Date: {date}
                     </AppText>
                 </View>
@@ -102,7 +102,7 @@ const SearchResults = () => {
                     ListEmptyComponent={
                         (!isPending) ? (
                             <View style={styles.emptyContainer}>
-                                <AppText color={Colors.TEXT_GREY}>No buses found.</AppText>
+                                <AppText color={Colors.DARK_GRAY} weight="500">No buses found for this route.</AppText>
                             </View>
                         ) : null
                     }
