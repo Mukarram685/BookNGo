@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(75, 74, 74, 0.8)', // light gray glass tint
+    backgroundColor: 'rgba(75, 74, 74, 0.8)',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: moderateScale(100),
