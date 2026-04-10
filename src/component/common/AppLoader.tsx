@@ -6,6 +6,7 @@ import {
   Dimensions,
 } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
+import busLogo from '../../assets/png/buslogo-removebg-preview.png';
 
 type AppLoaderProps = {
   size?: number;
@@ -41,7 +42,7 @@ const AppLoader: React.FC<AppLoaderProps> = ({
   return (
     <View style={styles.fullWidthContainer}>
       <Animated.Image
-        source={require('../../assets/png/buslogo-removebg-preview.png')}
+        source={busLogo}
         style={{
           width: scale(size),
           height: verticalScale(size),
