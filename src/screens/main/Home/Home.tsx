@@ -18,15 +18,15 @@ const Home = () => {
   };
 
   return (
-    <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="Home" />}>
+    <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title={t('tab_home')} />}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
       <View style={styles.container}>
         <View style={styles.header}>
           <AppText size={24} weight="700" color={Colors.WHITE}>
-            Where to next?
+            {t('home_title')}
           </AppText>
           <AppText size={14} color={Colors.TEXT_GREY}>
-            Find the best bus rides for your journey.
+            {t('home_subtitle')}
           </AppText>
         </View>
 

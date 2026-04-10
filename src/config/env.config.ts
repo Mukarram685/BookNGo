@@ -1,1 +1,2 @@
 export const oneSignalAppId = "a13cde05-841f-4644-925b-ed550788d016";
+export const stripePublishableKey = "pk_test_51T4IaCLbSOuJsJwPH0INUkj9yU4YHDUhrSicFN5MHfbUxo18iNqRAIHaoMKiz3Ky1LW2rQpaCdve6x3sRlOzWB5x00wOo36iAB"; // Placeholder, PLEASE UPDATE WITH REAL PK

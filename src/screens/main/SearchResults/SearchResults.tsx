@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, StatusBar, FlatList } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useRoute, RouteProp } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Colors from '../../../utils/Colors.util';
@@ -23,6 +24,7 @@ type SearchResultsRouteProp = RouteProp<RootStackParamList, 'SearchResults'>;
 const SearchResults = () => {
     const route = useRoute<SearchResultsRouteProp>();
     const { fromCity, toCity, date } = route.params;
+    const { t } = useTranslation();
 
     const { mutate: search, isPending, data } = useSearchBuses();
     const [busList, setBusList] = useState<BusSchedule[]>([]);
@@ -84,10 +86,10 @@ const SearchResults = () => {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <AppText size={20} weight="700" color={Colors.WHITE}>
-                        {fromCity} to {toCity}
+                        {t('searchresults_title', { from: fromCity, to: toCity })}
                     </AppText>
                     <AppText size={14} color={Colors.TEXT_GREY}>
-                        Date: {date}
+                        {t('searchresults_date', { date: date })}
                     </AppText>
                 </View>
 
@@ -102,7 +104,7 @@ const SearchResults = () => {
                     ListEmptyComponent={
                         (!isPending) ? (
                             <View style={styles.emptyContainer}>
-                                <AppText color={Colors.TEXT_GREY}>No buses found.</AppText>
+                                <AppText color={Colors.TEXT_GREY}>{t('searchresults_empty')}</AppText>
                             </View>
                         ) : null
                     }
