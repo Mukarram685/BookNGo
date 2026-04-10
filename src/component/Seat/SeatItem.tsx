@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         margin: scale(4),
-        // Depth effect
         shadowColor: Colors.BLACK,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
