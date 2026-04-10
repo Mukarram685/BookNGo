@@ -2,10 +2,11 @@ import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
 import Colors from '../../utils/Colors.util';
 import { BusSchedule } from '../../interface/bus.interface';
-import { Bus as BusIcon, Radio, Wifi, Charger, Food, Drink, Seat, AC } from '../../assets/svg';
+import { Wifi, Charger, Food, Drink, Seat, AC } from '../../assets/svg';
 
 interface BusCardProps {
   item: BusSchedule;
@@ -25,6 +26,7 @@ const amenityIcons: Record<string, React.FC<any>> = {
 
 const BusCard = ({ item }: BusCardProps) => {
   const navigation = useNavigation<any>();
+  const { t } = useTranslation();
 
   const handleBookPress = () => {
     navigation.navigate('SeatSelection', { schedule: item });
@@ -57,10 +59,10 @@ const BusCard = ({ item }: BusCardProps) => {
 
         <View style={styles.priceContainer}>
           <AppText size={18} weight="700" color={Colors.BRIGHT_BLUE}>
-            Rs. {item.price.toLocaleString()}
+            {'Rs. ' + item.price.toLocaleString()}
           </AppText>
           <AppText size={10} color={Colors.TEXT_GREY}>
-            Per seat
+            {t('busCard_perSeat')}
           </AppText>
         </View>
       </View>
@@ -71,7 +73,7 @@ const BusCard = ({ item }: BusCardProps) => {
             {item.departureTime}
           </AppText>
           <AppText size={12} color={Colors.TEXT_GREY} numberOfLines={1}>
-            {item.fromCity} Terminal
+            {t('busCard_terminal', { city: item.fromCity })}
           </AppText>
         </View>
 
@@ -85,7 +87,7 @@ const BusCard = ({ item }: BusCardProps) => {
             <View style={styles.dot} />
           </View>
           <AppText size={10} weight="600" color={Colors.BRIGHT_BLUE} style={{ marginTop: 4 }}>
-            Direct
+            {t('busCard_direct')}
           </AppText>
         </View>
 
@@ -94,7 +96,7 @@ const BusCard = ({ item }: BusCardProps) => {
             {item.arrivalTime}
           </AppText>
           <AppText size={12} color={Colors.TEXT_GREY} numberOfLines={1}>
-            {item.toCity} Terminal
+            {t('busCard_terminal', { city: item.toCity })}
           </AppText>
         </View>
       </View>
@@ -117,7 +119,7 @@ const BusCard = ({ item }: BusCardProps) => {
 
           {item.seatsAvailable < 10 && (
             <AppText size={10} weight="600" color="#FF6B00" style={{ marginTop: verticalScale(5) }}>
-              Only {item.seatsAvailable} seats left at this price!
+              {t('busCard_seatsLeft', { count: item.seatsAvailable })}
             </AppText>
           )}
         </View>
@@ -128,7 +130,7 @@ const BusCard = ({ item }: BusCardProps) => {
           onPress={handleBookPress}
         >
           <AppText size={14} weight="700" color={Colors.WHITE}>
-            Select
+            {t('busCard_select')}
           </AppText>
         </TouchableOpacity>
       </View>
