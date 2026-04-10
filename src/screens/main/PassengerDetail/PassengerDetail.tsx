@@ -5,6 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Header from '../../../component/Header';
@@ -18,6 +19,7 @@ const PassengerDetail = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const { schedule, selectedSeats }: { schedule: BusSchedule; selectedSeats: number[] } = route.params;
+  const { t } = useTranslation();
 
   const user = useSelector((state: any) => state.auth.user);
   const [isGroupBooking, setIsGroupBooking] = useState(false);
@@ -80,7 +82,7 @@ const PassengerDetail = () => {
   };
 
   return (
-    <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="Passenger Details" />}>
+    <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title={t('passengerDetail_title')} />}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ flex: 1 }}
@@ -100,8 +102,8 @@ const PassengerDetail = () => {
               >
                 <View style={styles.toggleContainer}>
                   <View style={{ flex: 1 }}>
-                    <AppText size={16} weight="700" color={Colors.WHITE}>Group Booking</AppText>
-                    <AppText size={12} color={Colors.TEXT_GREY}>Use same details for all {selectedSeats.length} seats</AppText>
+                    <AppText size={16} weight="700" color={Colors.WHITE}>{t('passengerDetail_groupBooking')}</AppText>
+                    <AppText size={12} color={Colors.TEXT_GREY}>{t('passengerDetail_groupBookingDesc', { count: selectedSeats.length })}</AppText>
                   </View>
                   <Switch
                     value={isGroupBooking}
@@ -135,7 +137,7 @@ const PassengerDetail = () => {
 
               <View style={styles.footer}>
                 <TouchableOpacity style={styles.button} onPress={handleSubmit as any}>
-                  <AppText size={16} weight="700" color={Colors.WHITE}>Review Booking</AppText>
+                  <AppText size={16} weight="700" color={Colors.WHITE}>{t('passengerDetail_reviewButton')}</AppText>
                 </TouchableOpacity>
               </View>
             </View>
