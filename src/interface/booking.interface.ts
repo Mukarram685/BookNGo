@@ -9,6 +9,7 @@ export interface PassengerDetail {
 export interface BookingRequest {
     scheduleId: string;
     seats: PassengerDetail[];
+    paymentIntentId?: string;
 }
 
 export interface TicketDetails {
