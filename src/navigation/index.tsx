@@ -1,4 +1,4 @@
-import React, { use } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import MainNavigator from './MainNavigator';
 import AuthNavigator from './AuthNavigator';

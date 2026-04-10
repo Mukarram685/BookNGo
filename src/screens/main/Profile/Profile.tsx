@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Colors from '../../../utils/Colors.util';
@@ -9,18 +10,19 @@ import { logout } from '../../../store/slice/auth.slice';
 
 const Profile = () => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const handleLogout = () => {
         dispatch(logout());
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="Profile" showBack={false} />}>
+        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title={t('profile_title')} showBack={false} />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.DARK_BG} />
             <View style={styles.container}>
                 <TouchableOpacity style={styles.logoutButton} onPress={handleLogout} activeOpacity={0.8}>
                     <AppText size={16} weight="700" color={Colors.WHITE}>
-                        Logout
+                        {t('profile_logout')}
                     </AppText>
                 </TouchableOpacity>
             </View>

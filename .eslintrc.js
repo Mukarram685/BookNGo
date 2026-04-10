@@ -30,8 +30,7 @@ module.exports = {
   ],
 
   rules: {
-    /* 🔴 TypeScript-safe unused checks */
-    'no-unused-vars': 'off', // turn off JS version
+    'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -47,6 +46,7 @@ module.exports = {
     'react/prop-types': 'off',
 
     'react-native/no-inline-styles': 'off',
+    'react-native/sort-styles': 'off',
 
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
