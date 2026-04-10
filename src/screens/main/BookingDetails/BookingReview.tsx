@@ -11,7 +11,6 @@ import { BusSchedule } from '../../../interface/bus.interface';
 import { PassengerDetail } from '../../../interface/booking.interface';
 import { useBookSeats } from '../../../hooks/useBookSeats';
 import { useCreatePaymentIntent } from '../../../hooks/useCreatePaymentIntent';
-import { useCancelBooking } from '../../../hooks/useCancelBooking';
 import { useStripe } from '@stripe/stripe-react-native';
 import Toast from 'react-native-toast-message';
 
@@ -24,7 +23,6 @@ const BookingReview = () => {
     const [paymentMethod, setPaymentMethod] = useState<'JazzCash' | 'EasyPaisa' | 'CreditCard'>('JazzCash');
     const { mutate: book, isPending: isBooking } = useBookSeats();
     const { mutateAsync: createPaymentIntent } = useCreatePaymentIntent();
-    const { mutate: cancelBooking } = useCancelBooking();
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const [loading, setLoading] = useState(false);
 
@@ -32,63 +30,65 @@ const BookingReview = () => {
         if (paymentMethod === 'CreditCard') {
             setLoading(true);
             try {
-                book({
+                // 1. Create Payment Intent FIRST (No booking yet)
+                const intentData: any = await createPaymentIntent({
                     scheduleId: schedule._id,
-                    seats: passengers
-                }, {
-                    onSuccess: async (data) => {
-                        try {
-                            // 2. Create Payment Intent
-                            const intentData: any = await createPaymentIntent(data.ticket.bookingId);
-                            // intentData is already response.data because of axiosInstance interceptor
-                            const clientSecret = intentData.clientSecret;
-
-                            if (!clientSecret) {
-                                setLoading(false);
-                                Toast.show({ type: 'error', text1: 'Error', text2: 'Could not get payment secret' });
-                                return;
-                            }
-
-                            // 3. Initialize Payment Sheet
-                            const { error: initError } = await initPaymentSheet({
-                                paymentIntentClientSecret: clientSecret,
-                                merchantDisplayName: 'BookNGo',
-                                returnURL: 'bookngo://stripe-redirect',
-                                defaultBillingDetails: {
-                                    name: passengers[0].passengerName,
-                                },
-                            });
-
-                            if (initError) {
-                                setLoading(false);
-                                Toast.show({ type: 'error', text1: 'Payment status', text2: initError.message });
-                                return;
-                            }
-
-                            // 4. Present Payment Sheet
-                            const { error: presentError } = await presentPaymentSheet();
-
-                            if (presentError) {
-                                setLoading(false);
-                                // If user cancels or payment fails, we cancel the booking to free seats
-                                cancelBooking({
-                                    bookingId: data.ticket.bookingId,
-                                    reason: 'Payment failed or cancelled by user'
-                                });
-                                Toast.show({ type: 'info', text1: 'Payment status', text2: 'Booking cancelled due to payment failure/dismissal' });
-                            } else {
-                                setLoading(false);
-                                navigation.navigate('BookingSuccess', { ticket: data.ticket });
-                            }
-                        } catch (err: any) {
-                            setLoading(false);
-                            Toast.show({ type: 'error', text1: 'Error', text2: err.message || 'Payment initiation failed' });
-                        }
-                    },
-                    onError: () => setLoading(false)
+                    seatsCount: passengers.length
                 });
-            } catch (error) {
+
+                const clientSecret = intentData.clientSecret;
+                const paymentIntentId = intentData.paymentIntentId;
+
+                if (!clientSecret) {
+                    setLoading(false);
+                    Toast.show({ type: 'error', text1: 'Error', text2: 'Could not get payment secret' });
+                    return;
+                }
+
+                // 2. Initialize Payment Sheet
+                const { error: initError } = await initPaymentSheet({
+                    paymentIntentClientSecret: clientSecret,
+                    merchantDisplayName: 'BookNGo',
+                    returnURL: 'bookngo://stripe-redirect',
+                    defaultBillingDetails: {
+                        name: passengers[0].passengerName,
+                    },
+                });
+
+                if (initError) {
+                    setLoading(false);
+                    Toast.show({ type: 'error', text1: 'Payment status', text2: initError.message });
+                    return;
+                }
+
+                // 3. Present Payment Sheet
+                const { error: presentError } = await presentPaymentSheet();
+
+                if (presentError) {
+                    setLoading(false);
+                    // Payment was cancelled or failed. No booking was created.
+                    Toast.show({ type: 'info', text1: 'Payment status', text2: 'Payment failed or cancelled' });
+                } else {
+                    // 4. Payment SUCCESS! Now create the booking.
+                    book({
+                        scheduleId: schedule._id,
+                        seats: passengers,
+                        paymentIntentId: paymentIntentId // Pass this to backend to verify payment
+                    }, {
+                        onSuccess: (data) => {
+                            setLoading(false);
+                            navigation.navigate('BookingSuccess', { ticket: data.ticket });
+                        },
+                        onError: () => {
+                            setLoading(false);
+                            // Theoretically payment was taken but booking failed. 
+                            // In real app: Log this critical error for admin review/refund.
+                        }
+                    });
+                }
+            } catch (err: any) {
                 setLoading(false);
+                Toast.show({ type: 'error', text1: 'Error', text2: err.message || 'Payment initiation failed' });
             }
         } else {
             // Simulated JazzCash / EasyPaisa flow

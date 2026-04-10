@@ -5,11 +5,13 @@ interface PaymentIntentResponse {
     success: boolean;
     clientSecret: string;
     amount: number;
+    paymentIntentId: string;
 }
 
-const createPaymentIntent = async (bookingId: string) => {
+const createPaymentIntent = async ({ scheduleId, seatsCount }: { scheduleId: string; seatsCount: number }) => {
     const response = await axiosInstance.post<PaymentIntentResponse>('/payment/create-intent', {
-        bookingId
+        scheduleId,
+        seatsCount
     });
     return response;
 };
