@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { View, StyleSheet, TouchableOpacity, Platform, PermissionsAndroid } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import ViewShot from 'react-native-view-shot';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
@@ -16,6 +17,7 @@ const BookingSuccess = () => {
     const route = useRoute<any>();
     const { ticket }: { ticket: TicketDetails } = route.params;
     const viewShotRef = useRef<any>(null);
+    const { t } = useTranslation();
 
     const requestPermission = async () => {
         if (Platform.OS === 'android') {
@@ -46,45 +48,45 @@ const BookingSuccess = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="Booking Confirmed" showBack={false} />}>
+        <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title={t('bookingSuccess_title')} showBack={false} />}>
             <View style={styles.container}>
                 <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
                     <View style={styles.ticketCard}>
                         <View style={styles.successHeader}>
                             <AppText size={40} align="center">✅</AppText>
-                            <AppText size={22} weight="800" color={Colors.WHITE} align="center">Success!</AppText>
-                            <AppText size={12} color={Colors.TEXT_GREY} align="center">Your trip is booked.</AppText>
+                            <AppText size={22} weight="800" color={Colors.WHITE} align="center">{t('bookingSuccess_success')}</AppText>
+                            <AppText size={12} color={Colors.TEXT_GREY} align="center">{t('bookingSuccess_bookedMessage')}</AppText>
                         </View>
 
                         <View style={styles.divider} />
 
                         <View style={styles.pnrSection}>
-                            <AppText size={10} weight="700" color={Colors.TEXT_GREY} align="center">PNR NUMBER</AppText>
+                            <AppText size={10} weight="700" color={Colors.TEXT_GREY} align="center">{t('bookingSuccess_pnrNumber')}</AppText>
                             <AppText size={32} weight="900" color={Colors.BRIGHT_BLUE} align="center" style={styles.pnrText}>
                                 {ticket.pnr}
                             </AppText>
                         </View>
 
                         <View style={styles.detailsList}>
-                            <DetailRow label="Route" value={`${ticket.fromCity} → ${ticket.toCity}`} />
-                            <DetailRow label="Date" value={ticket.travelDate} />
-                            <DetailRow label="Time" value={ticket.departureTime} />
-                            <DetailRow label="Bus" value={ticket.busNumber} />
-                            <DetailRow label="Seats" value={ticket.passengers.map(p => p.seatNumber).join(', ')} />
+                            <DetailRow label={t('bookingSuccess_route')} value={`${ticket.fromCity} → ${ticket.toCity}`} />
+                            <DetailRow label={t('bookingSuccess_date')} value={ticket.travelDate} />
+                            <DetailRow label={t('bookingSuccess_time')} value={ticket.departureTime} />
+                            <DetailRow label={t('bookingSuccess_bus')} value={ticket.busNumber} />
+                            <DetailRow label={t('bookingSuccess_seats')} value={ticket.passengers.map(p => p.seatNumber).join(', ')} />
                         </View>
                     </View>
                 </ViewShot>
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.shareBtn} onPress={shareTicket}>
-                        <AppText size={16} weight="700" color={Colors.WHITE}>Share Ticket</AppText>
+                        <AppText size={16} weight="700" color={Colors.WHITE}>{t('bookingSuccess_shareTicket')}</AppText>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         style={styles.homeBtn}
                         onPress={() => navigation.navigate('Home')}
                     >
-                        <AppText size={16} weight="700" color={Colors.BRIGHT_BLUE}>Back to Home</AppText>
+                        <AppText size={16} weight="700" color={Colors.BRIGHT_BLUE}>{t('bookingSuccess_backToHome')}</AppText>
                     </TouchableOpacity>
                 </View>
             </View>
