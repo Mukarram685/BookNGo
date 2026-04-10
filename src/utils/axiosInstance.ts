@@ -72,7 +72,6 @@ axiosInstance.interceptors.response.use(
             refreshToken: newRefreshToken
           }));
 
-          // Update header and retry original request
           originalRequest.headers.Authorization = `Bearer ${accessToken}`;
           return axiosInstance(originalRequest);
         }
