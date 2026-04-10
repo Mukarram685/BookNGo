@@ -7,7 +7,7 @@
     "ios": "react-native run-ios",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --fix --ext .ts,.tsx",
-    "start": "react-native start",
+    "start": "node api.js && react-native start",
     "test": "jest"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "@react-navigation/native": "^7.1.27",
     "@react-navigation/native-stack": "^7.9.1",
     "@reduxjs/toolkit": "^2.9.1",
+    "@stripe/stripe-react-native": "^0.59.0",
     "@tanstack/react-query": "^5.90.5",
     "@tanstack/react-query-devtools": "^5.90.2",
     "axios": "^1.12.2",
