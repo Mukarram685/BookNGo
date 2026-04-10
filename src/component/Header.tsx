@@ -25,7 +25,7 @@ function Header({ title, action, showBack = true }: HeaderProps) {
             <Arrow />
           </TouchableOpacity>
         )}
-        <Text style={[styles.title]}>{title}</Text>
+        <Text style={styles.title}>{title}</Text>
       </View>
       <View style={styles.iconContainer}>{action}</View>
     </View>
