@@ -1,3 +1,4 @@
+import { Wifi, Charger, Food, Drink, Seat, AC } from '../assets/svg';
 export interface BusSchedule {
     _id: string;
     busId: string;
@@ -19,3 +20,14 @@ export interface BusSchedule {
     status: 'AVAILABLE' | 'FULL' | 'CANCELLED';
     image?: string;        // URL or local asset path
 }
+
+export const amenityIcons = {
+  'Wifi': Wifi,
+  'Charging Point': Charger,
+  'Food': Food,
+  'Water': Drink,
+  'Comfortable Seats': Seat,
+  'AC': AC,
+  'Snacks': Food,
+  'Water Bottle': Drink,
+};
