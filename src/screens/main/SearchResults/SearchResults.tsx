@@ -8,6 +8,7 @@ import Colors from '../../../utils/Colors.util';
 import BusCard from '../../../component/Bus/BusCard';
 import { BusSchedule } from '../../../interface/bus.interface';
 import { useSearchBuses } from '../../../hooks/useSearchBuses';
+import Header from '../../../component/Header';
 
 type RootStackParamList = {
     SearchResults: {
@@ -75,11 +76,10 @@ const SearchResults = () => {
 
     const handleBookPress = (item: BusSchedule) => {
         console.log('Book Pressed', item);
-        // Navigate into booking details?
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending}>
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending} header={<Header title="Search Results" />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
             <View style={styles.container}>
                 <View style={styles.header}>

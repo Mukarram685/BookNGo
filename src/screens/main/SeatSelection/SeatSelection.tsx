@@ -1,26 +1,28 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, StatusBar, ActivityIndicator } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Header from '../../../component/Header';
-import Colors, { alpha } from '../../../utils/Colors.util';
+import Colors from '../../../utils/Colors.util';
 import SeatItem from '../../../component/Seat/SeatItem';
+import SeatLegend from '../../../component/Seat/SeatLegend';
+import CabinHeader from '../../../component/Seat/CabinHeader';
 import { BusSchedule } from '../../../interface/bus.interface';
-
+import { useGetSchedule } from '../../../hooks/useGetSchedule';
 
 const SeatSelection = () => {
     const navigation = useNavigation<any>();
     const route = useRoute<any>();
-    const { schedule }: { schedule: BusSchedule } = route.params;
+    const { schedule: initialSchedule }: { schedule: BusSchedule } = route.params;
+    const { t } = useTranslation();
 
+    const { data: schedule = initialSchedule, isLoading } = useGetSchedule(initialSchedule?._id);
     const [selectedSeats, setSelectedSeats] = useState<number[]>([]);
 
     const bookedSeats = schedule?.bookedSeats || [];
-    console.log('--- Seat Selection Debug ---');
-    console.log('Schedule ID:', schedule?._id);
-    console.log('Booked Seats received:', bookedSeats);
 
     const toggleSeat = useCallback((seatNumber: number) => {
         setSelectedSeats(prev => {
@@ -61,10 +63,12 @@ const SeatSelection = () => {
         for (let i = 0; i < rows; i++) {
             const rowSeats = [];
 
-            // Left Side
-            for (let j = 0; j < leftSide; j++) {
-                const seatNum = i * seatsPerRow + j + 1;
-                if (seatNum <= totalSeats) {
+            const isLastRow = i === rows - 1;
+
+            if (isLastRow && totalSeats % seatsPerRow !== 0) {
+                const remaining = totalSeats - (i * seatsPerRow);
+                for (let j = 0; j < remaining; j++) {
+                    const seatNum = i * seatsPerRow + j + 1;
                     rowSeats.push(
                         <SeatItem
                             key={seatNum}
@@ -74,23 +78,45 @@ const SeatSelection = () => {
                         />
                     );
                 }
-            }
+            } else {
+                for (let j = 0; j < leftSide; j++) {
+                    const seatNum = i * seatsPerRow + j + 1;
+                    if (seatNum <= totalSeats) {
+                        rowSeats.push(
+                            <SeatItem
+                                key={seatNum}
+                                seatNumber={seatNum}
+                                status={bookedSeats.includes(seatNum) ? 'booked' : selectedSeats.includes(seatNum) ? 'selected' : 'available'}
+                                onPress={toggleSeat}
+                            />
+                        );
+                    }
+                }
 
-            // Aisle
-            rowSeats.push(<View key={`aisle-${i}`} style={{ width: scale(35) }} />);
-
-            // Right Side
-            for (let j = 0; j < rightSide; j++) {
-                const seatNum = i * seatsPerRow + leftSide + j + 1;
-                if (seatNum <= totalSeats) {
+                if (i === Math.floor(rows / 2)) {
                     rowSeats.push(
-                        <SeatItem
-                            key={seatNum}
-                            seatNumber={seatNum}
-                            status={bookedSeats.includes(seatNum) ? 'booked' : selectedSeats.includes(seatNum) ? 'selected' : 'available'}
-                            onPress={toggleSeat}
-                        />
+                        <View key={`aisle-${i}`} style={styles.aisleTextWrapper}>
+                            <AppText size={9} color={Colors.TEXT_GREY} weight="600" style={styles.verticalText}>
+                                AISLE
+                            </AppText>
+                        </View>
                     );
+                } else {
+                    rowSeats.push(<View key={`aisle-${i}`} style={{ width: scale(25) }} />);
+                }
+
+                for (let j = 0; j < rightSide; j++) {
+                    const seatNum = i * seatsPerRow + leftSide + j + 1;
+                    if (seatNum <= totalSeats) {
+                        rowSeats.push(
+                            <SeatItem
+                                key={seatNum}
+                                seatNumber={seatNum}
+                                status={bookedSeats.includes(seatNum) ? 'booked' : selectedSeats.includes(seatNum) ? 'selected' : 'available'}
+                                onPress={toggleSeat}
+                            />
+                        );
+                    }
                 }
             }
 
@@ -105,50 +131,34 @@ const SeatSelection = () => {
     }, [schedule, bookedSeats, selectedSeats, toggleSeat]);
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title="Choose Seat" showBack={true} />}>
-            <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title={t('seatSelection_title') || 'Select Seats'} showBack={true} />}>            
+            {isLoading && (
+                <View style={styles.loadingOverlay}>
+                    <ActivityIndicator size="large" color={Colors.PRIMARY} />
+                </View>
+            )}
+
             <View style={styles.content}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-                    <View style={styles.headerInfo}>
-                        <AppText size={14} color={Colors.DARK_GRAY} weight="600">{schedule.fromCity} → {schedule.toCity}</AppText>
-                        <View style={styles.busMeta}>
-                            <View style={styles.metaItem}>
-                                <AppText size={10} color={Colors.TEXT_GREY} weight="700">COMPANY</AppText>
-                                <AppText size={14} weight="800" color={Colors.PRIMARY}>{schedule.busName}</AppText>
-                            </View>
-                            <View style={styles.metaItem}>
-                                <AppText size={10} color={Colors.TEXT_GREY} weight="700">DATE</AppText>
-                                <AppText size={14} weight="800" color={Colors.PRIMARY}>{new Date(schedule.date).toDateString()}</AppText>
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={styles.legendWrapper}>
-                        <LegendItem label="Available" color={Colors.SURFACE} dot={Colors.SECONDARY} />
-                        <LegendItem label="Selected" color={Colors.SECONDARY} dot={Colors.WHITE} />
-                        <LegendItem label="Booked" color={Colors.BORDER_GREY} dot={Colors.RED} />
-                    </View>
-
+                    
+                    <SeatLegend />
                     <View style={styles.busCabin}>
-                        <View style={styles.driverSection}>
-                            <View style={styles.dashboard}>
-                                <View style={styles.steeringWheel} />
-                                <View style={styles.speedometer} />
-                            </View>
-                            <View style={styles.entrance} />
-                        </View>
-
+                        <CabinHeader />
                         <View style={styles.seatFloor}>
                             {seatsGrid}
                         </View>
                     </View>
+                    {/* <BusDetailsCard /> */}
+
                 </ScrollView>
 
                 <View style={styles.checkoutWrapper}>
                     <View style={styles.checkoutContent}>
                         <View>
-                            <AppText size={12} color={Colors.TEXT_GREY} weight="700">SELECTED SEATS ({selectedSeats.length})</AppText>
-                            <AppText size={20} weight="800" color={Colors.PRIMARY}>
+                            <AppText size={11} color={Colors.TEXT_GREY} weight="700">
+                                SELECTED SEATS ({selectedSeats.length})
+                            </AppText>
+                            <AppText size={18} weight="800" color={Colors.PRIMARY} style={{ marginTop: 2 }}>
                                 PKR {(selectedSeats.length * schedule.price).toLocaleString()}
                             </AppText>
                         </View>
@@ -157,7 +167,9 @@ const SeatSelection = () => {
                             disabled={selectedSeats.length === 0}
                             onPress={() => navigation.navigate('PassengerDetails', { schedule, selectedSeats })}
                         >
-                            <AppText size={16} weight="700" color={Colors.WHITE}>Proceed</AppText>
+                            <AppText size={15} weight="700" color={Colors.WHITE}>
+                                Proceed
+                            </AppText>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -166,156 +178,82 @@ const SeatSelection = () => {
     );
 };
 
-const LegendItem = ({ label, color, dot }: any) => (
-    <View style={styles.legendItem}>
-        <View style={[styles.legendIndicator, { backgroundColor: color, borderColor: alpha(dot, 0.4) }]}>
-            <View style={[styles.legendDot, { backgroundColor: dot }]} />
-        </View>
-        <AppText size={11} color={Colors.TEXT_GREY} weight="500">{label}</AppText>
-    </View>
-);
-
 const styles = StyleSheet.create({
     content: {
         flex: 1,
     },
-    headerWrapper: {
-        paddingTop: verticalScale(10),
-    },
-    headerInfo: {
-        alignItems: 'center',
-        marginTop: verticalScale(10),
-        backgroundColor: Colors.SURFACE,
-        padding: scale(18),
-        borderRadius: scale(16),
-        borderWidth: 1,
-        borderColor: Colors.BORDER_GREY,
-    },
-    busMeta: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginTop: verticalScale(15),
-        borderTopWidth: 1,
-        borderTopColor: Colors.BORDER_GREY,
-        paddingTop: verticalScale(10),
-    },
-    metaItem: {
-        alignItems: 'center',
-    },
-    legendWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginTop: verticalScale(20),
-        marginBottom: verticalScale(10),
-    },
-    legendItem: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginHorizontal: scale(12),
-    },
-    legendIndicator: {
-        width: scale(14),
-        height: scale(14),
-        borderRadius: 4,
-        borderWidth: 1,
-        marginRight: scale(6),
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    legendDot: {
-        width: 4,
-        height: 4,
-        borderRadius: 2,
-    },
     scrollContent: {
+        paddingTop: verticalScale(10),
         paddingBottom: verticalScale(120),
     },
-    busCabin: {
-        marginTop: verticalScale(15),
-        backgroundColor: Colors.SURFACE,
-        borderRadius: scale(35),
-        borderWidth: 1,
-        borderColor: Colors.BORDER_GREY,
-        paddingBottom: verticalScale(20),
-        shadowColor: Colors.PRIMARY,
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
-        elevation: 2,
-    },
-    driverSection: {
-        padding: scale(25),
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderBottomWidth: 1,
-        borderBottomColor: Colors.BORDER_GREY,
-    },
-    dashboard: {
-        flexDirection: 'row',
+    loadingOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(255,255,255,0.4)',
+        zIndex: 999,
+        justifyContent: 'center',
         alignItems: 'center',
     },
-    steeringWheel: {
-        width: scale(30),
-        height: scale(30),
-        borderRadius: scale(15),
-        borderWidth: 4,
-        borderColor: '#34495E',
-        marginRight: scale(10),
-    },
-    speedometer: {
-        width: scale(20),
-        height: scale(8),
-        backgroundColor: '#34495E',
-        borderRadius: 4,
-    },
-    entrance: {
-        width: scale(40),
-        height: 4,
-        backgroundColor: alpha(Colors.BRIGHT_BLUE, 0.3),
-        borderRadius: 2,
+    busCabin: {
+        backgroundColor: Colors.SURFACE,
+        borderRadius: scale(32),
+        borderWidth: 1,
+        borderColor: Colors.BORDER_GREY,
+        paddingBottom: verticalScale(25),
+        paddingTop: verticalScale(15),
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.05,
+        shadowRadius: 12,
+        elevation: 3,
+        marginBottom: verticalScale(15),
     },
     seatFloor: {
-        paddingTop: verticalScale(20),
+        paddingHorizontal: scale(15),
         alignItems: 'center',
     },
     row: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: verticalScale(8),
+        marginBottom: verticalScale(6),
+    },
+    aisleTextWrapper: {
+        width: scale(25),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    verticalText: {
+        transform: [{ rotate: '-90deg' }],
+        letterSpacing: 2,
     },
     checkoutWrapper: {
         position: 'absolute',
-        bottom: verticalScale(20),
-        width: '100%',
+        bottom: verticalScale(15),
+        left: 0,
+        right: 0,
     },
     checkoutContent: {
         backgroundColor: Colors.SURFACE,
-        borderRadius: scale(24),
-        padding: scale(22),
+        borderRadius: scale(20),
+        paddingVertical: verticalScale(16),
+        paddingHorizontal: scale(20),
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,
-        shadowColor: Colors.PRIMARY,
-        shadowOffset: { width: 0, height: -10 },
-        shadowOpacity: 0.1,
-        shadowRadius: 15,
-        elevation: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -4 },
+        shadowOpacity: 0.06,
+        shadowRadius: 10,
+        elevation: 8,
     },
     payButton: {
-        backgroundColor: Colors.SECONDARY,
-        paddingHorizontal: scale(32),
-        paddingVertical: verticalScale(14),
-        borderRadius: scale(14),
-        shadowColor: Colors.SECONDARY,
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: 0.2,
-        shadowRadius: 8,
-        elevation: 8,
-    }
+        backgroundColor: '#172C6B', // Matches primary brand navy
+        paddingHorizontal: scale(28),
+        paddingVertical: verticalScale(12),
+        borderRadius: scale(10),
+    },
 });
 
 export default SeatSelection;

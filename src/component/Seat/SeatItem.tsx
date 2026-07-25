@@ -1,8 +1,9 @@
 import React, { memo } from 'react';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
+import Svg, { Path } from 'react-native-svg';
 import AppText from '../common/AppText';
-import Colors, { alpha } from '../../utils/Colors.util';
+import Colors from '../../utils/Colors.util';
 
 interface SeatItemProps {
     seatNumber: number;
@@ -10,68 +11,68 @@ interface SeatItemProps {
     onPress: (seatNumber: number) => void;
 }
 
+const CheckIcon = () => (
+    <Svg width={scale(14)} height={scale(14)} viewBox="0 0 24 24" fill="none">
+        <Path
+            d="M20 6L9 17L4 12"
+            stroke={Colors.WHITE}
+            strokeWidth="3.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </Svg>
+);
+
+const XIcon = ({ color = '#94A3B8' }: { color?: string }) => (
+    <Svg width={scale(12)} height={scale(12)} viewBox="0 0 24 24" fill="none">
+        <Path
+            d="M18 6L6 18M6 6l12 12"
+            stroke={color}
+            strokeWidth="3.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        />
+    </Svg>
+);
+
 const SeatItem: React.FC<SeatItemProps> = ({ seatNumber, status, onPress }) => {
-    const getBackgroundColor = () => {
-        switch (status) {
-            case 'selected':
-                return Colors.BRIGHT_BLUE;
-            case 'booked':
-                return alpha(Colors.RED, 0.1);
-            default:
-                return Colors.INPUT_BG;
-        }
-    };
-
-    const getBorderColor = () => {
-        switch (status) {
-            case 'selected':
-                return Colors.BRIGHT_BLUE;
-            case 'booked':
-                return alpha(Colors.RED, 0.5);
-            default:
-                return alpha(Colors.BRIGHT_BLUE, 0.4);
-        }
-    };
-
-    const getTextColor = () => {
-        switch (status) {
-            case 'selected':
-                return Colors.WHITE;
-            case 'booked':
-                return Colors.RED;
-            default:
-                return Colors.WHITE;
-        }
-    };
-
     const handlePress = () => {
         if (status !== 'booked') {
             onPress(seatNumber);
         }
     };
 
+    if (status === 'booked') {
+        return (
+            <View style={[styles.container, styles.bookedContainer]}>
+                <XIcon color="#94A3B8" />
+            </View>
+        );
+    }
+
+    if (status === 'selected') {
+        return (
+            <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={handlePress}
+                style={[styles.container, styles.selectedContainer]}
+            >
+                <AppText size={11} weight="700" color="#172C6B" align="center">
+                    {seatNumber}
+                </AppText>
+            </TouchableOpacity>
+        );
+    }
+
     return (
         <TouchableOpacity
-            activeOpacity={status === 'booked' ? 1 : 0.7}
+            activeOpacity={0.7}
             onPress={handlePress}
-            style={[
-                styles.container,
-                {
-                    backgroundColor: getBackgroundColor(),
-                    borderColor: getBorderColor(),
-                },
-            ]}
+            style={[styles.container, styles.availableContainer]}
         >
-            <View style={[
-                styles.headrest,
-                { backgroundColor: status === 'selected' ? alpha(Colors.WHITE, 0.2) : alpha(Colors.BLACK, 0.2) }
-            ]} />
-
-            <AppText size={10} weight="700" color={getTextColor()}>
+            <AppText size={11} weight="700" color="#172C6B" align="center">
                 {seatNumber}
             </AppText>
-
-            <View style={styles.cushion} />
         </TouchableOpacity>
     );
 };
@@ -79,34 +80,26 @@ const SeatItem: React.FC<SeatItemProps> = ({ seatNumber, status, onPress }) => {
 const styles = StyleSheet.create({
     container: {
         width: scale(38),
-        height: scale(42),
+        height: scale(38),
         borderRadius: scale(8),
-        borderWidth: 1.5,
         justifyContent: 'center',
         alignItems: 'center',
-        margin: scale(4),
-        // Depth effect
-        shadowColor: Colors.BLACK,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 3,
-        elevation: 3,
+        margin: scale(5),
     },
-    headrest: {
-        width: '60%',
-        height: scale(10),
-        position: 'absolute',
-        top: scale(2),
-        borderRadius: scale(3),
+    availableContainer: {
+        backgroundColor: '#EBEFF8',
+        borderWidth: 0,
     },
-    cushion: {
-        position: 'absolute',
-        bottom: scale(4),
-        width: '80%',
-        height: 2,
-        backgroundColor: 'rgba(255,255,255,0.05)',
-        borderRadius: scale(1),
-    }
+    selectedContainer: {
+        backgroundColor: 'rgba(23, 44, 107, 0.15)', // Light brand navy with opacity
+        borderWidth: 1.5,
+        borderColor: '#172C6B', // Navy border
+    },
+    bookedContainer: {
+        backgroundColor: '#E2E8F0', // Grey for Reserved
+        borderWidth: 0,
+    },
 });
 
 export default memo(SeatItem);
+
