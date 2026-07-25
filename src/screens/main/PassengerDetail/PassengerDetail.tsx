@@ -20,7 +20,7 @@ const PassengerDetail = () => {
   const { schedule, selectedSeats }: { schedule: BusSchedule; selectedSeats: number[] } = route.params;
 
   const user = useSelector((state: any) => state.auth.user);
-  const [isGroupBooking, setIsGroupBooking] = useState(false);
+  const [isGroupBooking, setIsGroupBooking] = useState(true);
 
   const initialValues = {
     passengers: selectedSeats.map((seat, index) => ({
@@ -80,7 +80,7 @@ const PassengerDetail = () => {
   };
 
   return (
-    <ScreenWrapper backgroundColor={Colors.DARK_BG} header={<Header title="Passenger Details" />}>
+    <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title="Passenger Details" showBack={true} />}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ flex: 1 }}
@@ -100,13 +100,13 @@ const PassengerDetail = () => {
               >
                 <View style={styles.toggleContainer}>
                   <View style={{ flex: 1 }}>
-                    <AppText size={16} weight="700" color={Colors.WHITE}>Group Booking</AppText>
+                    <AppText size={16} weight="700" color={Colors.PRIMARY}>Group Booking</AppText>
                     <AppText size={12} color={Colors.TEXT_GREY}>Use same details for all {selectedSeats.length} seats</AppText>
                   </View>
                   <Switch
                     value={isGroupBooking}
                     onValueChange={setIsGroupBooking}
-                    trackColor={{ false: '#3E3E3E', true: Colors.BRIGHT_BLUE }}
+                    trackColor={{ false: '#CBD5E1', true: Colors.PRIMARY }}
                     thumbColor={Colors.WHITE}
                   />
                 </View>
@@ -149,21 +149,25 @@ const PassengerDetail = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: scale(20),
   },
   scrollContent: {
-    paddingTop: verticalScale(10),
+    paddingTop: verticalScale(15),
     paddingBottom: verticalScale(100),
   },
   toggleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: alpha(Colors.WHITE, 0.05),
-    padding: scale(15),
-    borderRadius: scale(12),
-    marginBottom: verticalScale(15),
+    backgroundColor: Colors.SURFACE,
+    padding: scale(18),
+    borderRadius: scale(16),
+    marginBottom: verticalScale(20),
     borderWidth: 1,
-    borderColor: alpha(Colors.WHITE, 0.1),
+    borderColor: Colors.BORDER_GREY,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 6,
+    elevation: 2,
   },
   footer: {
     position: 'absolute',
@@ -172,10 +176,15 @@ const styles = StyleSheet.create({
     right: scale(20),
   },
   button: {
-    backgroundColor: Colors.BRIGHT_BLUE,
+    backgroundColor: '#172C6B', // Matches primary brand navy
     paddingVertical: verticalScale(14),
     borderRadius: scale(12),
     alignItems: 'center',
+    shadowColor: Colors.PRIMARY,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 4,
   },
 });
 

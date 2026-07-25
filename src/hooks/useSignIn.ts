@@ -8,7 +8,7 @@ export const useLogin = () => {
     const dispatch = useDispatch();
     return useMutation({
         mutationFn: async (data: any) => {
-            const response = await axiosInstance.post('login', data);
+            const response = await axiosInstance.post('/login', data);
             return response as any;
         },
         onSuccess: (data) => {

@@ -32,7 +32,7 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
                 <View style={styles.seatBadge}>
                     <AppText size={12} weight="800" color={Colors.WHITE}>S-{seatNumber}</AppText>
                 </View>
-                <AppText size={16} weight="700" color={Colors.WHITE}>Passenger Details</AppText>
+                <AppText size={16} weight="700" color={Colors.PRIMARY}>Passenger Details</AppText>
             </View>
 
             <AppInput
@@ -65,19 +65,20 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
             />
 
             <View style={styles.genderContainer}>
-                <AppText size={14} color={Colors.TEXT_GREY} style={{ marginBottom: verticalScale(10) }}>Gender</AppText>
+                <AppText size={13} color={Colors.DARK_GRAY} weight="600" style={{ marginBottom: verticalScale(10) }}>Gender</AppText>
                 <View style={styles.genderOptions}>
                     {(['Male', 'Female'] as const).map((g) => (
                         <View key={g} style={styles.genderRow}>
                             <Radio
                                 width={scale(18)}
                                 height={scale(18)}
-                                color={values.gender === g ? Colors.BRIGHT_BLUE : Colors.TEXT_GREY}
+                                color={values.gender === g ? '#172C6B' : Colors.TEXT_GREY}
                                 onPress={() => onChange('gender', g)}
                             />
                             <AppText
                                 size={14}
-                                color={values.gender === g ? Colors.WHITE : Colors.TEXT_GREY}
+                                color={values.gender === g ? Colors.PRIMARY : Colors.TEXT_GREY}
+                                weight="600"
                                 style={{ marginLeft: scale(8) }}
                             >
                                 {g}
@@ -92,21 +93,26 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: alpha(Colors.WHITE, 0.05),
-        borderRadius: scale(15),
-        padding: scale(15),
+        backgroundColor: Colors.SURFACE,
+        borderRadius: scale(16),
+        padding: scale(18),
         marginBottom: verticalScale(20),
         borderWidth: 1,
-        borderColor: alpha(Colors.WHITE, 0.05),
+        borderColor: Colors.BORDER_GREY,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.04,
+        shadowRadius: 6,
+        elevation: 2,
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: verticalScale(15),
+        marginBottom: verticalScale(18),
     },
     seatBadge: {
-        backgroundColor: Colors.BRIGHT_BLUE,
-        paddingHorizontal: scale(8),
+        backgroundColor: '#172C6B', // Matches brand primary navy
+        paddingHorizontal: scale(10),
         paddingVertical: scale(4),
         borderRadius: scale(6),
         marginRight: scale(10),
