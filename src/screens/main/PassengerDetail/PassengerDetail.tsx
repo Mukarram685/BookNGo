@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Header from '../../../component/Header';
-import Colors, { alpha } from '../../../utils/Colors.util';
+import Colors from '../../../utils/Colors.util';
 import PassengerForm from '../../../component/Booking/PassengerForm';
 import { BusSchedule } from '../../../interface/bus.interface';
 
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     right: scale(20),
   },
   button: {
-    backgroundColor: '#172C6B', // Matches primary brand navy
+    backgroundColor: '#172C6B',
     paddingVertical: verticalScale(14),
     borderRadius: scale(12),
     alignItems: 'center',

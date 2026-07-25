@@ -4,7 +4,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import AppText from '../common/AppText';
 import AppInput from '../TextInput/TextInput';
 import Colors, { alpha } from '../../utils/Colors.util';
-import { User, Phone, Radio } from '../../assets/svg';
+import { User, Phone, Radio, Male } from '../../assets/svg';
 
 interface PassengerFormProps {
     seatNumber: number;
@@ -69,7 +69,7 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
                 <View style={styles.genderOptions}>
                     {(['Male', 'Female'] as const).map((g) => (
                         <View key={g} style={styles.genderRow}>
-                            <Radio
+                            <Male
                                 width={scale(18)}
                                 height={scale(18)}
                                 color={values.gender === g ? '#172C6B' : Colors.TEXT_GREY}

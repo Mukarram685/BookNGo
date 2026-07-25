@@ -19,6 +19,16 @@ import Profile from './profile.svg';
 import From from './from.svg';
 import To from './to.svg';
 import Calendar from './calendar.svg';
+import Cnic from './cnic.svg';
+import Male from './male.svg';
+import Female from './female.svg';
+import Edit from './edit.svg';
+import Settings from './settings.svg';
+import Notification from './notification.svg';
+import Terms from './terms.svg';
+import Help from './help.svg';
+import Logout from './logout.svg';
+import More from './more.svg';
 
 export {
     Radio,
@@ -42,5 +52,15 @@ export {
     From,
     To,
     Calendar,
+    Cnic,
+    Male,
+    Female,
+    Edit,
+    Settings,
+    Notification,
+    Terms,
+    Help,
+    Logout,
+    More,
 }
 
