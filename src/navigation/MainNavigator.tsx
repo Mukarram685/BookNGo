@@ -7,6 +7,7 @@ import SeatSelection from '../screens/main/SeatSelection/SeatSelection';
 import PassengerDetail from '../screens/main/PassengerDetail/PassengerDetail';
 import BookingReview from '../screens/main/BookingDetails/BookingReview';
 import BookingSuccess from '../screens/main/BookingDetails/BookingSuccess';
+import BookingDetails from '../screens/main/BookingDetails/BookingDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +21,7 @@ const MainNavigator = () => {
             <Stack.Screen name="PassengerDetails" component={PassengerDetail} />
             <Stack.Screen name="BookingReview" component={BookingReview} />
             <Stack.Screen name="BookingSuccess" component={BookingSuccess} />
+            <Stack.Screen name="BookingDetails" component={BookingDetails} />
         </Stack.Navigator>
     );
 };

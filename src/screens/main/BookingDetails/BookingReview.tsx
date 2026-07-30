@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, Image, StatusBar } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
+import { useStripe } from '@stripe/stripe-react-native';
+import Toast from 'react-native-toast-message';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Header from '../../../component/Header';
@@ -9,54 +12,107 @@ import Colors from '../../../utils/Colors.util';
 import { BusSchedule } from '../../../interface/bus.interface';
 import { PassengerDetail } from '../../../interface/booking.interface';
 import { useBookSeats } from '../../../hooks/useBookSeats';
+import { useCreatePaymentIntent } from '../../../hooks/useCreatePaymentIntent';
 import PaymentOption from './PaymentOption';
 
 const BookingReview = () => {
     const navigation = useNavigation<any>();
     const route = useRoute<any>();
     const { schedule, passengers, totalAmount }: { schedule: BusSchedule; passengers: PassengerDetail[]; totalAmount: number } = route.params;
+    const { t } = useTranslation();
 
-    const [paymentMethod, setPaymentMethod] = useState<'JazzCash' | 'EasyPaisa' | 'CreditCard'>('JazzCash');
-    const { mutate: book, isPending } = useBookSeats();
+    const [paymentMethod, setPaymentMethod] = useState<'CreditCard'>('CreditCard');
+    const { mutate: book, isPending: isBooking } = useBookSeats();
+    const { mutateAsync: createPaymentIntent } = useCreatePaymentIntent();
+    const { initPaymentSheet, presentPaymentSheet } = useStripe();
+    const [loading, setLoading] = useState(false);
 
-    const handlePayment = () => {
-        book({
-            scheduleId: schedule._id,
-            seats: passengers
-        }, {
-            onSuccess: (data) => {
-                navigation.navigate('BookingSuccess', { ticket: data.ticket });
+    const handlePayment = async () => {
+        if (paymentMethod === 'CreditCard') {
+            setLoading(true);
+            try {
+                const intentData: any = await createPaymentIntent({
+                    scheduleId: schedule._id,
+                    seatsCount: passengers.length
+                });
+
+                const clientSecret = intentData.clientSecret;
+                const paymentIntentId = intentData.paymentIntentId;
+
+                if (!clientSecret) {
+                    setLoading(false);
+                    Toast.show({ type: 'error', text1: 'Error', text2: 'Could not get payment secret' });
+                    return;
+                }
+
+                const { error: initError } = await initPaymentSheet({
+                    paymentIntentClientSecret: clientSecret,
+                    merchantDisplayName: 'BookNGo',
+                    returnURL: 'bookngo://stripe-redirect',
+                    defaultBillingDetails: {
+                        name: passengers[0].passengerName,
+                    },
+                });
+
+                if (initError) {
+                    setLoading(false);
+                    Toast.show({ type: 'error', text1: 'Payment status', text2: initError.message });
+                    return;
+                }
+
+                const { error: presentError } = await presentPaymentSheet();
+
+                if (presentError) {
+                    setLoading(false);
+                    Toast.show({ type: 'info', text1: 'Payment status', text2: 'Payment failed or cancelled' });
+                } else {
+                    book({
+                        scheduleId: schedule._id,
+                        seats: passengers,
+                        paymentIntentId: paymentIntentId
+                    }, {
+                        onSuccess: (data) => {
+                            setLoading(false);
+                            navigation.navigate('BookingSuccess', { ticket: data.ticket });
+                        },
+                        onError: () => {
+                            setLoading(false);
+                        }
+                    });
+                }
+            } catch (err: any) {
+                setLoading(false);
+                Toast.show({ type: 'error', text1: 'Error', text2: err.message || 'Payment initiation failed' });
             }
-        });
+        }
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title="Review Booking" showBack={true} />} isLoading={isPending}>
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title={t('bookingReview_title') || 'Review Booking'} showBack={true} />} isLoading={isBooking || loading}>
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
 
-                    {/* Summary Card */}
                     <View style={styles.summaryCard}>
                         <AppText size={18} weight="700" color={Colors.PRIMARY} style={{ marginBottom: verticalScale(15) }}>
-                            Trip Summary
+                            {t('bookingReview_tripSummary') || 'Trip Summary'}
                         </AppText>
                         <View style={styles.row}>
-                            <AppText color={Colors.DARK_GRAY} weight="500">Route</AppText>
+                            <AppText color={Colors.DARK_GRAY} weight="500">{t('bookingReview_route') || 'Route'}</AppText>
                             <AppText color={Colors.PRIMARY} weight="700">{schedule.fromCity} → {schedule.toCity}</AppText>
                         </View>
                         <View style={styles.row}>
-                            <AppText color={Colors.DARK_GRAY} weight="500">Company</AppText>
+                            <AppText color={Colors.DARK_GRAY} weight="500">{t('bookingReview_company') || 'Company'}</AppText>
                             <AppText color={Colors.PRIMARY} weight="700">{schedule.busName}</AppText>
                         </View>
                         <View style={styles.row}>
-                            <AppText color={Colors.DARK_GRAY} weight="500">Departure</AppText>
+                            <AppText color={Colors.DARK_GRAY} weight="500">{t('bookingReview_departure') || 'Departure'}</AppText>
                             <AppText color={Colors.PRIMARY} weight="700">{schedule.departureTime}</AppText>
                         </View>
 
                         <View style={styles.divider} />
 
                         <AppText size={16} weight="700" color={Colors.PRIMARY} style={{ marginBottom: verticalScale(12) }}>
-                            Passengers ({passengers.length})
+                            {t('bookingReview_passengers', { count: passengers.length }) || `Passengers (${passengers.length})`}
                         </AppText>
                         {passengers.map((p, index) => (
                             <View key={index} style={styles.passengerItem}>
@@ -76,63 +132,35 @@ const BookingReview = () => {
                         <View style={styles.divider} />
 
                         <View style={[styles.row, { marginBottom: 0 }]}>
-                            <AppText size={16} weight="700" color={Colors.PRIMARY}>Total Amount</AppText>
+                            <AppText size={16} weight="700" color={Colors.PRIMARY}>{t('bookingReview_totalAmount') || 'Total Amount'}</AppText>
                             <AppText size={18} weight="800" color={Colors.PRIMARY}>PKR {totalAmount.toLocaleString()}</AppText>
                         </View>
                     </View>
 
-                    {/* Payment Methods */}
                     <AppText size={16} weight="700" color={Colors.PRIMARY} style={styles.sectionTitle}>
-                        Payment Method
+                        {t('bookingReview_paymentMethod') || 'Payment Method'}
                     </AppText>
 
-                     <PaymentOption
+                    <PaymentOption
                         title="Stripe"
                         selected={paymentMethod === 'CreditCard'}
                         onSelect={() => setPaymentMethod('CreditCard')}
                         icon="https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/512px-Stripe_Logo%2C_revised_2016.svg.png"
                     />
-                    {/* <PaymentOption
-                        title="EasyPaisa"
-                        selected={paymentMethod === 'EasyPaisa'}
-                        onSelect={() => setPaymentMethod('EasyPaisa')}
-                        icon="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6A6sYx0z9r9y7wGf9uHn8N-zVfG9_oWfXfg&s"
-                    />
-                    <PaymentOption
-                        title="Credit / Debit Card"
-                        selected={paymentMethod === 'CreditCard'}
-                        onSelect={() => setPaymentMethod('CreditCard')}
-                    /> */}
 
                 </ScrollView>
 
                 <View style={styles.footer}>
-                    <TouchableOpacity style={styles.button} onPress={handlePayment}>
-                        <AppText size={16} weight="700" color={Colors.WHITE}>Confirm Booking</AppText>
+                    <TouchableOpacity style={styles.button} onPress={handlePayment} disabled={isBooking || loading}>
+                        <AppText size={16} weight="700" color={Colors.WHITE}>
+                            {isBooking || loading ? t('bookingReview_processing') || 'Processing...' : t('bookingReview_confirmButton') || 'Confirm Booking'}
+                        </AppText>
                     </TouchableOpacity>
                 </View>
             </View>
         </ScreenWrapper>
     );
 };
-
-// const PaymentOption = ({ title, selected, onSelect, icon }: any) => (
-//     <TouchableOpacity
-//         style={[styles.paymentCard, selected && styles.paymentCardSelected]}
-//         onPress={onSelect}
-//         activeOpacity={0.7}
-//     >
-//         <View style={styles.paymentInfo}>
-//             {icon && <Image source={{ uri: icon }} style={styles.paymentIcon} />}
-//             <AppText color={selected ? Colors.PRIMARY : Colors.DARK_GRAY} weight={selected ? "700" : "500"}>
-//                 {title}
-//             </AppText>
-//         </View>
-//         <View style={[styles.radio, selected && styles.radioSelected]}>
-//             {selected && <View style={styles.radioInner} />}
-//         </View>
-//     </TouchableOpacity>
-// );
 
 const styles = StyleSheet.create({
     container: {
@@ -182,7 +210,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     seatBadgeSmall: {
-        backgroundColor: '#172C6B', // Navy accent
+        backgroundColor: '#172C6B',
         paddingHorizontal: scale(8),
         paddingVertical: scale(4),
         borderRadius: scale(6),
@@ -190,54 +218,6 @@ const styles = StyleSheet.create({
     },
     sectionTitle: {
         marginBottom: verticalScale(15),
-    },
-    paymentCard: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: Colors.SURFACE,
-        padding: scale(15),
-        borderRadius: scale(12),
-        marginBottom: verticalScale(12),
-        borderWidth: 1,
-        borderColor: Colors.BORDER_GREY,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.02,
-        shadowRadius: 4,
-        elevation: 1,
-    },
-    paymentCardSelected: {
-        borderColor: '#172C6B',
-        backgroundColor: 'rgba(23, 44, 107, 0.05)',
-    },
-    paymentInfo: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    paymentIcon: {
-        width: scale(30),
-        height: scale(20),
-        resizeMode: 'contain',
-        marginRight: scale(12),
-    },
-    radio: {
-        width: scale(20),
-        height: scale(20),
-        borderRadius: scale(10),
-        borderWidth: 2,
-        borderColor: Colors.TEXT_GREY,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    radioSelected: {
-        borderColor: '#172C6B',
-    },
-    radioInner: {
-        width: scale(10),
-        height: scale(10),
-        borderRadius: scale(5),
-        backgroundColor: '#172C6B',
     },
     footer: {
         position: 'absolute',
@@ -257,8 +237,5 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
 });
-
-export default BookingReview;
-
 
 export default BookingReview;
