@@ -15,8 +15,6 @@ const PrivacyPolicy = () => {
             backgroundColor={Colors.BACKGROUND} 
             header={<Header title={t('profile_privacy') || 'Privacy Policy'} showBack={true} />}
         >
-            <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
-            <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
                 <View style={styles.card}>
                     <AppText size={18} weight="900" color={Colors.PRIMARY} style={styles.title}>
                         Privacy Policy
@@ -57,7 +55,6 @@ const PrivacyPolicy = () => {
                         If you have any questions or suggestions regarding our Privacy Policy, please feel free to reach out to us via the Help Center.
                     </AppText>
                 </View>
-            </ScrollView>
         </ScreenWrapper>
     );
 };
@@ -69,6 +66,7 @@ const styles = StyleSheet.create({
         borderRadius: scale(18),
         borderWidth: 1,
         elevation: 3,
+        marginVertical: verticalScale(15),
         padding: scale(20),
         shadowColor: Colors.BLACK,
         shadowOffset: { width: 0, height: 4 },
