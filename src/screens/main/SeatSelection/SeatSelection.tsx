@@ -156,7 +156,7 @@ const SeatSelection = () => {
                     <View style={styles.checkoutContent}>
                         <View>
                             <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                                SELECTED SEATS ({selectedSeats.length})
+                                {t('seatSelection_selectedSeats', { count: selectedSeats.length }) || `SELECTED SEATS (${selectedSeats.length})`}
                             </AppText>
                             <AppText size={18} weight="800" color={Colors.PRIMARY} style={{ marginTop: 2 }}>
                                 PKR {(selectedSeats.length * schedule.price).toLocaleString()}
@@ -168,7 +168,7 @@ const SeatSelection = () => {
                             onPress={() => navigation.navigate('PassengerDetails', { schedule, selectedSeats })}
                         >
                             <AppText size={15} weight="700" color={Colors.WHITE}>
-                                Proceed
+                                {t('seatSelection_proceed') || "Proceed"}
                             </AppText>
                         </TouchableOpacity>
                     </View>

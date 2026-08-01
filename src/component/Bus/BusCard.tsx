@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
 import Colors, { alpha } from '../../utils/Colors.util';
 import { BusSchedule } from '../../interface/bus.interface';
@@ -24,6 +25,7 @@ const amenityIcons: Record<string, React.FC<any>> = {
 };
 
 const BusCard = ({ item }: BusCardProps) => {
+  const { t } = useTranslation();
   const navigation = useNavigation<any>();
 
   const handleBookPress = () => {
@@ -60,7 +62,7 @@ const BusCard = ({ item }: BusCardProps) => {
             Rs. {item.price.toLocaleString()}
           </AppText>
           <AppText size={11} color={Colors.DARK_GRAY} weight="500">
-            Per seat
+            {t('per_seat') || "Per seat"}
           </AppText>
         </View>
       </View>
@@ -85,7 +87,7 @@ const BusCard = ({ item }: BusCardProps) => {
             <View style={styles.dot} />
           </View>
           <AppText size={11} weight="700" color={Colors.SECONDARY} style={{ marginTop: 4 }}>
-            Direct
+            {t('direct_route') || "Direct"}
           </AppText>
         </View>
 
@@ -117,7 +119,7 @@ const BusCard = ({ item }: BusCardProps) => {
 
           {item.seatsAvailable < 10 && (
             <AppText size={10} weight="600" color="#FF6B00" style={{ marginTop: verticalScale(5) }}>
-              Only {item.seatsAvailable} seats left at this price!
+              {t('seats_left_warning', { count: item.seatsAvailable }) || `Only ${item.seatsAvailable} seats left at this price!`}
             </AppText>
           )}
         </View>
@@ -128,7 +130,7 @@ const BusCard = ({ item }: BusCardProps) => {
           onPress={handleBookPress}
         >
           <AppText size={14} weight="700" color={Colors.WHITE}>
-            Select
+            {t('select_button') || "Select"}
           </AppText>
         </TouchableOpacity>
       </View>

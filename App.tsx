@@ -43,6 +43,15 @@ const App = () => {
   }, []);
 
   const onBeforeLift = () => {
+    const state = store.getState();
+    const currentLang = state.language?.currentLanguage || 'en';
+    
+    const i18n = require('./src/i18n/i18n').default;
+    i18n.changeLanguage(currentLang);
+    
+    const { handleLanguageRTL } = require('./src/utils/rtl.util');
+    handleLanguageRTL(currentLang);
+
     setTimeout(() => SplashScreen.hide(), 100);
   };
 

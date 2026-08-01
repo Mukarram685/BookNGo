@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Platform } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import AppText from '../../../component/common/AppText';
 import AppInput from '../../../component/TextInput/TextInput';
 import Colors from '../../../utils/Colors.util';
@@ -15,6 +16,7 @@ interface HomeSearchProps {
 }
 
 const HomeSearch = ({ onSearch }: HomeSearchProps) => {
+    const { t } = useTranslation();
     const [showDatePicker, setShowDatePicker] = useState(false);
 
     return (
@@ -40,7 +42,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
             {({ values, setFieldValue, handleSubmit, errors, touched, setFieldTouched }) => (
                 <View style={styles.searchContainer}>
                     <CitySelector
-                        placeholder="From City"
+                        placeholder={t('home_from_city') || "From City"}
                         value={values.from}
                         onSelect={(city: string) => setFieldValue('from', city)}
                         LeftIcon={From}
@@ -49,7 +51,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                     />
 
                     <CitySelector
-                        placeholder="To City"
+                        placeholder={t('home_to_city') || "To City"}
                         value={values.to}
                         onSelect={(city: string) => setFieldValue('to', city)}
                         LeftIcon={To}
@@ -63,7 +65,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         style={[styles.inputContainer, styles.dateInputContainer]}
                     >
                         <View style={styles.leftIconContainer}>
-                            <Calendar width={scale(20)} height={scale(20)} />
+                             <Calendar width={scale(20)} height={scale(20)} />
                         </View>
                         <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.dateText}>
                             {values.date.toDateString()}
@@ -106,7 +108,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         onPress={() => handleSubmit()}
                     >
                         <AppText size={16} weight="700" color={Colors.WHITE}>
-                            Search Buses
+                            {t('home_search_button') || "Search Buses"}
                         </AppText>
                     </TouchableOpacity>
                 </View>

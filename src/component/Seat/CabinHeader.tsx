@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
+import { useTranslation } from 'react-i18next';
 import Svg, { Circle, Path } from 'react-native-svg';
 import AppText from '../common/AppText';
 import Colors from '../../utils/Colors.util';
@@ -28,6 +29,7 @@ const EntryIcon = () => (
 );
 
 export const CabinHeader: React.FC = () => {
+    const { t } = useTranslation();
     return (
         <View>
             <View style={styles.driverSection}>
@@ -36,7 +38,7 @@ export const CabinHeader: React.FC = () => {
                         <SteeringWheelIcon />
                     </View>
                     <AppText size={10} weight="800" color={Colors.DARK_GRAY} style={{ marginTop: 4 }}>
-                        DRIVER
+                        {t('driver') || "DRIVER"}
                     </AppText>
                 </View>
 
@@ -45,7 +47,7 @@ export const CabinHeader: React.FC = () => {
                         <EntryIcon />
                     </View>
                     <AppText size={10} weight="800" color={Colors.DARK_GRAY} style={{ marginTop: 4 }}>
-                        ENTRY
+                        {t('entry') || "ENTRY"}
                     </AppText>
                 </View>
             </View>

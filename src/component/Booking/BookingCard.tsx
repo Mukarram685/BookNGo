@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import AppText from '../common/AppText';
+import { useTranslation } from 'react-i18next';
 import Colors from '../../utils/Colors.util';
 import { scale, verticalScale } from 'react-native-size-matters';
 
@@ -17,14 +18,15 @@ interface BookingCardProps {
 }
 
 const BookingCard = ({ booking, onView }: BookingCardProps) => {
+    const { t } = useTranslation();
     const isCompleted = booking.status.toLowerCase() === 'completed' || booking.status.toLowerCase() === 'confirmed';
 
     return (
         <View style={styles.card}>
             <View style={styles.header}>
-                <View>
+                <View style={styles.headerTextContainer}>
                     <AppText size={16} weight="bold" color={Colors.PRIMARY}>{booking.route}</AppText>
-                    <AppText size={12} color={Colors.TEXT_GREY}>ID: #{booking.id}</AppText>
+                    <AppText size={12} color={Colors.TEXT_GREY}>{t('booking_details_id') || "ID"}: #{booking.id}</AppText>
                 </View>
                 <View style={[styles.statusBadge, { backgroundColor: isCompleted ? '#E6F7ED' : '#FEF3C7' }]}>
                     <AppText size={10} weight="800" color={isCompleted ? '#2CC93C' : '#D97706'}>
@@ -35,22 +37,22 @@ const BookingCard = ({ booking, onView }: BookingCardProps) => {
             
             <View style={styles.details}>
                 <View style={styles.detailItem}>
-                    <AppText size={11} color={Colors.TEXT_GREY} weight="700">DATE</AppText>
+                    <AppText size={11} color={Colors.TEXT_GREY} weight="700">{t('booking_details_date') || "DATE"}</AppText>
                     <AppText size={14} weight="600" color={Colors.PRIMARY}>{booking.date}</AppText>
                 </View>
                 <View style={styles.detailItem}>
-                    <AppText size={11} color={Colors.TEXT_GREY} weight="700">TIME</AppText>
+                    <AppText size={11} color={Colors.TEXT_GREY} weight="700">{t('booking_details_time') || "TIME"}</AppText>
                     <AppText size={14} weight="600" color={Colors.PRIMARY}>{booking.time}</AppText>
                 </View>
             </View>
 
             <View style={styles.footer}>
                 <View>
-                    <AppText size={11} color={Colors.TEXT_GREY} weight="700">TOTAL PRICE</AppText>
+                    <AppText size={11} color={Colors.TEXT_GREY} weight="700">{t('booking_card_total_price') || "TOTAL PRICE"}</AppText>
                     <AppText size={18} weight="800" color={Colors.PRIMARY}>Rs. {booking.price}</AppText>
                 </View>
                 <TouchableOpacity style={styles.viewButton} onPress={onView} activeOpacity={0.8}>
-                    <AppText size={14} weight="700" color={Colors.WHITE}>View</AppText>
+                    <AppText size={14} weight="700" color={Colors.WHITE}>{t('booking_card_view') || "View"}</AppText>
                 </TouchableOpacity>
             </View>
         </View>
@@ -76,6 +78,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'flex-start',
         marginBottom: scale(15),
+    },
+    headerTextContainer: {
+        flex: 1,
+        marginEnd: scale(12),
     },
     statusBadge: {
         paddingHorizontal: scale(12),

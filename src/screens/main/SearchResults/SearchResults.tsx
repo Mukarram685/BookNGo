@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, StatusBar, FlatList } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useRoute, RouteProp } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Colors from '../../../utils/Colors.util';
@@ -21,6 +22,7 @@ type RootStackParamList = {
 type SearchResultsRouteProp = RouteProp<RootStackParamList, 'SearchResults'>;
 
 const SearchResults = () => {
+    const { t } = useTranslation();
     const route = useRoute<SearchResultsRouteProp>();
     const { fromCity, toCity, date } = route.params;
 
@@ -79,15 +81,15 @@ const SearchResults = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending} header={<Header title="Search Results" />}>
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending} header={<Header title={t('search_results_title') || "Search Results"} />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
             <View style={styles.container}>
                 <View style={styles.header}>
                     <AppText size={22} weight="800" color={Colors.PRIMARY}>
-                        {fromCity} to {toCity}
+                        {fromCity} {t('route_to') || "to"} {toCity}
                     </AppText>
                     <AppText size={15} color={Colors.DARK_GRAY} weight="500">
-                        Date: {date}
+                        {t('booking_details_date') || "Date"}: {date}
                     </AppText>
                 </View>
 
@@ -102,7 +104,7 @@ const SearchResults = () => {
                     ListEmptyComponent={
                         (!isPending) ? (
                             <View style={styles.emptyContainer}>
-                                <AppText color={Colors.DARK_GRAY} weight="500">No buses found for this route.</AppText>
+                                <AppText color={Colors.DARK_GRAY} weight="500">{t('search_results_empty') || "No buses found for this route."}</AppText>
                             </View>
                         ) : null
                     }

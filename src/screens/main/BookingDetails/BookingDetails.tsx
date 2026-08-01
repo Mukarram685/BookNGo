@@ -7,6 +7,7 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { scale, verticalScale } from 'react-native-size-matters';
 import ViewShot from 'react-native-view-shot';
 import Share from 'react-native-share';
@@ -21,6 +22,7 @@ type BookingDetailsRouteProp = RouteProp<
 >;
 
 const BookingDetails = () => {
+  const { t } = useTranslation();
   const route = useRoute<BookingDetailsRouteProp>();
   const { booking } = route.params;
   const fullData = booking.fullData;
@@ -70,7 +72,7 @@ const BookingDetails = () => {
   return (
     <ScreenWrapper
       backgroundColor={Colors.BACKGROUND}
-      header={<Header title="Booking Details" showBack={true} />}
+      header={<Header title={t('booking_details_title') || "Booking Details"} showBack={true} />}
     >
       <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
         <View
@@ -82,7 +84,7 @@ const BookingDetails = () => {
           <View style={styles.headerInfoCard}>
             <View style={styles.headerRow}>
               <AppText size={11} color={Colors.TEXT_GREY} weight="800">
-                BOOKING ID
+                {t('booking_details_id') || "BOOKING ID"}
               </AppText>
               <View
                 style={[
@@ -122,7 +124,7 @@ const BookingDetails = () => {
                   weight="600"
                   style={{ marginTop: 2 }}
                 >
-                  Departure
+                  {t('booking_details_departure') || "Departure"}
                 </AppText>
               </View>
 
@@ -142,7 +144,7 @@ const BookingDetails = () => {
                   weight="600"
                   style={{ marginTop: 2 }}
                 >
-                  Arrival
+                  {t('booking_details_arrival') || "Arrival"}
                 </AppText>
               </View>
             </View>
@@ -152,7 +154,7 @@ const BookingDetails = () => {
             <View style={styles.infoGrid}>
               <View style={styles.infoItem}>
                 <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                  DATE
+                  {t('booking_details_date') || "DATE"}
                 </AppText>
                 <AppText
                   size={14}
@@ -165,7 +167,7 @@ const BookingDetails = () => {
               </View>
               <View style={styles.infoItem}>
                 <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                  TIME
+                  {t('booking_details_time') || "TIME"}
                 </AppText>
                 <AppText
                   size={14}
@@ -181,7 +183,7 @@ const BookingDetails = () => {
             <View style={[styles.infoGrid, { marginTop: scale(18) }]}>
               <View style={styles.infoItem}>
                 <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                  BUS NUMBER
+                  {t('booking_details_bus_number') || "BUS NUMBER"}
                 </AppText>
                 <AppText
                   size={14}
@@ -194,7 +196,7 @@ const BookingDetails = () => {
               </View>
               <View style={styles.infoItem}>
                 <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                  SEAT NUMBER(S)
+                  {t('booking_details_seat_number') || "SEAT NUMBER(S)"}
                 </AppText>
                 <AppText
                   size={14}
@@ -210,7 +212,7 @@ const BookingDetails = () => {
             <View style={[styles.infoGrid, { marginTop: scale(18) }]}>
               <View style={styles.infoItem}>
                 <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                  PNR NUMBER
+                  {t('booking_details_pnr') || "PNR NUMBER"}
                 </AppText>
                 <AppText
                   size={14}
@@ -232,12 +234,12 @@ const BookingDetails = () => {
               color={Colors.PRIMARY}
               style={styles.sectionTitle}
             >
-              Passenger Information
+              {t('booking_details_passenger_info') || "Passenger Information"}
             </AppText>
             <View style={styles.detailCard}>
               <View style={styles.detailRow}>
                 <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  Name
+                  {t('booking_details_name') || "Name"}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   {fullData?.seats?.[0]?.passengerName || 'Mukarram Ali'}
@@ -245,7 +247,7 @@ const BookingDetails = () => {
               </View>
               <View style={styles.detailRow}>
                 <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  Phone
+                  {t('booking_details_phone') || "Phone"}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   {fullData?.seats?.[0]?.passengerPhone || '+92 312 4567890'}
@@ -253,7 +255,7 @@ const BookingDetails = () => {
               </View>
               <View style={styles.detailRow}>
                 <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  Gender
+                  {t('booking_details_gender') || "Gender"}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   {fullData?.seats?.[0]?.gender || 'Male'}
@@ -270,12 +272,12 @@ const BookingDetails = () => {
               color={Colors.PRIMARY}
               style={styles.sectionTitle}
             >
-              Payment Summary
+              {t('booking_details_payment_summary') || "Payment Summary"}
             </AppText>
             <View style={styles.detailCard}>
               <View style={styles.detailRow}>
                 <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  Ticket Fare
+                  {t('booking_details_ticket_fare') || "Ticket Fare"}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   Rs. {booking.price}
@@ -283,7 +285,7 @@ const BookingDetails = () => {
               </View>
               <View style={styles.detailRow}>
                 <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  Service Fee
+                  {t('booking_details_service_fee') || "Service Fee"}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   Rs. {booking.serviceFee || 0}
@@ -292,7 +294,7 @@ const BookingDetails = () => {
               <View style={styles.dividerSmall} />
               <View style={styles.detailRow}>
                 <AppText size={15} weight="bold" color={Colors.PRIMARY}>
-                  Total Amount
+                  {t('booking_details_total') || "Total Amount"}
                 </AppText>
                 <AppText size={17} weight="900" color={Colors.PRIMARY}>
                   Rs. {booking.price}
@@ -311,13 +313,13 @@ const BookingDetails = () => {
           activeOpacity={0.8}
         >
           <AppText size={15} weight="bold" color={Colors.WHITE}>
-            Share Ticket
+            {t('booking_details_share') || "Share Ticket"}
           </AppText>
         </TouchableOpacity>
         {!isCompleted && (
           <TouchableOpacity style={styles.cancelButton} activeOpacity={0.8}>
             <AppText size={15} weight="bold" color={Colors.RED}>
-              Cancel Booking
+              {t('booking_details_cancel') || "Cancel Booking"}
             </AppText>
           </TouchableOpacity>
         )}

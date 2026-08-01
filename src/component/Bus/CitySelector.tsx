@@ -8,6 +8,7 @@ import {
     SafeAreaView,
 } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
+import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
 import AppInput from '../TextInput/TextInput';
 import Colors from '../../utils/Colors.util';
@@ -44,6 +45,7 @@ const CitySelector: React.FC<CitySelectorProps> = ({
     error,
     touched,
 }) => {
+    const { t } = useTranslation();
     const [modalVisible, setModalVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredCities, setFilteredCities] = useState(PAKISTAN_CITIES);
@@ -107,14 +109,14 @@ const CitySelector: React.FC<CitySelectorProps> = ({
                             <CloseIcon color={Colors.PRIMARY} size={scale(20)} />
                         </TouchableOpacity>
                         <AppText size={18} weight="700" color={Colors.PRIMARY}>
-                            Select City
+                            {t('select_city_title') || "Select City"}
                         </AppText>
                         <View style={{ width: scale(24) }} />
                     </View>
 
                     <View style={styles.searchWrapper}>
                         <AppInput
-                            placeholder="Search your city..."
+                            placeholder={t('search_city_placeholder') || "Search your city..."}
                             value={searchQuery}
                             onChangeText={setSearchQuery}
                             LeftIcon={() => <SearchIcon color={Colors.TEXT_GREY} size={scale(18)} />}
@@ -145,7 +147,7 @@ const CitySelector: React.FC<CitySelectorProps> = ({
                         ListEmptyComponent={
                             <View style={styles.emptyContainer}>
                                 <AppText size={14} color={Colors.TEXT_GREY}>
-                                    No cities found matching "{searchQuery}"
+                                    {t('no_cities_found', { query: searchQuery }) || `No cities found matching "${searchQuery}"`}
                                 </AppText>
                             </View>
                         }

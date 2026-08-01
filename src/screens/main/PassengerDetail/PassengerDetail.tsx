@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform, Switch } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -15,6 +16,7 @@ import { BusSchedule } from '../../../interface/bus.interface';
 const CNIC_REGEX = /^\d{5}-\d{7}-\d$/;
 
 const PassengerDetail = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const { schedule, selectedSeats }: { schedule: BusSchedule; selectedSeats: number[] } = route.params;
@@ -80,7 +82,7 @@ const PassengerDetail = () => {
   };
 
   return (
-    <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title="Passenger Details" showBack={true} />}>
+    <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title={t('passenger_details_title') || "Passenger Details"} showBack={true} />}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ flex: 1 }}
@@ -100,8 +102,8 @@ const PassengerDetail = () => {
               >
                 <View style={styles.toggleContainer}>
                   <View style={{ flex: 1 }}>
-                    <AppText size={16} weight="700" color={Colors.PRIMARY}>Group Booking</AppText>
-                    <AppText size={12} color={Colors.TEXT_GREY}>Use same details for all {selectedSeats.length} seats</AppText>
+                    <AppText size={16} weight="700" color={Colors.PRIMARY}>{t('group_booking') || "Group Booking"}</AppText>
+                    <AppText size={12} color={Colors.TEXT_GREY}>{t('group_booking_desc', { count: selectedSeats.length }) || `Use same details for all ${selectedSeats.length} seats`}</AppText>
                   </View>
                   <Switch
                     value={isGroupBooking}
@@ -135,7 +137,7 @@ const PassengerDetail = () => {
 
               <View style={styles.footer}>
                 <TouchableOpacity style={styles.button} onPress={handleSubmit as any}>
-                  <AppText size={16} weight="700" color={Colors.WHITE}>Review Booking</AppText>
+                  <AppText size={16} weight="700" color={Colors.WHITE}>{t('review_booking') || "Review Booking"}</AppText>
                 </TouchableOpacity>
               </View>
             </View>

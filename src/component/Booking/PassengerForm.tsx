@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import AppText from '../common/AppText';
+import { useTranslation } from 'react-i18next';
 import AppInput from '../TextInput/TextInput';
 import Colors, { alpha } from '../../utils/Colors.util';
 import { User, Phone, Radio, Male } from '../../assets/svg';
@@ -26,17 +27,18 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
     touched,
     onChange
 }) => {
+    const { t } = useTranslation();
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.seatBadge}>
                     <AppText size={12} weight="800" color={Colors.WHITE}>S-{seatNumber}</AppText>
                 </View>
-                <AppText size={16} weight="700" color={Colors.PRIMARY}>Passenger Details</AppText>
+                <AppText size={16} weight="700" color={Colors.PRIMARY}>{t('passenger_details_title') || "Passenger Details"}</AppText>
             </View>
 
             <AppInput
-                placeholder="Full Name"
+                placeholder={t('passenger_name_placeholder') || "Full Name"}
                 value={values.passengerName}
                 onChangeText={(val) => onChange('passengerName', val)}
                 error={touched?.passengerName ? errors?.passengerName : undefined}
@@ -45,7 +47,7 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
             />
 
             <AppInput
-                placeholder="CNIC (00000-0000000-0)"
+                placeholder={t('passenger_cnic_placeholder') || "CNIC (00000-0000000-0)"}
                 value={values.passengerCNIC}
                 onChangeText={(val) => onChange('passengerCNIC', val)}
                 error={touched?.passengerCNIC ? errors?.passengerCNIC : undefined}
@@ -55,7 +57,7 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
             />
 
             <AppInput
-                placeholder="Phone Number"
+                placeholder={t('passenger_phone_placeholder') || "Phone Number"}
                 value={values.passengerPhone}
                 onChangeText={(val) => onChange('passengerPhone', val)}
                 error={touched?.passengerPhone ? errors?.passengerPhone : undefined}
@@ -65,7 +67,7 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
             />
 
             <View style={styles.genderContainer}>
-                <AppText size={13} color={Colors.DARK_GRAY} weight="600" style={{ marginBottom: verticalScale(10) }}>Gender</AppText>
+                <AppText size={13} color={Colors.DARK_GRAY} weight="600" style={{ marginBottom: verticalScale(10) }}>{t('booking_details_gender') || "Gender"}</AppText>
                 <View style={styles.genderOptions}>
                     {(['Male', 'Female'] as const).map((g) => (
                         <View key={g} style={styles.genderRow}>
@@ -81,7 +83,7 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
                                 weight="600"
                                 style={{ marginLeft: scale(8) }}
                             >
-                                {g}
+                                {t(g.toLowerCase()) || g}
                             </AppText>
                         </View>
                     ))}

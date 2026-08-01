@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { View, StyleSheet, ScrollView, TouchableOpacity, Platform, PermissionsAndroid, StatusBar, BackHandler } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import ViewShot from 'react-native-view-shot';
 import Share from 'react-native-share';
 import Svg, { Path, Circle } from 'react-native-svg';
@@ -25,14 +26,14 @@ const SuccessTickIcon = () => (
 );
 
 const BookingSuccess = () => {
+    const { t } = useTranslation();
     const navigation = useNavigation<any>();
     const route = useRoute<any>();
     const { ticket }: { ticket: TicketDetails } = route.params;
     const viewShotRef = useRef<any>(null);
 
-    // Prevent going back to the review/details stack and redirect to Home
     useEffect(() => {
-        // Intercept react-navigation back gestures / actions
+
         const unsubscribe = navigation.addListener('beforeRemove', (e: any) => {
             if (e.data.action.type === 'GO_BACK') {
                 e.preventDefault();
@@ -40,10 +41,9 @@ const BookingSuccess = () => {
             }
         });
 
-        // Intercept Android hardware back button
         const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             navigation.navigate('BottomTabs');
-            return true; // Prevent default action
+            return true; 
         });
 
         return () => {
@@ -84,7 +84,7 @@ const BookingSuccess = () => {
     console.log('Total Amount:', totalAmount);
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title="Payment Success" showBack={false} />}>
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title={t('payment_success_title') || "Payment Success"} showBack={false} />}>
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
                     <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
@@ -93,13 +93,13 @@ const BookingSuccess = () => {
                             <View style={styles.successHeader}>
                                 <SuccessTickIcon />
                                 <AppText size={18} weight="800" color="#2CC93C" style={{ marginTop: verticalScale(12) }}>
-                                    Transaction Successful
+                                    {t('transaction_successful') || "Transaction Successful"}
                                 </AppText>
                                 <AppText size={28} weight="900" color={Colors.PRIMARY} style={{ marginTop: verticalScale(8) }}>
                                     PKR {totalAmount.toLocaleString()}
                                 </AppText>
                                 <AppText size={12} color={Colors.TEXT_GREY} weight="600" style={{ marginTop: 2 }}>
-                                    Paid to BookNGo Bus Service
+                                    {t('paid_to') || "Paid to BookNGo Bus Service"}
                                 </AppText>
                             </View>
 
@@ -107,13 +107,13 @@ const BookingSuccess = () => {
 
                             {/* PNR & Transaction details */}
                             <View style={styles.detailsList}>
-                                <DetailRow label="PNR / Ticket No" value={ticket.pnr} valueColor="#172C6B" valueWeight="800" />
-                                <DetailRow label="Bus Route" value={`${ticket.fromCity} → ${ticket.toCity}`} />
-                                <DetailRow label="Bus Number" value={ticket.busNumber} />
-                                <DetailRow label="Travel Date" value={ticket.travelDate} />
-                                <DetailRow label="Departure Time" value={ticket.departureTime} />
-                                <DetailRow label="Booked Seats" value={ticket.passengers.map(p => p.seatNumber).join(', ')} />
-                                <DetailRow label="Payment Status" value="COMPLETED" valueColor="#2CC93C" valueWeight="700" />
+                                <DetailRow label={t('pnr_ticket_no') || "PNR / Ticket No"} value={ticket.pnr} valueColor="#172C6B" valueWeight="800" />
+                                <DetailRow label={t('bus_route') || "Bus Route"} value={`${ticket.fromCity} → ${ticket.toCity}`} />
+                                <DetailRow label={t('bus_number') || "Bus Number"} value={ticket.busNumber} />
+                                <DetailRow label={t('travel_date') || "Travel Date"} value={ticket.travelDate} />
+                                <DetailRow label={t('departure_time') || "Departure Time"} value={ticket.departureTime} />
+                                <DetailRow label={t('booked_seats') || "Booked Seats"} value={ticket.passengers.map(p => p.seatNumber).join(', ')} />
+                                <DetailRow label={t('payment_status') || "Payment Status"} value={t('completed_status') || "COMPLETED"} valueColor="#2CC93C" valueWeight="700" />
                             </View>
                             
                             {/* Receipt Decorative Notch */}
@@ -123,10 +123,9 @@ const BookingSuccess = () => {
                         </View>
                     </ViewShot>
 
-                    {/* Bottom Buttons */}
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.shareBtn} onPress={shareTicket} activeOpacity={0.8}>
-                            <AppText size={16} weight="700" color={Colors.WHITE}>Share Receipt</AppText>
+                            <AppText size={16} weight="700" color={Colors.WHITE}>{t('share_receipt') || "Share Receipt"}</AppText>
                         </TouchableOpacity>
 
                         <TouchableOpacity
@@ -134,7 +133,7 @@ const BookingSuccess = () => {
                             onPress={() => navigation.navigate('BottomTabs')}
                             activeOpacity={0.7}
                         >
-                            <AppText size={16} weight="700" color="#172C6B">Back to Home</AppText>
+                            <AppText size={16} weight="700" color="#172C6B">{t('back_to_home') || "Back to Home"}</AppText>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>

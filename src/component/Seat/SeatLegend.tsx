@@ -1,21 +1,23 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
+import { useTranslation } from 'react-i18next';
 import Svg, { Path } from 'react-native-svg';
 import AppText from '../common/AppText';
 import Colors from '../../utils/Colors.util';
 
 export const SeatLegend: React.FC = () => {
+    const { t } = useTranslation();
     return (
         <View style={styles.legendCard}>
             <View style={styles.legendRow}>
                 <View style={styles.legendItem}>
                     <View style={[styles.legendBox, { backgroundColor: '#EBEFF8' }]} />
-                    <AppText size={12} weight="600" color={Colors.DARK_GRAY}>Available</AppText>
+                    <AppText size={12} weight="600" color={Colors.DARK_GRAY}>{t('seatSelection_available') || "Available"}</AppText>
                 </View>
                 <View style={styles.legendItem}>
                     <View style={[styles.legendBox, { backgroundColor: 'rgba(23, 44, 107, 0.15)', borderWidth: 1, borderColor: '#172C6B' }]} />
-                    <AppText size={12} weight="600" color={Colors.DARK_GRAY}>Selected</AppText>
+                    <AppText size={12} weight="600" color={Colors.DARK_GRAY}>{t('seatSelection_selected') || "Selected"}</AppText>
                 </View>
                 <View style={styles.legendItem}>
                     <View style={[styles.legendBox, { backgroundColor: '#E2E8F0', justifyContent: 'center', alignItems: 'center' }]}>
@@ -23,7 +25,7 @@ export const SeatLegend: React.FC = () => {
                             <Path d="M18 6L6 18M6 6l12 12" stroke="#94A3B8" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
                         </Svg>
                     </View>
-                    <AppText size={12} weight="600" color={Colors.DARK_GRAY}>Reserved</AppText>
+                    <AppText size={12} weight="600" color={Colors.DARK_GRAY}>{t('seatSelection_booked') || "Reserved"}</AppText>
                 </View>
             </View>
         </View>
