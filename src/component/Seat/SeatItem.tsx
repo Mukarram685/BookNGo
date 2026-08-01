@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import Svg, { Path } from 'react-native-svg';
 import AppText from '../common/AppText';
 import Colors from '../../utils/Colors.util';
 
@@ -10,30 +9,6 @@ interface SeatItemProps {
     status: 'available' | 'selected' | 'booked';
     onPress: (seatNumber: number) => void;
 }
-
-const CheckIcon = () => (
-    <Svg width={scale(14)} height={scale(14)} viewBox="0 0 24 24" fill="none">
-        <Path
-            d="M20 6L9 17L4 12"
-            stroke={Colors.WHITE}
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        />
-    </Svg>
-);
-
-const XIcon = ({ color = '#94A3B8' }: { color?: string }) => (
-    <Svg width={scale(12)} height={scale(12)} viewBox="0 0 24 24" fill="none">
-        <Path
-            d="M18 6L6 18M6 6l12 12"
-            stroke={color}
-            strokeWidth="3.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        />
-    </Svg>
-);
 
 const SeatItem: React.FC<SeatItemProps> = ({ seatNumber, status, onPress }) => {
     const handlePress = () => {
@@ -45,7 +20,9 @@ const SeatItem: React.FC<SeatItemProps> = ({ seatNumber, status, onPress }) => {
     if (status === 'booked') {
         return (
             <View style={[styles.container, styles.bookedContainer]}>
-                <XIcon color="#94A3B8" />
+                <AppText align="center" color={Colors.WHITE} size={11} weight="700">
+                    {seatNumber}
+                </AppText>
             </View>
         );
     }
@@ -57,7 +34,7 @@ const SeatItem: React.FC<SeatItemProps> = ({ seatNumber, status, onPress }) => {
                 onPress={handlePress}
                 style={[styles.container, styles.selectedContainer]}
             >
-                <AppText size={11} weight="700" color="#172C6B" align="center">
+                <AppText align="center" color={Colors.PRIMARY} size={11} weight="700">
                     {seatNumber}
                 </AppText>
             </TouchableOpacity>
@@ -70,7 +47,7 @@ const SeatItem: React.FC<SeatItemProps> = ({ seatNumber, status, onPress }) => {
             onPress={handlePress}
             style={[styles.container, styles.availableContainer]}
         >
-            <AppText size={11} weight="700" color="#172C6B" align="center">
+            <AppText align="center" color={Colors.WHITE} size={11} weight="700">
                 {seatNumber}
             </AppText>
         </TouchableOpacity>
@@ -78,28 +55,28 @@ const SeatItem: React.FC<SeatItemProps> = ({ seatNumber, status, onPress }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        width: scale(38),
-        height: scale(38),
-        borderRadius: scale(8),
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: scale(5),
-    },
     availableContainer: {
-        backgroundColor: '#EBEFF8',
+        backgroundColor: Colors.SEAT_AVAILABLE,
         borderWidth: 0,
-    },
-    selectedContainer: {
-        backgroundColor: 'rgba(23, 44, 107, 0.15)', // Light brand navy with opacity
-        borderWidth: 1.5,
-        borderColor: '#172C6B', // Navy border
     },
     bookedContainer: {
-        backgroundColor: '#E2E8F0', // Grey for Reserved
+        backgroundColor: Colors.SEAT_BOOKED,
         borderWidth: 0,
+        // opacity: 0.4,
+    },
+    container: {
+        alignItems: 'center',
+        borderRadius: scale(11),
+        height: scale(38),
+        justifyContent: 'center',
+        margin: scale(5),
+        width: scale(38),
+    },
+    selectedContainer: {
+        backgroundColor: Colors.SEAT_SELECTED,
+        borderColor: Colors.SEAT_SELECTED_BORDER,
+        borderWidth: 1,
     },
 });
 
 export default memo(SeatItem);
-
