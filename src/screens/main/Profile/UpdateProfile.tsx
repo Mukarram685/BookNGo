@@ -1,0 +1,200 @@
+import React, { useState } from 'react';
+import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
+import { scale, verticalScale } from 'react-native-size-matters';
+import { useNavigation } from '@react-navigation/native';
+import ScreenWrapper from '../../../component/common/ScreenWrapper';
+import AppText from '../../../component/common/AppText';
+import Colors from '../../../utils/Colors.util';
+import Header from '../../../component/Header';
+import { useGetProfile, useUpdateProfile } from '../../../hooks/useProfile';
+import AppLoader from '../../../component/common/AppLoader';
+
+const UpdateProfile = () => {
+    const navigation = useNavigation();
+    const authUser = useSelector((state: any) => state.auth.user);
+    const { data: profile, isLoading } = useGetProfile(authUser?.id || authUser?._id);
+    const updateProfileMutation = useUpdateProfile();
+
+    const [name, setName] = useState(profile?.name || authUser?.name || '');
+    const [phone, setPhone] = useState(profile?.phone || authUser?.phone || '');
+    const email = profile?.email || authUser?.email || '';
+
+    const handleUpdate = () => {
+        if (!name.trim()) {
+            return;
+        }
+        updateProfileMutation.mutate({
+            id: authUser?.id || authUser?._id,
+            data: { name, phone }
+        }, {
+            onSuccess: () => {
+                navigation.goBack();
+            }
+        });
+    };
+
+    if (isLoading) {
+        return <AppLoader />;
+    }
+
+    const getInitials = (nameStr: string) => {
+        if (!nameStr) return 'UN';
+        const parts = nameStr.trim().split(' ');
+        if (parts.length === 1) {
+            return parts[0].substring(0, 2).toUpperCase();
+        }
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    };
+
+    return (
+        <ScreenWrapper 
+            backgroundColor={Colors.BACKGROUND} 
+            header={<Header title="Personal Information" showBack={true} />}
+        >  
+                {/* Centered Avatar */}
+                <View style={styles.avatarSection}>
+                    <View style={styles.avatarLarge}>
+                        <AppText size={28} weight="900" color={Colors.WHITE}>
+                            {getInitials(name)}
+                        </AppText>
+                    </View>
+                </View>
+
+                {/* Form Fields Card */}
+                <View style={styles.formCard}>
+                    <View style={styles.inputGroup}>
+                        <AppText size={12} color={Colors.TEXT_GREY} weight="800" style={styles.label}>
+                            FULL NAME
+                        </AppText>
+                        <TextInput
+                            style={styles.textInput}
+                            value={name}
+                            onChangeText={setName}
+                            placeholder="Enter your name"
+                            placeholderTextColor={Colors.TEXT_GREY}
+                        />
+                    </View>
+
+                    <View style={styles.inputGroup}>
+                        <AppText size={12} color={Colors.TEXT_GREY} weight="800" style={styles.label}>
+                            EMAIL ADDRESS
+                        </AppText>
+                        <TextInput
+                            style={[styles.textInput, styles.disabledInput]}
+                            value={email}
+                            editable={false}
+                            placeholder="Email address"
+                            placeholderTextColor={Colors.TEXT_GREY}
+                        />
+                    </View>
+
+                    <View style={styles.inputGroup}>
+                        <AppText size={12} color={Colors.TEXT_GREY} weight="800" style={styles.label}>
+                            PHONE NUMBER
+                        </AppText>
+                        <TextInput
+                            style={styles.textInput}
+                            value={phone}
+                            onChangeText={setPhone}
+                            placeholder="Enter phone number"
+                            placeholderTextColor={Colors.TEXT_GREY}
+                            keyboardType="phone-pad"
+                        />
+                    </View>
+                </View>
+
+                {/* Update Button */}
+                <TouchableOpacity 
+                    style={[styles.submitButton, updateProfileMutation.isPending && styles.disabledButton]} 
+                    onPress={handleUpdate}
+                    disabled={updateProfileMutation.isPending}
+                    activeOpacity={0.8}
+                >
+                    <AppText size={16} weight="700" color={Colors.WHITE}>
+                        {updateProfileMutation.isPending ? 'Updating...' : 'Save Changes'}
+                    </AppText>
+                </TouchableOpacity>
+        </ScreenWrapper>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: scale(20),
+        paddingTop: verticalScale(10),
+        paddingBottom: verticalScale(30),
+    },
+    avatarSection: {
+        alignItems: 'center',
+        marginVertical: verticalScale(20),
+    },
+    avatarLarge: {
+        width: scale(88),
+        height: scale(88),
+        borderRadius: scale(44),
+        backgroundColor: '#172C6B', // Brand Navy
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: '#172C6B',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 8,
+        elevation: 3,
+        borderWidth: 3,
+        borderColor: Colors.WHITE,
+    },
+    formCard: {
+        backgroundColor: Colors.SURFACE,
+        borderRadius: scale(18),
+        padding: scale(20),
+        borderWidth: 1,
+        borderColor: Colors.BORDER_GREY,
+        marginBottom: verticalScale(30),
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 12,
+        elevation: 3,
+    },
+    inputGroup: {
+        marginBottom: verticalScale(18),
+    },
+    label: {
+        marginBottom: verticalScale(6),
+        marginLeft: scale(2),
+        letterSpacing: 0.8,
+    },
+    textInput: {
+        backgroundColor: '#F8FAFF', // Light theme text field back
+        borderWidth: 1,
+        borderColor: Colors.BORDER_GREY,
+        borderRadius: scale(12),
+        paddingHorizontal: scale(14),
+        height: verticalScale(46),
+        fontSize: scale(14),
+        color: Colors.PRIMARY,
+        fontWeight: '600',
+    },
+    disabledInput: {
+        backgroundColor: '#F1F5F9', // Slightly darker back for read-only
+        color: Colors.DARK_GRAY,
+    },
+    submitButton: {
+        backgroundColor: '#172C6B', // Brand Navy
+        height: scale(50),
+        borderRadius: scale(12),
+        justifyContent: 'center',
+        alignItems: 'center',
+        shadowColor: Colors.PRIMARY,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 6,
+        elevation: 4,
+    },
+    disabledButton: {
+        backgroundColor: Colors.TEXT_GREY,
+    },
+});
+
+export default UpdateProfile;

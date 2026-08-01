@@ -8,6 +8,11 @@ import PassengerDetail from '../screens/main/PassengerDetail/PassengerDetail';
 import BookingReview from '../screens/main/BookingDetails/BookingReview';
 import BookingSuccess from '../screens/main/BookingDetails/BookingSuccess';
 import BookingDetails from '../screens/main/BookingDetails/BookingDetails';
+import UpdateProfile from '../screens/main/Profile/UpdateProfile';
+import Language from '../screens/main/Profile/Language';
+import PrivacyPolicy from '../screens/main/Profile/PrivacyPolicy';
+import TermsConditions from '../screens/main/Profile/TermsConditions';
+import GetHelp from '../screens/main/Profile/GetHelp';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +27,11 @@ const MainNavigator = () => {
             <Stack.Screen name="BookingReview" component={BookingReview} />
             <Stack.Screen name="BookingSuccess" component={BookingSuccess} />
             <Stack.Screen name="BookingDetails" component={BookingDetails} />
+            <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+            <Stack.Screen name="Language" component={Language} />
+            <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+            <Stack.Screen name="TermsConditions" component={TermsConditions} />
+            <Stack.Screen name="GetHelp" component={GetHelp} />
         </Stack.Navigator>
     );
 };

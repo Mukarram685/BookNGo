@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';

@@ -58,5 +58,20 @@
   "bookingReview_totalAmount": "Total Amount",
   "bookingReview_paymentMethod": "Payment Method",
   "bookingReview_confirmButton": "Confirm Booking",
-  "bookingReview_processing": "Processing..."
+  "bookingReview_processing": "Processing...",
+  "profile_title": "Profile",
+  "profile_accountDetails": "Account Details",
+  "profile_accountDetailsDesc": "Manage your account details",
+  "profile_paymentHistory": "Booking History",
+  "profile_paymentHistoryDesc": "View your past bookings",
+  "profile_notification": "Notifications",
+  "profile_settings": "Settings",
+  "profile_contactUs": "Contact Us",
+  "profile_terms": "Terms & Conditions",
+  "profile_privacy": "Privacy Policy",
+  "profile_help": "Get Help",
+  "profile_logout": "Log Out",
+  "profile_logoutConfirmTitle": "Log Out",
+  "profile_logoutConfirmDesc": "Are you sure you want to log out?",
+  "cancel": "Cancel"
 }
