@@ -16,6 +16,9 @@ const languageSlice = createSlice({
     setLanguage: (state, action: PayloadAction<string>) => {
       state.currentLanguage = action.payload;
       i18n.changeLanguage(action.payload);
+      
+      const { handleLanguageRTL } = require('../../utils/rtl.util');
+      handleLanguageRTL(action.payload);
     },
   },
 });

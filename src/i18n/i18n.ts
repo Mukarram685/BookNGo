@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import * as RNLocalize from 'react-native-localize';
 
 import en from './en.json';
-import ar from './ur.json';
+import ur from './ur.json';
 import fr from './fr.json';
 
 const locales = RNLocalize.getLocales();
@@ -17,7 +17,7 @@ i18n
     fallbackLng: 'en',
     resources: {
       en: { translation: en },
-      ur: { translation: ar },
+      ur: { translation: ur },
       fr: { translation: fr },
     },
     interpolation: {
