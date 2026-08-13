@@ -18,7 +18,7 @@ const Home = () => {
   };
 
   return (
-    <ScreenWrapper header={<Header title={t('home') || "Home"} />}>
+    <ScreenWrapper shouldShowGradientBackground={true}>
       <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
       <View style={styles.container}>
         <View style={styles.header}>

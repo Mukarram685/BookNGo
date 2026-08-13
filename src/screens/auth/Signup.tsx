@@ -8,6 +8,7 @@ import { signupSchema } from '../../helpers/auth.helper';
 import AppText from '../../component/common/AppText';
 import AppInput from '../../component/TextInput/TextInput';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
+import AppButton from '../../component/common/AppButton';
 import Colors from '../../utils/Colors.util';
 import { Bus, Lock, User, Mail, Phone } from '../../assets/svg';
 import { useRegister } from '../../hooks/useSignUp';
@@ -25,11 +26,7 @@ const Signup = () => {
                 initialValues={{ name: '', email: '', phoneNumber: '', password: '', role: 'user' }}
                 validationSchema={signupSchema}
                 onSubmit={(values) => {
-                    register(values, {
-                        onSuccess: () => {
-                            navigation.navigate('Signin');
-                        }
-                    });
+                    register(values);
                 }}
             >
                 {({
@@ -112,11 +109,11 @@ const Signup = () => {
                             containerStyle={styles.inputContainer}
                         />
 
-                        <TouchableOpacity style={styles.button} onPress={handleSubmit as any} activeOpacity={0.8}>
-                            <AppText size={16} weight="700" color={Colors.WHITE}>
-                                {t('auth_signup_button')}
-                            </AppText>
-                        </TouchableOpacity>
+                        <AppButton
+                            title={t('auth_signup_button')}
+                            onPress={handleSubmit as any}
+                            style={styles.button}
+                        />
 
                         <View style={styles.footer}>
                             <AppText size={14} color={Colors.DARK_GRAY}>

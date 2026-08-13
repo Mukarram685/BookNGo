@@ -307,21 +307,17 @@ const BookingDetails = () => {
 
       {/* Action Buttons */}
       <View style={styles.actions}>
-        <TouchableOpacity
-          style={styles.downloadButton}
+        <AppButton
+          title={t('booking_details_share') || "Share Ticket"}
           onPress={shareTicket}
-          activeOpacity={0.8}
-        >
-          <AppText size={15} weight="bold" color={Colors.WHITE}>
-            {t('booking_details_share') || "Share Ticket"}
-          </AppText>
-        </TouchableOpacity>
+          style={styles.downloadButton}
+        />
         {!isCompleted && (
-          <TouchableOpacity style={styles.cancelButton} activeOpacity={0.8}>
-            <AppText size={15} weight="bold" color={Colors.RED}>
-              {t('booking_details_cancel') || "Cancel Booking"}
-            </AppText>
-          </TouchableOpacity>
+          <AppButton
+            title={t('booking_details_cancel') || "Cancel Booking"}
+            variant="danger-outline"
+            style={styles.cancelButton}
+          />
         )}
       </View>
     </ScreenWrapper>

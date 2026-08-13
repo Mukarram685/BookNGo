@@ -151,11 +151,12 @@ const BookingReview = () => {
                 </ScrollView>
 
                 <View style={styles.footer}>
-                    <TouchableOpacity style={styles.button} onPress={handlePayment} disabled={isBooking || loading}>
-                        <AppText size={16} weight="700" color={Colors.WHITE}>
-                            {isBooking || loading ? t('bookingReview_processing') || 'Processing...' : t('bookingReview_confirmButton') || 'Confirm Booking'}
-                        </AppText>
-                    </TouchableOpacity>
+                    <AppButton
+                        title={isBooking || loading ? t('bookingReview_processing') || 'Processing...' : t('bookingReview_confirmButton') || 'Confirm Booking'}
+                        onPress={handlePayment}
+                        loading={isBooking || loading}
+                        style={styles.button}
+                    />
                 </View>
             </View>
         </ScreenWrapper>
