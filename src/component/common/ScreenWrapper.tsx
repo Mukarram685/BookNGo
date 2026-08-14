@@ -35,6 +35,7 @@ type ScreenWrapperProps = {
   backgroundImageOpacity?: number;
   backgroundImageHeight?: string | number;
   statusBarTranslucent?: boolean;
+  gradient?: 'upper' | 'lower' | 'both';
 };
 
 const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
@@ -56,10 +57,11 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   backgroundImageOpacity = 1,
   backgroundImageHeight = '48%',
   statusBarTranslucent = false,
+  gradient,
 }) => {
   const finalHeaderAbsolute = isHeaderAbsolute || headerAbsolute;
   const finalFooterAbsolute = isFooterAbsolute || footerAbsolute;
-  const gradientLightColor = (Colors as any).GRADIENT_LIGHT || Colors.ACCENT || '#7ED3EF';
+  const gradientLightColor = (Colors as Record<string, string>).GRADIENT_LIGHT || Colors.ACCENT;
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
@@ -73,6 +75,38 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
           translucent={statusBarTranslucent}
         />
         <NetworkStatus />
+
+        {(gradient === 'upper' || gradient === 'both') && (
+          <View style={styles.upperGradientContainer}>
+            <Svg width="100%" height="100%">
+              <Defs>
+                <LinearGradient id="upperGrad" x1="0.5" y1="0" x2="0.5" y2="1">
+                  <Stop offset="0" stopColor="#A3CCFF" stopOpacity="0.7" />
+                  <Stop offset="0.4" stopColor="#CBE0FF" stopOpacity="0.4" />
+                  <Stop offset="0.7" stopColor="#F2F7FF" stopOpacity="0.1" />
+                  <Stop offset="1" stopColor={Colors.WHITE} stopOpacity="0" />
+                </LinearGradient>
+              </Defs>
+              <Rect width="100%" height="100%" fill="url(#upperGrad)" />
+            </Svg>
+          </View>
+        )}
+
+        {(gradient === 'lower' || gradient === 'both') && (
+          <View style={styles.fullGradientContainer}>
+            <Svg width="100%" height="100%">
+              <Defs>
+                <LinearGradient id="lowerGrad" x1="0.5" y1="0" x2="0.5" y2="1">
+                  <Stop offset="0" stopColor={Colors.WHITE} stopOpacity="0" />
+                  <Stop offset="0.3" stopColor="#F2F7FF" stopOpacity="0.1" />
+                  <Stop offset="0.6" stopColor="#CBE0FF" stopOpacity="0.4" />
+                  <Stop offset="1" stopColor="#A3CCFF" stopOpacity="0.7" />
+                </LinearGradient>
+              </Defs>
+              <Rect width="100%" height="100%" fill="url(#lowerGrad)" />
+            </Svg>
+          </View>
+        )}
 
         {shouldShowGradientBackground && (
           <View style={styles.gradientContainer}>
@@ -164,79 +198,94 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
 };
 
 const styles = StyleSheet.create({
+  absoluteFooter: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    zIndex: 10,
+  },
+  absoluteHeader: {
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+  },
+  backgroundImage: {
+    height: '100%',
+    width: '100%',
+  },
+  backgroundImageContainer: {
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 0,
+  },
   container: {
     flex: 1,
     position: 'relative',
   },
-  safeArea: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
   flex1: {
     flex: 1,
   },
+  footer: {
+    backgroundColor: Colors.WHITE,
+    borderTopLeftRadius: scale(20),
+    borderTopRightRadius: scale(20),
+    padding: moderateScale(16),
+  },
+  fullGradientContainer: {
+    bottom: 0,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 0,
+  },
   gradientContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
     height: verticalScale(350),
-    zIndex: 0,
-  },
-  backgroundImageContainer: {
-    position: 'absolute',
     left: 0,
+    position: 'absolute',
     right: 0,
     top: 0,
     zIndex: 0,
-  },
-  backgroundImage: {
-    width: '100%',
-    height: '100%',
   },
   header: {
     zIndex: 10,
   },
   headerTransparent: {
-    backgroundColor: 'transparent',
+    backgroundColor: Colors.TRANSPARENT,
     padding: 0,
   },
   headerWhite: {
-    backgroundColor: '#FFFFFF',
-    padding: moderateScale(16),
-  },
-  absoluteHeader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
+    padding: moderateScale(1),
   },
   loadingContainer: {
+    alignItems: 'center',
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+  },
+  nonScrollContent: {
+    alignItems: 'stretch',
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
+  safeArea: {
+    backgroundColor: Colors.TRANSPARENT,
+    flex: 1,
   },
   scrollContent: {
     flexGrow: 1,
     paddingBottom: verticalScale(16),
   },
-  nonScrollContent: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-  },
-  footer: {
-    backgroundColor: '#FFFFFF',
-    padding: moderateScale(16),
-    borderTopLeftRadius: scale(20),
-    borderTopRightRadius: scale(20),
-  },
-  absoluteFooter: {
-    position: 'absolute',
-    bottom: 0,
+  upperGradientContainer: {
+    height: '60%',
     left: 0,
+    position: 'absolute',
     right: 0,
-    zIndex: 10,
+    top: 0,
+    zIndex: 0,
   },
 });
 

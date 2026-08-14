@@ -30,6 +30,8 @@ import Help from './help.svg';
 import Logout from './logout.svg';
 import More from './more.svg';
 import All from './all.svg';
+import LocationB from './location-blue.svg';
+import HeadPhoneB from './headphone-blue.svg'
 
 export {
     Radio,
@@ -64,6 +66,8 @@ export {
     Logout,
     More,
     All,
+    LocationB,
+    HeadPhoneB
 }
 
 
