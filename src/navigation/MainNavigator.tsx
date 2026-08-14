@@ -14,6 +14,8 @@ import PrivacyPolicy from '../screens/main/Profile/PrivacyPolicy';
 import TermsConditions from '../screens/main/Profile/TermsConditions';
 import GetHelp from '../screens/main/Profile/GetHelp';
 
+import Profile from '../screens/main/Profile/Profile';
+
 const Stack = createNativeStackNavigator();
 
 const MainNavigator = () => {
@@ -21,6 +23,7 @@ const MainNavigator = () => {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="BottomTabs" component={BottomTabNavigator} />
             <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="SearchResults" component={SearchResults} />
             <Stack.Screen name="SeatSelection" component={SeatSelection} />
             <Stack.Screen name="PassengerDetails" component={PassengerDetail} />
