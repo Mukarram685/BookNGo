@@ -57,7 +57,7 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   backgroundImageOpacity = 1,
   backgroundImageHeight = '48%',
   statusBarTranslucent = false,
-  gradient,
+  gradient = 'upper',
 }) => {
   const finalHeaderAbsolute = isHeaderAbsolute || headerAbsolute;
   const finalFooterAbsolute = isFooterAbsolute || footerAbsolute;
