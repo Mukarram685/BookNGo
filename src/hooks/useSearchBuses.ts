@@ -3,18 +3,28 @@ import axiosInstance from '../utils/axiosInstance';
 import Toast from 'react-native-toast-message';
 
 interface SearchParams {
-    fromCity: string;
-    toCity: string;
-    date: string;
+    fromCity?: string;
+    toCity?: string;
+    date?: string;
+    startDate?: string;
+    endDate?: string;
 }
 
 const searchBuses = async (params: SearchParams) => {
+    const cleanedParams: Record<string, string> = {};
+
+    if (params) {
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && String(value).trim() !== '') {
+                cleanedParams[key] = String(value).trim();
+            }
+        });
+    }
+
+    console.log('Fetching /schedules/search with params:', cleanedParams);
+
     const response = await axiosInstance.get('/schedules/search', {
-        params: {
-            fromCity: params.fromCity,
-            toCity: params.toCity,
-            date: params.date,
-        },
+        params: cleanedParams,
     });
     return response;
 };
@@ -22,9 +32,10 @@ const searchBuses = async (params: SearchParams) => {
 export const useSearchBuses = () => {
     return useMutation({
         mutationFn: searchBuses,
-        onSuccess: (data) => {
+        onSuccess: (data: any) => {
             console.log('Search Results:', data);
-            if (data.count === 0) {
+            const count = data?.count ?? data?.schedules?.length ?? data?.data?.length ?? 0;
+            if (count === 0) {
                 Toast.show({
                     type: 'info',
                     text1: 'No buses found',
@@ -34,7 +45,7 @@ export const useSearchBuses = () => {
                 Toast.show({
                     type: 'success',
                     text1: 'Buses found',
-                    text2: `${data.count} buses found for this route.`,
+                    text2: `${count} buses found for this route.`,
                 });
             }
         },
@@ -43,7 +54,7 @@ export const useSearchBuses = () => {
             Toast.show({
                 type: 'error',
                 text1: 'Search failed',
-                text2: error?.data?.message || 'Something went wrong',
+                text2: error?.data?.message || error?.message || 'Something went wrong on the server',
             });
         },
     });

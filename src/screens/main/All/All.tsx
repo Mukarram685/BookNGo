@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, StatusBar, FlatList } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
-import { useRoute, RouteProp } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
@@ -11,28 +10,15 @@ import { BusSchedule } from '../../../interface/bus.interface';
 import { useSearchBuses } from '../../../hooks/useSearchBuses';
 import Header from '../../../component/Header';
 
-type RootStackParamList = {
-    SearchResults: {
-        fromCity: string;
-        toCity: string;
-        date: string;
-    };
-};
-
-type SearchResultsRouteProp = RouteProp<RootStackParamList, 'SearchResults'>;
-
-const SearchResults = () => {
+const All = () => {
     const { t } = useTranslation();
-    const route = useRoute<SearchResultsRouteProp>();
-    const { fromCity, toCity, date } = route.params || {};
-
     const { mutate: search, isPending, data } = useSearchBuses();
     const [busList, setBusList] = useState<BusSchedule[]>([]);
 
     useEffect(() => {
-        // Trigger search on mount
-        search({ fromCity, toCity, date });
-    }, [fromCity, toCity, date]);
+        // Trigger empty search on mount to get all routes from today onwards
+        search({});
+    }, []);
 
     useEffect(() => {
         const searchData = data as any;
@@ -66,10 +52,6 @@ const SearchResults = () => {
                 status: (item.status === 'active' ? 'AVAILABLE' : item.status) || 'AVAILABLE',
                 image: item.bus?.image,
             }));
-            console.log('--- Search Results Debug ---');
-            console.log('Raw Item Keys:', Object.keys(rawData[0] || {}));
-            console.log('Raw Item bookedSeats:', rawData[0]?.bookedSeats);
-            console.log('Mapped Item bookedSeats:', mappedData[0]?.bookedSeats);
             setBusList(mappedData);
         } else {
             setBusList([]);
@@ -81,16 +63,16 @@ const SearchResults = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending} header={<Header title={t('search_results_title') || "Search Results"} />}>
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending} header={<Header title={t('all_routes_title') || "All Routes"} showBack={false} />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
             <View style={styles.container}>
                 <View style={styles.header}>
                     <AppText size={22} weight="800" color={Colors.PRIMARY}>
-                        {fromCity} {t('route_to') || "to"} {toCity}
+                        {t('all_available_buses') || "All Available Buses"}
                     </AppText>
-                    <AppText size={15} color={Colors.DARK_GRAY} weight="500">
-                        {t('booking_details_date') || "Date"}: {date}
-                    </AppText>
+                    {/* <AppText size={15} color={Colors.DARK_GRAY} weight="500">
+                        {t('showing_today_onwards') || "Showing schedules from today onwards"}
+                    </AppText> */}
                 </View>
 
                 <FlatList
@@ -104,7 +86,7 @@ const SearchResults = () => {
                     ListEmptyComponent={
                         (!isPending) ? (
                             <View style={styles.emptyContainer}>
-                                <AppText color={Colors.DARK_GRAY} weight="500">{t('search_results_empty') || "No buses found for this route."}</AppText>
+                                <AppText color={Colors.DARK_GRAY} weight="500">{t('no_routes_available') || "No routes found."}</AppText>
                             </View>
                         ) : null
                     }
@@ -119,12 +101,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
-        paddingBottom: verticalScale(20),
+        paddingBottom: verticalScale(80),
     },
     header: {
-        paddingHorizontal: scale(20),
-        paddingTop: verticalScale(20),
-        marginBottom: verticalScale(10),
+        paddingHorizontal: scale(10),
+        paddingVertical: verticalScale(10),
     },
     emptyContainer: {
         alignItems: 'center',
@@ -132,4 +113,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SearchResults;
+export default All;

@@ -34,7 +34,7 @@ const Bookings = () => {
         navigation.navigate('BookingDetails' as never, { booking } as never);
     };
 
-    if (isLoading) {
+    if (isLoading && !data) {
         return <AppLoader />;
     }
 

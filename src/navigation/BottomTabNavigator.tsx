@@ -6,6 +6,7 @@ import AppText from '../component/common/AppText';
 import Home from '../screens/main/Home/Home';
 import Bookings from '../screens/main/Bookings/Bookings';
 import Profile from '../screens/main/Profile/Profile';
+import All from '../screens/main/All/All';
 import { Home as HomeIcon, Bookings as BookingsIcon, All as AllIcon, Profile as ProfileIcon } from '../assets/svg';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -177,7 +178,7 @@ const BottomTabNavigator = () => {
             />
             <Tab.Screen
                 name="All"
-                component={Profile}
+                component={All}
                 options={{ tabBarLabel: 'All' }}
             />
         </Tab.Navigator>
