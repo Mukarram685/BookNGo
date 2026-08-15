@@ -97,7 +97,9 @@ export default function Header({
             }
           >
             {showName && (
-              <Text style={styles.title}>Hi, {resolvedDisplayName}</Text>
+                <Text style={styles.title}>
+                  {title ? title : (nameOnly ? resolvedDisplayName : t('hi', { name: resolvedDisplayName }))}
+                </Text>
             )}
 
             {/* {showLocation && (
