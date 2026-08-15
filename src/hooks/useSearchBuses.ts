@@ -1,6 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axiosInstance from '../utils/axiosInstance';
-import Toast from 'react-native-toast-message';
 
 interface SearchParams {
     fromCity?: string;
@@ -10,7 +9,15 @@ interface SearchParams {
     endDate?: string;
 }
 
-const searchBuses = async (params: SearchParams) => {
+const searchBuses = async (cleanedParams: Record<string, string>) => {
+    console.log('Fetching /schedules/search with params:', cleanedParams);
+    const response = await axiosInstance.get('/schedules/search', {
+        params: cleanedParams,
+    });
+    return response;
+};
+
+export const useSearchBuses = (params?: SearchParams) => {
     const cleanedParams: Record<string, string> = {};
 
     if (params) {
@@ -21,41 +28,12 @@ const searchBuses = async (params: SearchParams) => {
         });
     }
 
-    console.log('Fetching /schedules/search with params:', cleanedParams);
-
-    const response = await axiosInstance.get('/schedules/search', {
-        params: cleanedParams,
-    });
-    return response;
-};
-
-export const useSearchBuses = () => {
-    return useMutation({
-        mutationFn: searchBuses,
-        onSuccess: (data: any) => {
-            console.log('Search Results:', data);
-            const count = data?.count ?? data?.schedules?.length ?? data?.data?.length ?? 0;
-            if (count === 0) {
-                Toast.show({
-                    type: 'info',
-                    text1: 'No buses found',
-                    text2: 'Try searching for a different date or route.',
-                });
-            } else {
-                Toast.show({
-                    type: 'success',
-                    text1: 'Buses found',
-                    text2: `${count} buses found for this route.`,
-                });
-            }
-        },
-        onError: (error: any) => {
-            console.error('Search Error:', error);
-            Toast.show({
-                type: 'error',
-                text1: 'Search failed',
-                text2: error?.data?.message || error?.message || 'Something went wrong on the server',
-            });
-        },
+    return useQuery({
+        queryKey: ['schedules', 'search', cleanedParams],
+        queryFn: () => searchBuses(cleanedParams),
+        staleTime: 5 * 60 * 1000, // Cache results for 5 minutes (5 * 60 * 1000 ms)
+        gcTime: 10 * 60 * 1000,    // Keep cache in memory for 10 minutes
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
     });
 };

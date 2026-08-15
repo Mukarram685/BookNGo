@@ -5,16 +5,20 @@ import {
   TouchableOpacity,
   Platform,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { scale, verticalScale } from 'react-native-size-matters';
 import ViewShot from 'react-native-view-shot';
 import Share from 'react-native-share';
+import Toast from 'react-native-toast-message';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Colors from '../../../utils/Colors.util';
 import Header from '../../../component/Header';
+import AppButton from '../../../component/common/AppButton';
+import { useCancelBooking } from '../../../hooks/useCancelBooking';
 
 type BookingDetailsRouteProp = RouteProp<
   { BookingDetails: { booking: any } },
@@ -24,14 +28,66 @@ type BookingDetailsRouteProp = RouteProp<
 const BookingDetails = () => {
   const { t } = useTranslation();
   const route = useRoute<BookingDetailsRouteProp>();
+  const navigation = useNavigation<any>();
   const { booking } = route.params;
   const fullData = booking.fullData;
   const viewShotRef = useRef<any>(null);
+  const cancelBookingMutation = useCancelBooking();
 
-  const isCompleted =
-    booking.status.toLowerCase() === 'completed' ||
-    booking.status.toLowerCase() === 'confirmed' ||
-    fullData?.bookingStatus?.toLowerCase() === 'confirmed';
+  const currentStatus = (fullData?.bookingStatus || booking.status || 'confirmed').toLowerCase();
+  const isCancelled = currentStatus === 'cancelled';
+  const isCompleted = currentStatus === 'completed';
+  const canCancel = !isCancelled && !isCompleted;
+
+  const getStatusBadgeStyle = () => {
+    if (currentStatus === 'confirmed') {
+      return { bg: '#E6F7ED', text: '#2CC93C', label: 'CONFIRMED' };
+    } else if (currentStatus === 'completed') {
+      return { bg: '#E0F2FE', text: '#0284C7', label: 'COMPLETED' };
+    } else if (currentStatus === 'cancelled') {
+      return { bg: '#FEE2E2', text: '#DC2626', label: 'CANCELLED' };
+    }
+    return { bg: '#FEF3C7', text: '#D97706', label: (currentStatus || 'PENDING').toUpperCase() };
+  };
+
+  const badge = getStatusBadgeStyle();
+
+  const handleCancelBooking = () => {
+    Alert.alert(
+      t('cancel_booking_title') || 'Cancel Booking',
+      t('cancel_booking_confirm') || 'Are you sure you want to cancel this booking?',
+      [
+        { text: t('no') || 'No', style: 'cancel' },
+        {
+          text: t('yes_cancel') || 'Yes, Cancel',
+          style: 'destructive',
+          onPress: () => {
+            cancelBookingMutation.mutate(
+              { bookingId: booking.id || fullData?._id },
+              {
+                onSuccess: () => {
+                  Toast.show({
+                    type: 'success',
+                    text1: 'Booking Cancelled',
+                    text2: 'Your booking has been cancelled successfully.',
+                  });
+                  navigation.goBack();
+                },
+                onError: (err: any) => {
+                  Toast.show({
+                    type: 'error',
+                    text1: 'Cancellation Failed',
+                    text2: err?.response?.data?.message || err?.data?.message || 'Could not cancel booking',
+                  });
+                },
+              }
+            );
+          },
+        },
+      ]
+    );
+  };
+
   const seatNumbers =
     fullData?.seats?.map((s: any) => s.seatNumber).join(', ') || 'N/A';
   const busNumber = fullData?.schedule?.bus?.busNumber || 'BS-4592';
@@ -71,13 +127,11 @@ const BookingDetails = () => {
 
   return (
     <ScreenWrapper
-      backgroundColor={Colors.BACKGROUND}
       header={<Header title={t('booking_details_title') || "Booking Details"} showBack={true} />}
     >
       <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
         <View
           style={{
-            backgroundColor: Colors.BACKGROUND,
             paddingBottom: scale(10),
           }}
         >
@@ -89,15 +143,15 @@ const BookingDetails = () => {
               <View
                 style={[
                   styles.statusBadge,
-                  { backgroundColor: isCompleted ? '#E6F7ED' : '#FEF3C7' },
+                  { backgroundColor: badge.bg },
                 ]}
               >
                 <AppText
                   size={11}
                   weight="800"
-                  color={isCompleted ? '#2CC93C' : '#D97706'}
+                  color={badge.text}
                 >
-                  {booking.status.toUpperCase()}
+                  {badge.label}
                 </AppText>
               </View>
             </View>
@@ -226,7 +280,6 @@ const BookingDetails = () => {
             </View>
           </View>
 
-          {/* Passenger Info Section */}
           <View style={styles.section}>
             <AppText
               size={15}
@@ -264,7 +317,6 @@ const BookingDetails = () => {
             </View>
           </View>
 
-          {/* Payment Summary Section */}
           <View style={styles.section}>
             <AppText
               size={15}
@@ -312,11 +364,13 @@ const BookingDetails = () => {
           onPress={shareTicket}
           style={styles.downloadButton}
         />
-        {!isCompleted && (
+        {canCancel && (
           <AppButton
-            title={t('booking_details_cancel') || "Cancel Booking"}
+            title={cancelBookingMutation.isPending ? 'Cancelling...' : (t('booking_details_cancel') || "Cancel Booking")}
             variant="danger-outline"
             style={styles.cancelButton}
+            onPress={handleCancelBooking}
+            disabled={cancelBookingMutation.isPending}
           />
         )}
       </View>
