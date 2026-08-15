@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { scale, verticalScale } from 'react-native-size-matters';
@@ -8,17 +8,21 @@ import AppText from '../../../component/common/AppText';
 import Colors from '../../../utils/Colors.util';
 import Header from '../../../component/Header';
 import { useGetProfile, useUpdateProfile } from '../../../hooks/useProfile';
-import AppLoader from '../../../component/common/AppLoader';
 
 const UpdateProfile = () => {
     const navigation = useNavigation();
     const authUser = useSelector((state: any) => state.auth.user);
-    const { data: profile, isLoading } = useGetProfile(authUser?.id || authUser?._id);
+    const { data: profile } = useGetProfile(authUser?.id || authUser?._id);
     const updateProfileMutation = useUpdateProfile();
 
-    const [name, setName] = useState(profile?.name || authUser?.name || '');
-    const [phone, setPhone] = useState(profile?.phone || authUser?.phone || '');
-    const email = profile?.email || authUser?.email || '';
+    const [name, setName] = useState(authUser?.name || profile?.name || '');
+    const [phone, setPhone] = useState(authUser?.phone || profile?.phone || '');
+    const email = authUser?.email || profile?.email || '';
+
+    useEffect(() => {
+        if (authUser?.name) setName(authUser.name);
+        if (authUser?.phone) setPhone(authUser.phone);
+    }, [authUser]);
 
     const handleUpdate = () => {
         if (!name.trim()) {
@@ -33,10 +37,6 @@ const UpdateProfile = () => {
             }
         });
     };
-
-    if (isLoading) {
-        return <AppLoader />;
-    }
 
     const getInitials = (nameStr: string) => {
         if (!nameStr) return 'UN';

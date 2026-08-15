@@ -19,7 +19,7 @@ const Profile = () => {
     const navigation = useNavigation<any>();
     const authUser = useSelector((state: any) => state.auth.user);
     
-    const { data: profile, isLoading } = useGetProfile(authUser?.id || authUser?._id);
+    useGetProfile(authUser?.id || authUser?._id);
 
     const handleLogout = () => {
         dispatch(logout());
@@ -63,7 +63,8 @@ const Profile = () => {
         return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     };
 
-    const userName = profile?.name || authUser?.name || '';
+    const userName = authUser?.name || profile?.name || '';
+    const userEmail = authUser?.email || profile?.email || 'Welcome to BookNGo';
 
     const renderMenuItem = (
         title: string,
@@ -96,11 +97,10 @@ const Profile = () => {
     return (
         <ScreenWrapper 
             backgroundColor={Colors.BACKGROUND} 
-            isLoading={isLoading}
-            header={<Header title={t('profile_title') || 'Profile'} showBack={false} />}
+            header={<Header title={t('profile_title') || 'Profile'} />}
+            gradient='upper'
         >
                 
-                {/* Elevated Avatar Profile Card */}
                 <View style={styles.profileCard}>
                     <View style={styles.avatarWrapper}>
                         <View style={styles.avatarLarge}>
@@ -114,11 +114,10 @@ const Profile = () => {
                         {userName || 'Guest User'}
                     </AppText>
                     <AppText size={12} color={Colors.TEXT_GREY} weight="600" style={{ marginTop: verticalScale(3) }}>
-                        {profile?.email || authUser?.email || 'Welcome to BookNGo'}
+                        {userEmail}
                     </AppText>
                 </View>
 
-                {/* Section 1: Account settings */}
                 <AppText size={13} color={Colors.TEXT_GREY} weight="800" style={styles.sectionHeader}>
                     ACCOUNT SETTINGS
                 </AppText>
@@ -149,7 +148,6 @@ const Profile = () => {
                     )}
                 </View>
 
-                {/* Section 2: Help & Support */}
                 <AppText size={13} color={Colors.TEXT_GREY} weight="800" style={styles.sectionHeader}>
                     HELP & SUPPORT
                 </AppText>
@@ -174,7 +172,6 @@ const Profile = () => {
                     )}
                 </View>
 
-                {/* Dedicated Logout Card with Shadow */}
                 <TouchableOpacity 
                     style={styles.logoutButton} 
                     onPress={confirmLogout} 
