@@ -77,14 +77,14 @@ export default function Header({
               </Text>
             )}
             
-            {showLocation && (
+            {/* {showLocation && (
               <View style={styles.locationRow}>
                 <LocationB width={14} height={14} color={Colors.PRIMARY} />
                 <Text style={styles.locationText}>
                   {resolvedDisplayLocation}
                 </Text>
               </View>
-            )}
+            )} */}
           </View>
         </View>
 

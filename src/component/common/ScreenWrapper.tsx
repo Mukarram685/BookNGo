@@ -80,7 +80,7 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
           <View style={styles.upperGradientContainer}>
             <Svg width="100%" height="100%">
               <Defs>
-                <LinearGradient id="upperGrad" x1="0.5" y1="0" x2="0.5" y2="1">
+                <LinearGradient id="upperGrad" x1="0.5" y1="0.5" x2="0.5" y2="1">
                   <Stop offset="0" stopColor="#A3CCFF" stopOpacity="0.7" />
                   <Stop offset="0.4" stopColor="#CBE0FF" stopOpacity="0.4" />
                   <Stop offset="0.7" stopColor="#F2F7FF" stopOpacity="0.1" />

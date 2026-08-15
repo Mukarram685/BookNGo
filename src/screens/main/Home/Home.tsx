@@ -11,28 +11,26 @@ import Header from '../../../component/Header';
 
 const Home = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation();
 
   const handleSearch = (params: { fromCity: string; toCity: string; date: string }) => {
-    navigation.navigate('SearchResults', params);
+    navigation.navigate('SearchResults' as never, params as never);
   };
 
   return (
-    <ScreenWrapper shouldShowGradientBackground={true}>
+    <ScreenWrapper gradient="upper" header={<Header />} >
       <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
       <View style={styles.container}>
         <View style={styles.header}>
-          <AppText size={28} weight="700" color={Colors.PRIMARY} style={{ letterSpacing: -0.5 }}>
+          <AppText size={28} weight="700" color={Colors.PRIMARY} style={styles.welcomeText}>
             {t('home_welcome') || "Where to next?"}
           </AppText>
-          <AppText size={14} color={Colors.DARK_GRAY} style={{ marginTop: 10 }}>
+          <AppText size={14} color={Colors.DARK_GRAY} style={styles.subtitleText}>
             {t('home_subtitle') || "Find the best bus rides for your journey."}
           </AppText>
         </View>
 
-        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
           <HomeSearch onSearch={handleSearch} />
-        </ScrollView>
       </View>
     </ScreenWrapper>
   );
@@ -42,13 +40,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  scrollContent: {
-    paddingBottom: verticalScale(20),
-  },
   header: {
-    paddingHorizontal: scale(10),
-    paddingTop: verticalScale(20),
     marginBottom: verticalScale(10),
+    paddingHorizontal: scale(5),
+    paddingTop: verticalScale(5),
+  },
+  subtitleText: {
+    marginTop: 5,
+  },
+  welcomeText: {
+    letterSpacing: -0.5,
   },
 });
 
