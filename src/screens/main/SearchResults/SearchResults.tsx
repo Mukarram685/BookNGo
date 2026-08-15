@@ -26,13 +26,8 @@ const SearchResults = () => {
     const route = useRoute<SearchResultsRouteProp>();
     const { fromCity, toCity, date } = route.params || {};
 
-    const { mutate: search, isPending, data } = useSearchBuses();
+    const { data, isLoading, isFetching, refetch } = useSearchBuses({ fromCity, toCity, date });
     const [busList, setBusList] = useState<BusSchedule[]>([]);
-
-    useEffect(() => {
-        // Trigger search on mount
-        search({ fromCity, toCity, date });
-    }, [fromCity, toCity, date]);
 
     useEffect(() => {
         const searchData = data as any;
@@ -66,10 +61,6 @@ const SearchResults = () => {
                 status: (item.status === 'active' ? 'AVAILABLE' : item.status) || 'AVAILABLE',
                 image: item.bus?.image,
             }));
-            console.log('--- Search Results Debug ---');
-            console.log('Raw Item Keys:', Object.keys(rawData[0] || {}));
-            console.log('Raw Item bookedSeats:', rawData[0]?.bookedSeats);
-            console.log('Mapped Item bookedSeats:', mappedData[0]?.bookedSeats);
             setBusList(mappedData);
         } else {
             setBusList([]);
@@ -81,7 +72,7 @@ const SearchResults = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending} header={<Header title={t('search_results_title') || "Search Results"} />}>
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isLoading && !data} header={<Header title={t('search_results_title') || "Search Results"} />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
             <View style={styles.container}>
                 <View style={styles.header}>
@@ -101,8 +92,10 @@ const SearchResults = () => {
                     )}
                     contentContainerStyle={styles.scrollContent}
                     showsVerticalScrollIndicator={false}
+                    onRefresh={refetch}
+                    refreshing={isFetching}
                     ListEmptyComponent={
-                        (!isPending) ? (
+                        (!isLoading) ? (
                             <View style={styles.emptyContainer}>
                                 <AppText color={Colors.DARK_GRAY} weight="500">{t('search_results_empty') || "No buses found for this route."}</AppText>
                             </View>

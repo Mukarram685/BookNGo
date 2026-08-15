@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosInstance from '../utils/axiosInstance';
 
 interface CancelResponse {
@@ -12,7 +12,11 @@ const cancelBooking = async ({ bookingId, reason }: { bookingId: string; reason?
 };
 
 export const useCancelBooking = () => {
+    const queryClient = useQueryClient();
     return useMutation({
         mutationFn: cancelBooking,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['myBookings'] });
+        },
     });
 };

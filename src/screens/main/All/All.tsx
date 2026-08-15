@@ -12,13 +12,8 @@ import Header from '../../../component/Header';
 
 const All = () => {
     const { t } = useTranslation();
-    const { mutate: search, isPending, data } = useSearchBuses();
+    const { data, isLoading, isFetching, refetch } = useSearchBuses({});
     const [busList, setBusList] = useState<BusSchedule[]>([]);
-
-    useEffect(() => {
-        // Trigger empty search on mount to get all routes from today onwards
-        search({});
-    }, []);
 
     useEffect(() => {
         const searchData = data as any;
@@ -63,7 +58,7 @@ const All = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending} header={<Header title={t('all_routes_title') || "All Routes"} showBack={false} />}>
+        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isLoading && !data} header={<Header title={t('all_routes_title') || "All Routes"} showBack={false} />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
             <View style={styles.container}>
                 <View style={styles.header}>
@@ -83,8 +78,10 @@ const All = () => {
                     )}
                     contentContainerStyle={styles.scrollContent}
                     showsVerticalScrollIndicator={false}
+                    onRefresh={refetch}
+                    refreshing={isFetching}
                     ListEmptyComponent={
-                        (!isPending) ? (
+                        (!isLoading) ? (
                             <View style={styles.emptyContainer}>
                                 <AppText color={Colors.DARK_GRAY} weight="500">{t('no_routes_available') || "No routes found."}</AppText>
                             </View>
