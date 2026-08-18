@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import {
   View,
   StyleSheet,
-  TouchableOpacity,
   Platform,
   PermissionsAndroid,
   Alert,
@@ -34,7 +33,11 @@ const BookingDetails = () => {
   const viewShotRef = useRef<any>(null);
   const cancelBookingMutation = useCancelBooking();
 
-  const currentStatus = (fullData?.bookingStatus || booking.status || 'confirmed').toLowerCase();
+  const currentStatus = (
+    fullData?.bookingStatus ||
+    booking.status ||
+    'confirmed'
+  ).toLowerCase();
   const isCancelled = currentStatus === 'cancelled';
   const isCompleted = currentStatus === 'completed';
   const canCancel = !isCancelled && !isCompleted;
@@ -47,7 +50,11 @@ const BookingDetails = () => {
     } else if (currentStatus === 'cancelled') {
       return { bg: '#FEE2E2', text: '#DC2626', label: 'CANCELLED' };
     }
-    return { bg: '#FEF3C7', text: '#D97706', label: (currentStatus || 'PENDING').toUpperCase() };
+    return {
+      bg: '#FEF3C7',
+      text: '#D97706',
+      label: (currentStatus || 'PENDING').toUpperCase(),
+    };
   };
 
   const badge = getStatusBadgeStyle();
@@ -55,7 +62,8 @@ const BookingDetails = () => {
   const handleCancelBooking = () => {
     Alert.alert(
       t('cancel_booking_title') || 'Cancel Booking',
-      t('cancel_booking_confirm') || 'Are you sure you want to cancel this booking?',
+      t('cancel_booking_confirm') ||
+        'Are you sure you want to cancel this booking?',
       [
         { text: t('no') || 'No', style: 'cancel' },
         {
@@ -77,14 +85,17 @@ const BookingDetails = () => {
                   Toast.show({
                     type: 'error',
                     text1: 'Cancellation Failed',
-                    text2: err?.response?.data?.message || err?.data?.message || 'Could not cancel booking',
+                    text2:
+                      err?.response?.data?.message ||
+                      err?.data?.message ||
+                      'Could not cancel booking',
                   });
                 },
-              }
+              },
             );
           },
         },
-      ]
+      ],
     );
   };
 
@@ -127,7 +138,12 @@ const BookingDetails = () => {
 
   return (
     <ScreenWrapper
-      header={<Header title={t('booking_details_title') || "Booking Details"} showBack={true} />}
+      header={
+        <Header
+          title={t('booking_details_title') || 'Booking Details'}
+          showBack={true}
+        />
+      }
     >
       <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
         <View
@@ -138,26 +154,17 @@ const BookingDetails = () => {
           <View style={styles.headerInfoCard}>
             <View style={styles.headerRow}>
               <AppText size={11} color={Colors.TEXT_GREY} weight="800">
-                {t('booking_details_id') || "BOOKING ID"}
+                {t('booking_details_id') || 'BOOKING ID'}
               </AppText>
-              <View
-                style={[
-                  styles.statusBadge,
-                  { backgroundColor: badge.bg },
-                ]}
-              >
-                <AppText
-                  size={11}
-                  weight="800"
-                  color={badge.text}
-                >
+              <View style={[styles.statusBadge, { backgroundColor: badge.bg }]}>
+                <AppText size={11} weight="800" color={badge.text}>
                   {badge.label}
                 </AppText>
               </View>
             </View>
             <AppText
               size={15}
-              weight="800"
+              weight="600"
               color={Colors.PRIMARY}
               style={{ marginTop: verticalScale(6) }}
             >
@@ -165,11 +172,10 @@ const BookingDetails = () => {
             </AppText>
           </View>
 
-          {/* Main Ticket Info Card */}
           <View style={styles.ticketCard}>
             <View style={styles.routeSection}>
               <View style={styles.cityInfo}>
-                <AppText size={24} weight="900" color={Colors.PRIMARY}>
+                <AppText size={20} weight="700" color={Colors.PRIMARY}>
                   {fromCity}
                 </AppText>
                 <AppText
@@ -178,7 +184,7 @@ const BookingDetails = () => {
                   weight="600"
                   style={{ marginTop: 2 }}
                 >
-                  {t('booking_details_departure') || "Departure"}
+                  {t('booking_details_departure') || 'Departure'}
                 </AppText>
               </View>
 
@@ -189,7 +195,7 @@ const BookingDetails = () => {
               </View>
 
               <View style={[styles.cityInfo, { alignItems: 'flex-end' }]}>
-                <AppText size={24} weight="900" color={Colors.PRIMARY}>
+                <AppText size={20} weight="700" color={Colors.PRIMARY}>
                   {toCity}
                 </AppText>
                 <AppText
@@ -198,7 +204,7 @@ const BookingDetails = () => {
                   weight="600"
                   style={{ marginTop: 2 }}
                 >
-                  {t('booking_details_arrival') || "Arrival"}
+                  {t('booking_details_arrival') || 'Arrival'}
                 </AppText>
               </View>
             </View>
@@ -208,7 +214,7 @@ const BookingDetails = () => {
             <View style={styles.infoGrid}>
               <View style={styles.infoItem}>
                 <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                  {t('booking_details_date') || "DATE"}
+                  {t('booking_details_date') || 'DATE'}
                 </AppText>
                 <AppText
                   size={14}
@@ -221,7 +227,7 @@ const BookingDetails = () => {
               </View>
               <View style={styles.infoItem}>
                 <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                  {t('booking_details_time') || "TIME"}
+                  {t('booking_details_time') || 'TIME'}
                 </AppText>
                 <AppText
                   size={14}
@@ -237,7 +243,7 @@ const BookingDetails = () => {
             <View style={[styles.infoGrid, { marginTop: scale(18) }]}>
               <View style={styles.infoItem}>
                 <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                  {t('booking_details_bus_number') || "BUS NUMBER"}
+                  {t('booking_details_bus_number') || 'BUS NUMBER'}
                 </AppText>
                 <AppText
                   size={14}
@@ -250,7 +256,7 @@ const BookingDetails = () => {
               </View>
               <View style={styles.infoItem}>
                 <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                  {t('booking_details_seat_number') || "SEAT NUMBER(S)"}
+                  {t('booking_details_seat_number') || 'SEAT NUMBER(S)'}
                 </AppText>
                 <AppText
                   size={14}
@@ -266,7 +272,7 @@ const BookingDetails = () => {
             <View style={[styles.infoGrid, { marginTop: scale(18) }]}>
               <View style={styles.infoItem}>
                 <AppText size={11} color={Colors.TEXT_GREY} weight="700">
-                  {t('booking_details_pnr') || "PNR NUMBER"}
+                  {t('booking_details_pnr') || 'PNR NUMBER'}
                 </AppText>
                 <AppText
                   size={14}
@@ -287,12 +293,12 @@ const BookingDetails = () => {
               color={Colors.PRIMARY}
               style={styles.sectionTitle}
             >
-              {t('booking_details_passenger_info') || "Passenger Information"}
+              {t('booking_details_passenger_info') || 'Passenger Information'}
             </AppText>
             <View style={styles.detailCard}>
               <View style={styles.detailRow}>
                 <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  {t('booking_details_name') || "Name"}
+                  {t('booking_details_name') || 'Name'}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   {fullData?.seats?.[0]?.passengerName || 'Mukarram Ali'}
@@ -300,7 +306,7 @@ const BookingDetails = () => {
               </View>
               <View style={styles.detailRow}>
                 <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  {t('booking_details_phone') || "Phone"}
+                  {t('booking_details_phone') || 'Phone'}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   {fullData?.seats?.[0]?.passengerPhone || '+92 312 4567890'}
@@ -308,7 +314,7 @@ const BookingDetails = () => {
               </View>
               <View style={styles.detailRow}>
                 <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  {t('booking_details_gender') || "Gender"}
+                  {t('booking_details_gender') || 'Gender'}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   {fullData?.seats?.[0]?.gender || 'Male'}
@@ -324,12 +330,12 @@ const BookingDetails = () => {
               color={Colors.PRIMARY}
               style={styles.sectionTitle}
             >
-              {t('booking_details_payment_summary') || "Payment Summary"}
+              {t('booking_details_payment_summary') || 'Payment Summary'}
             </AppText>
             <View style={styles.detailCard}>
               <View style={styles.detailRow}>
                 <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  {t('booking_details_ticket_fare') || "Ticket Fare"}
+                  {t('booking_details_ticket_fare') || 'Ticket Fare'}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   Rs. {booking.price}
@@ -337,7 +343,7 @@ const BookingDetails = () => {
               </View>
               <View style={styles.detailRow}>
                 <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  {t('booking_details_service_fee') || "Service Fee"}
+                  {t('booking_details_service_fee') || 'Service Fee'}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
                   Rs. {booking.serviceFee || 0}
@@ -346,7 +352,7 @@ const BookingDetails = () => {
               <View style={styles.dividerSmall} />
               <View style={styles.detailRow}>
                 <AppText size={15} weight="bold" color={Colors.PRIMARY}>
-                  {t('booking_details_total') || "Total Amount"}
+                  {t('booking_details_total') || 'Total Amount'}
                 </AppText>
                 <AppText size={17} weight="900" color={Colors.PRIMARY}>
                   Rs. {booking.price}
@@ -357,16 +363,19 @@ const BookingDetails = () => {
         </View>
       </ViewShot>
 
-      {/* Action Buttons */}
       <View style={styles.actions}>
         <AppButton
-          title={t('booking_details_share') || "Share Ticket"}
+          title={t('booking_details_share') || 'Share Ticket'}
           onPress={shareTicket}
           style={styles.downloadButton}
         />
         {canCancel && (
           <AppButton
-            title={cancelBookingMutation.isPending ? 'Cancelling...' : (t('booking_details_cancel') || "Cancel Booking")}
+            title={
+              cancelBookingMutation.isPending
+                ? 'Cancelling...'
+                : t('booking_details_cancel') || 'Cancel Booking'
+            }
             variant="danger-outline"
             style={styles.cancelButton}
             onPress={handleCancelBooking}
