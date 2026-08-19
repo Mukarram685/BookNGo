@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: Colors.SEAT_SELECTED_BORDER,
         borderRadius: scale(8),
-        backgroundColor: 'transparent',
         paddingHorizontal: scale(12),
     },
     errorBorder: {
@@ -214,7 +213,6 @@ const styles = StyleSheet.create({
         paddingVertical: verticalScale(15),
         borderBottomWidth: 1,
         borderBottomColor: Colors.BORDER_GREY,
-        backgroundColor: Colors.SURFACE,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
