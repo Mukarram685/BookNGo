@@ -5,7 +5,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import AppText from '../../../component/common/AppText';
-import AppInput from '../../../component/TextInput/TextInput';
 import Colors from '../../../utils/Colors.util';
 import { From, To, Calendar } from '../../../assets/svg';
 import { SearchSchema } from '../../../helpers/bus.helper';
@@ -119,12 +118,12 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
 
 const styles = StyleSheet.create({
     searchContainer: {
-        marginVertical: scale(20),
+        marginVertical: scale(1),
         padding: scale(24),
         borderRadius: scale(24),
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,
-        backgroundColor: Colors.SURFACE,
+        backgroundColor: 'transparent',
         shadowColor: Colors.PRIMARY,
         shadowOffset: { width: 0, height: 10 },
         shadowOpacity: 0.05,
@@ -132,7 +131,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     datePickerWrapper: {
-        backgroundColor: Colors.WHITE,
+        backgroundColor: 'transparent',
         borderRadius: 15,
         padding: 10,
         marginTop: 10,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +14,7 @@ import { PassengerDetail } from '../../../interface/booking.interface';
 import { useBookSeats } from '../../../hooks/useBookSeats';
 import { useCreatePaymentIntent } from '../../../hooks/useCreatePaymentIntent';
 import PaymentOption from './PaymentOption';
+import AppButton from '../../../component/common/AppButton';
 
 const BookingReview = () => {
     const navigation = useNavigation<any>();
@@ -151,11 +152,12 @@ const BookingReview = () => {
                 </ScrollView>
 
                 <View style={styles.footer}>
-                    <TouchableOpacity style={styles.button} onPress={handlePayment} disabled={isBooking || loading}>
-                        <AppText size={16} weight="700" color={Colors.WHITE}>
-                            {isBooking || loading ? t('bookingReview_processing') || 'Processing...' : t('bookingReview_confirmButton') || 'Confirm Booking'}
-                        </AppText>
-                    </TouchableOpacity>
+                    <AppButton
+                        title={isBooking || loading ? t('bookingReview_processing') || 'Processing...' : t('bookingReview_confirmButton') || 'Confirm Booking'}
+                        onPress={handlePayment}
+                        loading={isBooking || loading}
+                        style={styles.button}
+                    />
                 </View>
             </View>
         </ScreenWrapper>

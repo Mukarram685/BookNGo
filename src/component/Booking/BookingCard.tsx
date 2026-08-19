@@ -61,7 +61,7 @@ const BookingCard = ({ booking, onView }: BookingCardProps) => {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: Colors.SURFACE,
+        backgroundColor: Colors.WHITE,
         borderRadius: scale(16),
         padding: scale(18),
         marginVertical: verticalScale(8),

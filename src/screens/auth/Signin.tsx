@@ -7,6 +7,7 @@ import { loginSchema } from '../../helpers/auth.helper';
 import AppText from '../../component/common/AppText';
 import AppInput from '../../component/TextInput/TextInput';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
+import AppButton from '../../component/common/AppButton';
 import Colors from '../../utils/Colors.util';
 import { Bus, Lock, User } from '../../assets/svg';
 import { useNavigation } from '@react-navigation/native';
@@ -90,11 +91,11 @@ const Signin = () => {
               </AppText>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={handleSubmit as any} activeOpacity={0.8}>
-              <AppText size={16} weight="700" color={Colors.WHITE}>
-                {t('auth_signin_button')}
-              </AppText>
-            </TouchableOpacity>
+            <AppButton
+              title={t('auth_signin_button')}
+              onPress={handleSubmit as any}
+              style={styles.button}
+            />
 
             <View style={styles.footer}>
               <AppText size={14} color={Colors.DARK_GRAY}>
