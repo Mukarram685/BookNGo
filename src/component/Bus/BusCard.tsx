@@ -1,28 +1,17 @@
 import React from 'react';
 import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import Svg, { Path, Circle } from 'react-native-svg';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
-import Colors, { alpha } from '../../utils/Colors.util';
 import { BusSchedule } from '../../interface/bus.interface';
-import { Bus as BusIcon, Wifi, Charger, Food, Drink, Seat, AC } from '../../assets/svg';
+import { Bus as BusIcon, Wifi, AC, Seat, LocationB, Arrow } from '../../assets/svg';
 
 interface BusCardProps {
   item: BusSchedule;
-  onBookPress: (item: BusSchedule) => void;
+  onBookPress?: (item: BusSchedule) => void;
 }
-
-const amenityIcons: Record<string, React.FC<any>> = {
-  'Wifi': Wifi,
-  'Charging Point': Charger,
-  'Food': Food,
-  'Water': Drink,
-  'Comfortable Seats': Seat,
-  'AC': AC,
-  'Snacks': Food,
-  'Water Bottle': Drink,
-};
 
 const BusCard = ({ item }: BusCardProps) => {
   const { t } = useTranslation();
@@ -32,107 +21,170 @@ const BusCard = ({ item }: BusCardProps) => {
     navigation.navigate('SeatSelection', { schedule: item });
   };
 
+  const formattedPrice = (item.price || 0).toLocaleString();
+  
+  const amenitiesList = item.amenities || [];
+  const hasAC = amenitiesList.some(a => a.toLowerCase().includes('ac'));
+  const hasWifi = amenitiesList.some(a => a.toLowerCase().includes('wifi'));
+  const seatLayoutText = item.seatLayout ? `${item.seatLayout} Seats` : '2x2 Seats';
+  
+  const extraCount = Math.max(0, amenitiesList.length - (hasAC ? 1 : 0) - (hasWifi ? 1 : 0));
+
   return (
     <View style={styles.cardContainer}>
+      {/* Top Header Section */}
       <View style={styles.headerRow}>
         <View style={styles.companyInfoContainer}>
-          <Image
-            source={
-              item.image
-                ? { uri: item.image }
-                : require('../../assets/png/buslogo-removebg-preview.png')
-            }
-            style={styles.logo}
-            resizeMode="cover"
-          />
+          <View style={styles.logoBox}>
+            <Image
+              source={
+                item.image
+                  ? { uri: item.image }
+                  : require('../../assets/png/buslogo-removebg-preview.png')
+              }
+              style={styles.logo}
+              resizeMode="contain"
+            />
+          </View>
           <View style={styles.nameAndClass}>
-            <AppText size={16} weight="800" color={Colors.PRIMARY} numberOfLines={1}>
-              {item.busName}
+            <AppText size={16} weight="800" color="#0F172A" numberOfLines={1}>
+              {item.busName || 'Test Express 314'}
             </AppText>
-            <View style={styles.classBadge}>
-              <AppText size={10} weight="600" color={Colors.SECONDARY}>
-                {item.busType}
+            <View style={styles.luxuryBadge}>
+              <AppText size={10} color="#0052CC" style={{ marginRight: 3 }}>
+                👑
+              </AppText>
+              <AppText size={11} weight="700" color="#0052CC">
+                {item.busType || 'Luxury'}
               </AppText>
             </View>
           </View>
         </View>
 
         <View style={styles.priceContainer}>
-          <AppText size={18} weight="800" color={Colors.PRIMARY}>
-            Rs. {item.price.toLocaleString()}
+          <AppText size={18} weight="900" color="#0052CC" numberOfLines={1}>
+            Rs. {formattedPrice}
           </AppText>
-          <AppText size={11} color={Colors.DARK_GRAY} weight="500">
-            {t('per_seat') || "Per seat"}
-          </AppText>
-        </View>
-      </View>
-
-      <View style={styles.routeRow}>
-        <View style={styles.timeLocContainer}>
-          <AppText size={18} weight="800" color={Colors.PRIMARY}>
-            {item.departureTime}
-          </AppText>
-          <AppText size={12} color={Colors.DARK_GRAY} weight="500" numberOfLines={1}>
-            {item.fromCity}
-          </AppText>
-        </View>
-
-        <View style={styles.durationContainer}>
-          <AppText size={11} weight="700" color={Colors.TEXT_GREY} style={{ marginBottom: 4 }}>
-            {item.duration}
-          </AppText>
-          <View style={styles.lineGraphic}>
-            <View style={styles.dot} />
-            <View style={styles.line} />
-            <View style={styles.dot} />
-          </View>
-          <AppText size={11} weight="700" color={Colors.SECONDARY} style={{ marginTop: 4 }}>
-            {t('direct_route') || "Direct"}
-          </AppText>
-        </View>
-
-        <View style={[styles.timeLocContainer, { alignItems: 'flex-end' }]}>
-          <AppText size={18} weight="800" color={Colors.PRIMARY}>
-            {item.arrivalTime}
-          </AppText>
-          <AppText size={12} color={Colors.DARK_GRAY} weight="500" numberOfLines={1}>
-            {item.toCity}
+          <AppText size={11} color="#64748B" weight="500" style={{ marginTop: 1 }}>
+            {t('per_seat') || 'Per seat'}
           </AppText>
         </View>
       </View>
 
-      <View style={styles.divider} />
-
-      <View style={styles.footerRow}>
-        <View style={styles.leftFooter}>
-          <View style={styles.amenitiesContainer}>
-            {item.amenities && item.amenities.map((amenity, i) => {
-              const Icon = amenityIcons[amenity];
-              if (!Icon) return null;
-              return (
-                <View key={i} style={{ marginRight: scale(10) }}>
-                  <Icon width={scale(18)} height={scale(18)} color={Colors.PRIMARY} />
-                </View>
-              );
-            })}
-          </View>
-
-          {item.seatsAvailable < 10 && (
-            <AppText size={10} weight="600" color="#FF6B00" style={{ marginTop: verticalScale(5) }}>
-              {t('seats_left_warning', { count: item.seatsAvailable }) || `Only ${item.seatsAvailable} seats left at this price!`}
+      {/* Inner Route Card Box */}
+      <View style={styles.innerRouteBox}>
+        <View style={styles.routeRow}>
+          {/* Departure */}
+          <View style={styles.timeLocContainer}>
+            <AppText size={17} weight="900" color="#0F172A">
+              {item.departureTime || '08:00 AM'}
             </AppText>
-          )}
+            <AppText size={13} color="#475467" weight="600" numberOfLines={1} style={{ marginTop: 2 }}>
+              {item.fromCity || 'Lahore'}
+            </AppText>
+            <View style={styles.terminalRow}>
+              <LocationB width={scale(11)} height={scale(11)} color="#64748B" />
+              <AppText size={10} color="#64748B" weight="500" numberOfLines={1} style={{ marginLeft: 3 }}>
+                {item.fromCity || 'Lahore'} Terminal
+              </AppText>
+            </View>
+          </View>
+
+          {/* Duration & Route Graphic */}
+          <View style={styles.durationContainer}>
+            <View style={styles.durationPill}>
+              <AppText size={10} weight="700" color="#475467">
+                {item.duration || '4h'}
+              </AppText>
+            </View>
+
+            <View style={styles.routeLineWrap}>
+              <Svg width="100%" height={24} viewBox="0 0 100 24">
+                <Circle cx="4" cy="12" r="3" fill="#FFFFFF" stroke="#0052CC" strokeWidth={2} />
+                <Path d="M10 12 H42" stroke="#B9D5FF" strokeWidth={1.5} strokeDasharray="3,3" />
+                <Circle cx="50" cy="12" r="10" fill="#EBF3FF" />
+                <Path d="M58 12 H90" stroke="#B9D5FF" strokeWidth={1.5} strokeDasharray="3,3" />
+                <Circle cx="96" cy="12" r="3" fill="#FFFFFF" stroke="#0052CC" strokeWidth={2} />
+              </Svg>
+              <View style={styles.busIconBadge}>
+                <BusIcon width={scale(11)} height={scale(11)} color="#0052CC" />
+              </View>
+            </View>
+
+            <AppText size={11} weight="700" color="#16A34A" style={{ marginTop: 2 }}>
+              {t('direct_route') || 'Direct'}
+            </AppText>
+          </View>
+
+          {/* Arrival */}
+          <View style={[styles.timeLocContainer, { alignItems: 'flex-end' }]}>
+            <AppText size={17} weight="900" color="#0F172A">
+              {item.arrivalTime || '12:00 PM'}
+            </AppText>
+            <AppText size={13} color="#475467" weight="600" numberOfLines={1} style={{ marginTop: 2 }}>
+              {item.toCity || 'Karachi'}
+            </AppText>
+            <View style={styles.terminalRow}>
+              <LocationB width={scale(11)} height={scale(11)} color="#64748B" />
+              <AppText size={10} color="#64748B" weight="500" numberOfLines={1} style={{ marginLeft: 3 }}>
+                {item.toCity || 'Karachi'} Terminal
+              </AppText>
+            </View>
+          </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.selectButton}
-          activeOpacity={0.8}
-          onPress={handleBookPress}
-        >
-          <AppText size={14} weight="700" color={Colors.WHITE}>
-            {t('select_button') || "Select"}
-          </AppText>
-        </TouchableOpacity>
+        {/* Footer inside Route Box */}
+        <View style={styles.footerRow}>
+          <View style={styles.amenitiesContainer}>
+            {/* Seat Layout */}
+            <View style={styles.amenityChip}>
+              <Seat width={scale(12)} height={scale(12)} color="#1E40AF" />
+              <AppText size={11} weight="600" color="#1E40AF" style={{ marginLeft: 4 }}>
+                {seatLayoutText}
+              </AppText>
+            </View>
+
+            {/* AC */}
+            <View style={styles.amenityChip}>
+              <AC width={scale(12)} height={scale(12)} color="#1E40AF" />
+              <AppText size={11} weight="600" color="#1E40AF" style={{ marginLeft: 4 }}>
+                AC
+              </AppText>
+            </View>
+
+            {/* Wi-Fi */}
+            <View style={styles.amenityChip}>
+              <Wifi width={scale(12)} height={scale(12)} color="#1E40AF" />
+              <AppText size={11} weight="600" color="#1E40AF" style={{ marginLeft: 4 }}>
+                Wi-Fi
+              </AppText>
+            </View>
+
+            {extraCount > 0 && (
+              <View style={styles.extraChip}>
+                <AppText size={11} weight="600" color="#64748B">
+                  +{extraCount} More
+                </AppText>
+              </View>
+            )}
+          </View>
+
+          <TouchableOpacity
+            style={styles.selectButton}
+            activeOpacity={0.85}
+            onPress={handleBookPress}
+          >
+            <AppText size={13} weight="800" color="#FFFFFF">
+              {t('select_seat') || 'Select Seat'}
+            </AppText>
+            <Arrow
+              width={scale(12)}
+              height={scale(12)}
+              fill="#FFFFFF"
+              style={{ transform: [{ rotate: '180deg' }], marginLeft: scale(6) }}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -140,110 +192,158 @@ const BusCard = ({ item }: BusCardProps) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: Colors.SURFACE,
-    borderRadius: scale(20),
-    padding: scale(18),
-    marginVertical: verticalScale(10),
-    shadowColor: Colors.PRIMARY,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    elevation: 4,
+    backgroundColor: '#FFFFFF',
+    borderRadius: scale(18),
+    borderLeftWidth: scale(5),
+    borderLeftColor: '#0052CC',
     borderWidth: 1,
-    borderColor: Colors.BORDER_GREY,
+    borderColor: '#E2E8F0',
+    padding: scale(14),
+    marginVertical: verticalScale(8),
+    shadowColor: '#0052CC',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    elevation: 3,
   },
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: verticalScale(18),
+    alignItems: 'center',
+    marginBottom: verticalScale(12),
   },
   companyInfoContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
+    marginRight: scale(8),
+  },
+  logoBox: {
+    width: scale(48),
+    height: scale(48),
+    borderRadius: scale(12),
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    padding: scale(3),
+    backgroundColor: '#FFFFFF',
     marginRight: scale(10),
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   logo: {
-    width: scale(44),
-    height: scale(44),
-    borderRadius: scale(10),
-    backgroundColor: Colors.BACKGROUND,
-    marginRight: scale(12),
+    width: '100%',
+    height: '100%',
   },
   nameAndClass: {
     justifyContent: 'center',
+    flex: 1,
   },
-  classBadge: {
-    backgroundColor: alpha(Colors.SECONDARY, 0.1),
-    paddingHorizontal: scale(8),
+  luxuryBadge: {
+    backgroundColor: '#EBF3FF',
+    paddingHorizontal: scale(7),
     paddingVertical: verticalScale(2),
     borderRadius: scale(6),
+    flexDirection: 'row',
+    alignItems: 'center',
     alignSelf: 'flex-start',
-    marginTop: verticalScale(4),
+    marginTop: verticalScale(3),
   },
   priceContainer: {
     alignItems: 'flex-end',
+    flexShrink: 0,
+    marginLeft: scale(8),
+  },
+  innerRouteBox: {
+    backgroundColor: '#F8FAFC',
+    borderRadius: scale(14),
+    borderWidth: 1,
+    borderColor: '#F1F5F9',
+    padding: scale(12),
   },
   routeRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: verticalScale(18),
+    alignItems: 'flex-start',
   },
   timeLocContainer: {
-    flex: 1,
+    flex: 1.2,
+  },
+  terminalRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: verticalScale(4),
   },
   durationContainer: {
-    flex: 2,
+    flex: 1.6,
     alignItems: 'center',
-    paddingHorizontal: scale(10),
+    paddingHorizontal: scale(2),
   },
-  lineGraphic: {
+  durationPill: {
+    backgroundColor: '#E2E8F0',
+    paddingHorizontal: scale(8),
+    paddingVertical: verticalScale(2),
+    borderRadius: scale(8),
+    marginBottom: verticalScale(2),
+  },
+  routeLineWrap: {
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
+    position: 'relative',
+    justifyContent: 'center',
   },
-  dot: {
-    width: scale(8),
-    height: scale(8),
-    borderRadius: scale(4),
-    borderWidth: 1.5,
-    borderColor: Colors.SECONDARY,
-    backgroundColor: Colors.WHITE,
-  },
-  line: {
-    flex: 1,
-    height: 1.5,
-    backgroundColor: Colors.BORDER_GREY,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: Colors.BORDER_GREY,
-    marginBottom: verticalScale(15),
+  busIconBadge: {
+    position: 'absolute',
+    left: '50%',
+    marginLeft: -scale(6),
+    top: 6,
   },
   footerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
-  },
-  leftFooter: {
-    flex: 1,
-    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: verticalScale(12),
+    paddingTop: verticalScale(10),
+    borderTopWidth: 1,
+    borderTopColor: '#E2E8F0',
   },
   amenitiesContainer: {
     flexDirection: 'row',
-    marginBottom: verticalScale(4),
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    flex: 1,
+    marginRight: scale(6),
+  },
+  amenityChip: {
+    backgroundColor: '#EFF6FF',
+    borderRadius: scale(6),
+    paddingHorizontal: scale(7),
+    paddingVertical: verticalScale(3),
+    marginRight: scale(5),
+    marginBottom: verticalScale(2),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  extraChip: {
+    backgroundColor: '#F1F5F9',
+    borderRadius: scale(6),
+    paddingHorizontal: scale(6),
+    paddingVertical: verticalScale(3),
+    marginBottom: verticalScale(2),
   },
   selectButton: {
-    backgroundColor: Colors.SECONDARY,
-    paddingVertical: verticalScale(12),
-    paddingHorizontal: scale(32),
-    borderRadius: scale(12),
-    shadowColor: Colors.SECONDARY,
-    shadowOffset: { width: 0, height: 4 },
+    backgroundColor: '#0052CC',
+    borderRadius: scale(10),
+    paddingHorizontal: scale(14),
+    paddingVertical: verticalScale(9),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#0052CC',
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 4,
+    shadowRadius: 4,
+    elevation: 3,
   },
 });
 
