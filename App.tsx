@@ -62,7 +62,7 @@ const App = () => {
         persistor={persistor}
         onBeforeLift={onBeforeLift}
       >
-        <StripeProvider publishableKey={stripePublishableKey}>
+        <StripeProvider publishableKey={stripePublishableKey} urlScheme="bookngo">
           <QueryClientProvider client={queryClient}>
             <RootNavigator />
             <Toast />
