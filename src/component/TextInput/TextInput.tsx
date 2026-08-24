@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
     View,
     TextInput,
@@ -6,7 +6,6 @@ import {
     StyleSheet,
     TextInputProps,
     TouchableOpacity,
-    Animated,
 } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { Eye, EyeOff } from '../../assets/svg';
@@ -14,19 +13,23 @@ import Colors from '../../utils/Colors.util';
 
 type AppInputProps = TextInputProps & {
     label?: string;
+    required?: boolean;
     error?: string;
     containerStyle?: any;
     inputStyle?: any;
+    shellStyle?: any;
+    labelStyle?: any;
     isPassword?: boolean;
     LeftIcon?: React.FC<any>;
-    labelStyle?: any;
 };
 
 const AppInput: React.FC<AppInputProps> = ({
     label,
+    required = false,
     error,
     containerStyle,
     inputStyle,
+    shellStyle,
     labelStyle,
     isPassword = false,
     secureTextEntry,
@@ -34,6 +37,8 @@ const AppInput: React.FC<AppInputProps> = ({
     onFocus,
     onBlur,
     value,
+    placeholder,
+    placeholderTextColor = Colors.TEXT_GREY,
     ...props
 }) => {
     const [isFocused, setIsFocused] = useState(false);
@@ -42,16 +47,6 @@ const AppInput: React.FC<AppInputProps> = ({
     );
 
     const inputRef = useRef<TextInput>(null);
-
-    const animatedIsFocused = useRef(new Animated.Value(value ? 1 : 0)).current;
-
-    useEffect(() => {
-        Animated.timing(animatedIsFocused, {
-            toValue: (isFocused || value) ? 1 : 0,
-            duration: 200,
-            useNativeDriver: false,
-        }).start();
-    }, [isFocused, value]);
 
     const handleFocus = (e: any) => {
         setIsFocused(true);
@@ -67,27 +62,18 @@ const AppInput: React.FC<AppInputProps> = ({
         inputRef.current?.focus();
     };
 
-    const labelTranslateY = animatedIsFocused.interpolate({
-        inputRange: [0, 1],
-        outputRange: [verticalScale(12), verticalScale(-10)],
-    });
+    const displayLabel = label || placeholder;
 
-    const labelFontSize = animatedIsFocused.interpolate({
-        inputRange: [0, 1],
-        outputRange: [scale(14), scale(11)],
-    });
+    let borderColor = Colors.BORDER_GREY;
+    let labelColor = Colors.TEXT_GREY;
 
-    const labelColor = animatedIsFocused.interpolate({
-        inputRange: [0, 1],
-        outputRange: [Colors.TEXT_GREY, Colors.PRIMARY],
-    });
-
-    const labelTranslateX = animatedIsFocused.interpolate({
-        inputRange: [0, 1],
-        outputRange: [LeftIcon ? scale(40) : scale(12), scale(10)],
-    });
-
-    const displayLabel = label || props.placeholder;
+    if (error) {
+        borderColor = Colors.RED;
+        labelColor = Colors.RED;
+    } else if (isFocused) {
+        borderColor = Colors.PRIMARY;
+        labelColor = Colors.PRIMARY;
+    }
 
     return (
         <View style={[styles.container, containerStyle]}>
@@ -96,33 +82,27 @@ const AppInput: React.FC<AppInputProps> = ({
                 onPress={handleContainerPress}
                 style={[
                     styles.inputWrapper,
-                    isFocused && styles.inputFocused,
-                    error && styles.inputError,
-                    inputStyle && inputStyle.backgroundColor ? { backgroundColor: inputStyle.backgroundColor, borderColor: inputStyle.borderColor } : {}
+                    { borderColor },
+                    isFocused && styles.inputWrapperFocused,
+                    error && styles.inputWrapperError,
+                    shellStyle,
                 ]}
             >
                 {displayLabel && (
-                    <Animated.Text
-                        pointerEvents="none"
-                        style={[
-                            styles.label,
-                            {
-                                top: labelTranslateY,
-                                left: labelTranslateX,
-                                fontSize: labelFontSize,
-                                color: labelColor,
-                                borderBlockColor: Colors.SURFACE,
-                            },
-                            labelStyle,
-                        ]}
-                    >
-                        {displayLabel}
-                    </Animated.Text>
+                    <View style={styles.labelContainer}>
+                        <Text style={[styles.labelText, { color: labelColor }, labelStyle]}>
+                            {displayLabel} {required && <Text style={styles.asterisk}>*</Text>}
+                        </Text>
+                    </View>
                 )}
 
                 {LeftIcon && (
                     <View style={styles.leftIconContainer} pointerEvents="none">
-                        <LeftIcon width={scale(20)} height={scale(20)} color={isFocused ? Colors.SECONDARY : Colors.TEXT_GREY} />
+                        <LeftIcon
+                            width={scale(18)}
+                            height={scale(18)}
+                            color={isFocused ? Colors.PRIMARY : Colors.TEXT_GREY}
+                        />
                     </View>
                 )}
 
@@ -133,21 +113,23 @@ const AppInput: React.FC<AppInputProps> = ({
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     secureTextEntry={hidePassword}
-                    placeholder=""
-                    style={[
-                        styles.input,
-                        inputStyle,
-                    ]}
+                    placeholder={isFocused || !displayLabel ? placeholder : ''}
+                    placeholderTextColor={placeholderTextColor}
+                    style={[styles.input, inputStyle]}
                 />
 
-                {isPassword && (
+                {(isPassword || secureTextEntry !== undefined) && (
                     <TouchableOpacity
                         onPress={() => setHidePassword(!hidePassword)}
                         style={styles.iconContainer}
                         activeOpacity={0.7}
                         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
-                        {!hidePassword ? <Eye color={Colors.SECONDARY} /> : <EyeOff color={Colors.TEXT_GREY} />}
+                        {!hidePassword ? (
+                            <Eye width={scale(18)} height={scale(18)} color={isFocused ? Colors.PRIMARY : Colors.TEXT_GREY} />
+                        ) : (
+                            <EyeOff width={scale(18)} height={scale(18)} color={Colors.TEXT_GREY} />
+                        )}
                     </TouchableOpacity>
                 )}
             </TouchableOpacity>
@@ -157,54 +139,66 @@ const AppInput: React.FC<AppInputProps> = ({
     );
 };
 
-export default AppInput;
-
 const styles = StyleSheet.create({
     container: {
-        marginBottom: verticalScale(12),
+        marginBottom: verticalScale(16),
         width: '100%',
-    },
-    label: {
-        position: 'absolute',
-        fontWeight: '500',
-        paddingHorizontal: scale(4),
-        zIndex: 1,
     },
     inputWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
-        height: verticalScale(46),
+        height: verticalScale(48),
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,
-        borderRadius: scale(8),
+        borderRadius: scale(10),
         backgroundColor: Colors.SURFACE,
-        paddingHorizontal: scale(12),
+        paddingHorizontal: scale(14),
         position: 'relative',
     },
-    inputFocused: {
-        // borderColor: Colors.SECONDARY,
-        borderWidth: 1.5,
+    inputWrapperFocused: {
+        borderWidth: 1.8,
+        borderColor: Colors.PRIMARY,
+    },
+    inputWrapperError: {
+        borderWidth: 1.8,
+        borderColor: Colors.RED,
+    },
+    labelContainer: {
+        position: 'absolute',
+        top: -verticalScale(9),
+        left: scale(12),
+        backgroundColor: Colors.SURFACE,
+        paddingHorizontal: scale(4),
+        zIndex: 10,
+    },
+    labelText: {
+        fontSize: scale(11),
+        fontWeight: '600',
+        color: Colors.TEXT_GREY,
+    },
+    asterisk: {
+        color: Colors.RED,
     },
     input: {
         flex: 1,
         height: '100%',
-        fontSize: scale(15),
+        fontSize: scale(14),
         color: Colors.BLACK,
         paddingVertical: 0,
-    },
-    iconContainer: {
-        paddingLeft: scale(8),
     },
     leftIconContainer: {
         paddingRight: scale(10),
     },
-    inputError: {
-        borderColor: Colors.RED,
+    iconContainer: {
+        paddingLeft: scale(8),
     },
     errorText: {
         marginTop: verticalScale(4),
         color: Colors.RED,
         fontSize: scale(11),
         fontWeight: '500',
+        marginLeft: scale(4),
     },
 });
+
+export default AppInput;
