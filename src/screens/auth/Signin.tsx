@@ -48,54 +48,56 @@ const Signin = () => {
               </AppText>
             </View>
 
-            <View style={styles.titleContainer}>
-              <AppText size={32} weight="700" color={Colors.PRIMARY} style={styles.welcomeText}>
-                {t('auth_signin_title')}
-              </AppText>
-              <AppText size={16} color={Colors.PRIMARY} weight="500">
-                {t('auth_signin_subtitle')}
-              </AppText>
-            </View>
+            <View style={styles.card}>
+              <View style={styles.titleContainer}>
+                <AppText size={26} weight="700" color={Colors.PRIMARY} style={styles.welcomeText}>
+                  {t('auth_signin_title')}
+                </AppText>
+                <AppText size={14} color={Colors.DARK_GRAY} weight="500">
+                  {t('auth_signin_subtitle')}
+                </AppText>
+              </View>
 
-            <AppInput
-              label={t('auth_signin_emailPhoneLabel')}
-              placeholder={t('auth_signin_emailPhonePlaceholder')}
-              value={values.email}
-              onChangeText={handleChange('email')}
-              onBlur={handleBlur('email')}
-              keyboardType="email-address"
-              error={touched.email ? errors.email : undefined}
-              LeftIcon={User}
-              placeholderTextColor={Colors.TEXT_GREY}
-              inputStyle={styles.inputStyle}
-              containerStyle={styles.inputContainer}
-            />
+              <AppInput
+                label={t('auth_signin_emailPhoneLabel')}
+                placeholder={t('auth_signin_emailPhonePlaceholder')}
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                keyboardType="email-address"
+                autoCapitalize="none"
+                error={touched.email ? errors.email : undefined}
+                LeftIcon={User}
+                placeholderTextColor={Colors.TEXT_GREY}
+                inputStyle={styles.inputStyle}
+                containerStyle={styles.inputContainer}
+              />
 
-            <AppInput
-              label={t('auth_signin_passwordLabel')}
-              placeholder={t('auth_signin_passwordPlaceholder')}
-              isPassword
-              value={values.password}
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              error={touched.password ? errors.password : undefined}
-              LeftIcon={Lock}
-              placeholderTextColor={Colors.TEXT_GREY}
-              inputStyle={styles.inputStyle}
-              containerStyle={styles.inputContainer}
-            />
+              <AppInput
+                label={t('auth_signin_passwordLabel')}
+                placeholder={t('auth_signin_passwordPlaceholder')}
+                isPassword
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                error={touched.password ? errors.password : undefined}
+                LeftIcon={Lock}
+                placeholderTextColor={Colors.TEXT_GREY}
+                inputStyle={styles.inputStyle}
+                containerStyle={styles.inputContainer}
+              />
 
-            <TouchableOpacity style={styles.forgotPassword} activeOpacity={0.7}>
-              <AppText size={14} weight="600" color={Colors.PRIMARY}>
-                {t('auth_signin_forgotPassword')}
-              </AppText>
-            </TouchableOpacity>
+              <TouchableOpacity style={styles.forgotPassword} activeOpacity={0.7}>
+                <AppText size={14} weight="600" color={Colors.SECONDARY}>
+                  {t('auth_signin_forgotPassword')}
+                </AppText>
+              </TouchableOpacity>
 
-            <AppButton
-              title={t('auth_signin_button')}
-              onPress={handleSubmit as any}
-              style={styles.button}
-            />
+              <AppButton
+                title={t('auth_signin_button')}
+                onPress={handleSubmit as any}
+                style={styles.button}
+              />
 
             <View style={styles.footer}>
               <AppText size={14} color={Colors.DARK_GRAY}>
@@ -106,6 +108,7 @@ const Signin = () => {
                   {t('auth_signin_signupLink')}
                 </AppText>
               </TouchableOpacity>
+            </View>
             </View>
           </View>
         )}
@@ -119,27 +122,44 @@ export default Signin;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: verticalScale(40),
+    paddingTop: verticalScale(20),
+    justifyContent: 'center',
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: verticalScale(50),
+    marginBottom: verticalScale(24),
   },
   brandName: {
     marginLeft: scale(10),
     letterSpacing: 1,
   },
+  card: {
+    backgroundColor: Colors.WHITE,
+    borderRadius: scale(20),
+    paddingHorizontal: scale(20),
+    paddingVertical: verticalScale(24),
+    borderWidth: 1,
+    borderColor: Colors.BORDER_GREY,
+    shadowColor: Colors.PRIMARY,
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 6,
+    marginBottom: verticalScale(24),
+  },
   titleContainer: {
-    marginBottom: verticalScale(30),
+    marginBottom: verticalScale(20),
   },
   welcomeText: {
-    paddingVertical: verticalScale(8),
-    height: verticalScale(50),
+    marginBottom: verticalScale(6),
   },
   inputContainer: {
-    marginBottom: verticalScale(20),
+    marginBottom: verticalScale(16),
   },
   inputStyle: {
     backgroundColor: Colors.SURFACE,
@@ -147,28 +167,28 @@ const styles = StyleSheet.create({
     color: Colors.PRIMARY,
   },
   forgotPassword: {
-    alignSelf: 'center',
-    marginBottom: verticalScale(30),
+    alignSelf: 'flex-end',
+    marginTop: verticalScale(2),
+    marginBottom: verticalScale(24),
   },
   button: {
     backgroundColor: Colors.PRIMARY,
-    paddingVertical: verticalScale(16),
-    borderRadius: scale(14),
+    paddingVertical: verticalScale(14),
+    borderRadius: scale(12),
     alignItems: 'center',
-    marginBottom: verticalScale(30),
     shadowColor: Colors.PRIMARY,
     shadowOffset: {
       width: 0,
-      height: 6,
+      height: 4,
     },
     shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowRadius: 6,
+    elevation: 4,
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 'auto',
+    marginTop: verticalScale(8),
     marginBottom: verticalScale(20),
   },
 });

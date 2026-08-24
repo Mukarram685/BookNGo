@@ -41,6 +41,8 @@ const AppInput: React.FC<AppInputProps> = ({
         isPassword || secureTextEntry
     );
 
+    const inputRef = useRef<TextInput>(null);
+
     const animatedIsFocused = useRef(new Animated.Value(value ? 1 : 0)).current;
 
     useEffect(() => {
@@ -59,6 +61,10 @@ const AppInput: React.FC<AppInputProps> = ({
     const handleBlur = (e: any) => {
         setIsFocused(false);
         if (onBlur) onBlur(e);
+    };
+
+    const handleContainerPress = () => {
+        inputRef.current?.focus();
     };
 
     const labelTranslateY = animatedIsFocused.interpolate({
@@ -85,7 +91,9 @@ const AppInput: React.FC<AppInputProps> = ({
 
     return (
         <View style={[styles.container, containerStyle]}>
-            <View
+            <TouchableOpacity
+                activeOpacity={1}
+                onPress={handleContainerPress}
                 style={[
                     styles.inputWrapper,
                     isFocused && styles.inputFocused,
@@ -95,6 +103,7 @@ const AppInput: React.FC<AppInputProps> = ({
             >
                 {displayLabel && (
                     <Animated.Text
+                        pointerEvents="none"
                         style={[
                             styles.label,
                             {
@@ -112,12 +121,13 @@ const AppInput: React.FC<AppInputProps> = ({
                 )}
 
                 {LeftIcon && (
-                    <View style={styles.leftIconContainer}>
+                    <View style={styles.leftIconContainer} pointerEvents="none">
                         <LeftIcon width={scale(20)} height={scale(20)} color={isFocused ? Colors.SECONDARY : Colors.TEXT_GREY} />
                     </View>
                 )}
 
                 <TextInput
+                    ref={inputRef}
                     {...props}
                     value={value}
                     onFocus={handleFocus}
@@ -135,11 +145,12 @@ const AppInput: React.FC<AppInputProps> = ({
                         onPress={() => setHidePassword(!hidePassword)}
                         style={styles.iconContainer}
                         activeOpacity={0.7}
+                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                     >
                         {!hidePassword ? <Eye color={Colors.SECONDARY} /> : <EyeOff color={Colors.TEXT_GREY} />}
                     </TouchableOpacity>
                 )}
-            </View>
+            </TouchableOpacity>
 
             {error && <Text style={styles.errorText}>{error}</Text>}
         </View>
@@ -176,8 +187,10 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
+        height: '100%',
         fontSize: scale(15),
         color: Colors.BLACK,
+        paddingVertical: 0,
     },
     iconContainer: {
         paddingLeft: scale(8),
