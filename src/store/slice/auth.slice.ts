@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { OneSignal } from 'react-native-onesignal';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -27,6 +28,11 @@ const authSlice = createSlice({
       state.refreshToken = refreshToken;
     },
     logout: (state) => {
+      try {
+        OneSignal.logout();
+      } catch (e) {
+        console.warn('OneSignal logout error:', e);
+      }
       state.user = null;
       state.token = null;
       state.refreshToken = null;

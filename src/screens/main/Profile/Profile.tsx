@@ -12,6 +12,7 @@ import Header from '../../../component/Header';
 import { logout } from '../../../store/slice/auth.slice';
 import { useGetProfile } from '../../../hooks/useProfile';
 import { Arrow } from '../../../assets/svg';
+import { OneSignal } from 'react-native-onesignal';
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const Profile = () => {
     useGetProfile(authUser?.id || authUser?._id);
 
     const handleLogout = () => {
+        OneSignal.logout();
         dispatch(logout());
     };
 

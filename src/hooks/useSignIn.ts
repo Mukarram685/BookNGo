@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import axiosInstance from "../utils/axiosInstance";
 import Toast from "react-native-toast-message";
 import { setCredentials } from "../store/slice/auth.slice";
+import { OneSignal } from 'react-native-onesignal';
 
 export const useLogin = () => {
     const dispatch = useDispatch();
@@ -12,7 +13,12 @@ export const useLogin = () => {
             return response as any;
         },
         onSuccess: (data) => {
-            console.log('data is ', data)
+            console.log('data is ', data);
+            const userId = data?.user?._id || data?.user?.id;
+            if (userId) {
+                console.log('[OneSignal] Signing in user:', userId);
+                OneSignal.login(String(userId));
+            }
             Toast.show({
                 type: 'success',
                 text1: 'Login Successful',
