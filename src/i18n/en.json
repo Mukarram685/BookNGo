@@ -18,6 +18,8 @@
   "auth_signup_namePlaceholder": "Enter your name",
   "auth_signup_emailLabel": "Email",
   "auth_signup_emailPlaceholder": "Enter your email",
+  "auth_signup_cnicLabel": "CNIC",
+  "auth_signup_cnicPlaceholder": "Enter your CNIC (00000-0000000-0)",
   "auth_signup_phoneLabel": "Phone Number",
   "auth_signup_phonePlaceholder": "Enter your phone number",
   "auth_signup_passwordLabel": "Password",

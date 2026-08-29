@@ -20,7 +20,7 @@ const Profile = () => {
     const navigation = useNavigation<any>();
     const authUser = useSelector((state: any) => state.auth.user);
     
-    useGetProfile(authUser?.id || authUser?._id);
+    const { data: profile } = useGetProfile(authUser?.id || authUser?._id);
 
     const handleLogout = () => {
         OneSignal.logout();

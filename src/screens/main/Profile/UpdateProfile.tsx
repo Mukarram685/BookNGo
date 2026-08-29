@@ -16,12 +16,24 @@ const UpdateProfile = () => {
     const updateProfileMutation = useUpdateProfile();
 
     const [name, setName] = useState(authUser?.name || profile?.name || '');
-    const [phone, setPhone] = useState(authUser?.phone || profile?.phone || '');
+    const [phone, setPhone] = useState(authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber || '');
+    const [cnic, setCnic] = useState(authUser?.cnic || profile?.cnic || '');
     const email = authUser?.email || profile?.email || '';
+
+    const formatCNIC = (text: string) => {
+        const cleaned = text.replace(/\D/g, '').slice(0, 13);
+        if (cleaned.length > 12) {
+            return `${cleaned.slice(0, 5)}-${cleaned.slice(5, 12)}-${cleaned.slice(12)}`;
+        } else if (cleaned.length > 5) {
+            return `${cleaned.slice(0, 5)}-${cleaned.slice(5)}`;
+        }
+        return cleaned;
+    };
 
     useEffect(() => {
         if (authUser?.name) setName(authUser.name);
-        if (authUser?.phone) setPhone(authUser.phone);
+        if (authUser?.phone || authUser?.phoneNumber) setPhone(authUser.phone || authUser.phoneNumber);
+        if (authUser?.cnic) setCnic(authUser.cnic);
     }, [authUser]);
 
     const handleUpdate = () => {
@@ -30,7 +42,7 @@ const UpdateProfile = () => {
         }
         updateProfileMutation.mutate({
             id: authUser?.id || authUser?._id,
-            data: { name, phone }
+            data: { name, phoneNumber: phone, cnic }
         }, {
             onSuccess: () => {
                 navigation.goBack();
@@ -86,6 +98,21 @@ const UpdateProfile = () => {
                             editable={false}
                             placeholder="Email address"
                             placeholderTextColor={Colors.TEXT_GREY}
+                        />
+                    </View>
+
+                    <View style={styles.inputGroup}>
+                        <AppText size={12} color={Colors.TEXT_GREY} weight="800" style={styles.label}>
+                            CNIC
+                        </AppText>
+                        <TextInput
+                            style={styles.textInput}
+                            value={cnic}
+                            onChangeText={(val) => setCnic(formatCNIC(val))}
+                            placeholder="00000-0000000-0"
+                            placeholderTextColor={Colors.TEXT_GREY}
+                            keyboardType="numeric"
+                            maxLength={15}
                         />
                     </View>
 

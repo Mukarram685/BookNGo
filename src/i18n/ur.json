@@ -18,6 +18,8 @@
   "auth_signup_namePlaceholder": "اپنا نام درج کریں",
   "auth_signup_emailLabel": "ای میل",
   "auth_signup_emailPlaceholder": "اپنا ای میل درج کریں",
+  "auth_signup_cnicLabel": "شناختی کارڈ نمبر",
+  "auth_signup_cnicPlaceholder": "اپنا شناختی کارڈ نمبر درج کریں",
   "auth_signup_phoneLabel": "فون نمبر",
   "auth_signup_phonePlaceholder": "اپنا فون نمبر درج کریں",
   "auth_signup_passwordLabel": "پاس ورڈ",
