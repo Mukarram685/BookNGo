@@ -9,7 +9,7 @@ import AppText from '../../component/common/AppText';
 import AppInput from '../../component/TextInput/TextInput';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
 import AppButton from '../../component/common/AppButton';
-import Colors from '../../utils/Colors.util';
+import colors, { Colors } from '../../utils/colors';
 import { Bus, Lock, User, Mail, Phone, Cnic } from '../../assets/svg';
 import { useRegister } from '../../hooks/useSignUp';
 

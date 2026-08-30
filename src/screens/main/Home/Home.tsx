@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
-import Colors from '../../../utils/Colors.util';
+import colors, { Colors } from '../../../utils/colors';
 import HomeSearch from './HomeSearch';
 import Header from '../../../component/Header';
 

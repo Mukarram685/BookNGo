@@ -4,7 +4,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import AppText from '../common/AppText';
 import { useTranslation } from 'react-i18next';
 import AppInput from '../TextInput/TextInput';
-import colors from '../../constants/colors';
+import colors from '../../utils/colors';
 import { User, Phone, Radio } from '../../assets/svg';
 
 interface PassengerFormProps {

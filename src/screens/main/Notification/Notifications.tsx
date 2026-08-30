@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { scale, verticalScale } from 'react-native-size-matters';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
-import Colors from '../../../utils/Colors.util';
+import colors, { Colors } from '../../../utils/colors';
 import Header from '../../../component/Header';
 import EmptyCard from '../../../component/common/EmptyCard';
 import { INITIAL_NOTIFICATIONS, NotificationItem } from '../../../data/notifications.data';

@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import Svg, { Path } from 'react-native-svg';
 import AppText from '../common/AppText';
-import Colors from '../../utils/Colors.util';
+import colors, { Colors } from '../../utils/colors';
 import { Wifi, Charger, AC, Bus } from '../../assets/svg';
 
 // Custom WC Icon

@@ -8,8 +8,9 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
+import AppButton from '../../../component/common/AppButton';
 import Header from '../../../component/Header';
-import Colors from '../../../utils/Colors.util';
+import colors, { Colors } from '../../../utils/colors';
 import PassengerForm from '../../../component/Booking/PassengerForm';
 import { BusSchedule } from '../../../interface/bus.interface';
 
@@ -136,9 +137,11 @@ const PassengerDetail = () => {
               </ScrollView>
 
               <View style={styles.footer}>
-                <TouchableOpacity style={styles.button} onPress={handleSubmit as any}>
-                  <AppText size={16} weight="700" color={Colors.WHITE}>{t('review_booking') || "Review Booking"}</AppText>
-                </TouchableOpacity>
+                <AppButton
+                  title={t('review_booking') || "Review Booking"}
+                  onPress={handleSubmit as any}
+                  style={styles.button}
+                />
               </View>
             </View>
           )}

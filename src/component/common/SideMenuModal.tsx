@@ -17,7 +17,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import Toast from 'react-native-toast-message';
 import Svg, { Defs, LinearGradient, Stop, Rect } from 'react-native-svg';
 import AppText from './AppText';
-import colors from '../../constants/colors';
+import colors from '../../utils/colors';
 import { setLanguage } from '../../store/slice/language.slice';
 import { Globe, CloseCircle } from '../../assets/svg';
 import { SIDE_MENU_ITEMS, APP_VERSION, MenuItemData } from '../../data/sideMenu.data';

@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import Svg, { Defs, LinearGradient, Stop, Rect } from 'react-native-svg';
-import Colors from '../../utils/Colors.util';
+import colors, { Colors } from '../../utils/colors';
 import AppLoader from './AppLoader';
 import NetworkStatus from './NetworkStatus';
 

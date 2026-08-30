@@ -4,7 +4,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
-import colors from '../../constants/colors';
+import colors from '../../utils/colors';
 import {
     Arrow,
     Ticket as TicketIcon,

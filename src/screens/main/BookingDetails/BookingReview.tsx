@@ -8,7 +8,7 @@ import Toast from 'react-native-toast-message';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Header from '../../../component/Header';
-import Colors from '../../../utils/Colors.util';
+import colors, { Colors } from '../../../utils/colors';
 import { BusSchedule } from '../../../interface/bus.interface';
 import { PassengerDetail } from '../../../interface/booking.interface';
 import { useBookSeats } from '../../../hooks/useBookSeats';

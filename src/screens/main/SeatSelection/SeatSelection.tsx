@@ -5,8 +5,9 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
+import AppButton from '../../../component/common/AppButton';
 import Header from '../../../component/Header';
-import colors, { alpha } from '../../../constants/colors';
+import colors, { alpha } from '../../../utils/colors';
 import SeatItem from '../../../component/Seat/SeatItem';
 import SeatLegend from '../../../component/Seat/SeatLegend';
 import CabinHeader from '../../../component/Seat/CabinHeader';
@@ -181,22 +182,21 @@ const SeatSelection = () => {
                             </View>
                         </View>
 
-                        <TouchableOpacity
-                            style={[styles.payButton, selectedSeats.length === 0 && { opacity: 0.5 }]}
-                            disabled={selectedSeats.length === 0}
-                            activeOpacity={0.85}
+                        <AppButton
+                            title={t('seatSelection_proceed') || "Continue"}
                             onPress={() => navigation.navigate('PassengerDetails', { schedule, selectedSeats })}
-                        >
-                            <AppText size={14} weight="800" color="#FFFFFF">
-                                {t('seatSelection_proceed') || "Continue"}
-                            </AppText>
-                            <ArrowIcon
-                                width={scale(13)}
-                                height={scale(13)}
-                                fill="#FFFFFF"
-                                style={{ transform: [{ rotate: '180deg' }], marginLeft: scale(6) }}
-                            />
-                        </TouchableOpacity>
+                            disabled={selectedSeats.length === 0}
+                            style={styles.payButton}
+                            icon={
+                                <ArrowIcon
+                                    width={scale(13)}
+                                    height={scale(13)}
+                                    fill="#FFFFFF"
+                                    style={{ transform: [{ rotate: '180deg' }] }}
+                                />
+                            }
+                            iconPosition="right"
+                        />
                     </View>
                 </View>
             </View>

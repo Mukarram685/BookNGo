@@ -6,7 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
-import Colors from '../../../utils/Colors.util';
+import AppButton from '../../../component/common/AppButton';
+import colors, { Colors } from '../../../utils/colors';
 import Header from '../../../component/Header';
 import { useGetProfile, useUpdateProfile } from '../../../hooks/useProfile';
 
@@ -189,21 +190,16 @@ const UpdateProfile = () => {
       </View>
 
       {/* Update Button */}
-      <TouchableOpacity
-        style={[
-          styles.submitButton,
-          updateProfileMutation.isPending && styles.disabledButton,
-        ]}
-        onPress={handleUpdate}
-        disabled={updateProfileMutation.isPending}
-        activeOpacity={0.8}
-      >
-        <AppText size={16} weight="700" color={Colors.WHITE}>
-          {updateProfileMutation.isPending
+      <AppButton
+        title={
+          updateProfileMutation.isPending
             ? t('bookingReview_processing') || 'Updating...'
-            : t('save_changes') || 'Save Changes'}
-        </AppText>
-      </TouchableOpacity>
+            : t('save_changes') || 'Save Changes'
+        }
+        onPress={handleUpdate}
+        loading={updateProfileMutation.isPending}
+        style={styles.submitButton}
+      />
     </ScreenWrapper>
   );
 };

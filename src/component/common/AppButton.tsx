@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
-import Colors from '../../utils/Colors.util';
+import colors from '../../utils/colors';
 import AppText from './AppText';
 
 type AppButtonProps = {
@@ -85,7 +85,7 @@ const AppButton: React.FC<AppButtonProps> = ({
       {loading ? (
         <ActivityIndicator
           size="small"
-          color={variant === 'outline' || variant === 'danger-outline' || variant === 'text' ? Colors.PRIMARY : Colors.WHITE}
+          color={variant === 'outline' || variant === 'danger-outline' || variant === 'text' ? colors.PRIMARY : colors.WHITE}
         />
       ) : (
         <View style={styles.contentContainer}>
@@ -131,42 +131,42 @@ const styles = StyleSheet.create({
     marginLeft: scale(8),
   },
   primaryButton: {
-    backgroundColor: Colors.PRIMARY,
-    shadowColor: Colors.PRIMARY,
+    backgroundColor: colors.PRIMARY,
+    shadowColor: colors.PRIMARY,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.12,
     shadowRadius: 5,
     elevation: 3,
   },
   primaryText: {
-    color: Colors.WHITE,
+    color: colors.WHITE,
   },
   secondaryButton: {
-    backgroundColor: Colors.SECONDARY,
-    shadowColor: Colors.SECONDARY,
+    backgroundColor: colors.SECONDARY,
+    shadowColor: colors.SECONDARY,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.12,
     shadowRadius: 5,
     elevation: 3,
   },
   secondaryText: {
-    color: Colors.WHITE,
+    color: colors.WHITE,
   },
   outlineButton: {
-    backgroundColor: Colors.SURFACE,
+    backgroundColor: colors.SURFACE,
     borderWidth: 1.5,
-    borderColor: Colors.PRIMARY,
+    borderColor: colors.PRIMARY,
   },
   outlineText: {
-    color: Colors.PRIMARY,
+    color: colors.PRIMARY,
   },
   dangerOutlineButton: {
-    backgroundColor: Colors.SURFACE,
+    backgroundColor: colors.SURFACE,
     borderWidth: 1.5,
-    borderColor: Colors.RED,
+    borderColor: colors.RED,
   },
   dangerOutlineText: {
-    color: Colors.RED,
+    color: colors.RED,
   },
   textButton: {
     backgroundColor: 'transparent',
@@ -174,16 +174,16 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(8),
   },
   textText: {
-    color: Colors.PRIMARY,
+    color: colors.PRIMARY,
   },
   disabledButton: {
-    backgroundColor: Colors.BORDER_GREY,
+    backgroundColor: colors.BORDER_GREY,
     shadowOpacity: 0,
     elevation: 0,
-    borderColor: Colors.BORDER_GREY,
+    borderColor: colors.BORDER_GREY,
   },
   disabledText: {
-    color: Colors.TEXT_GREY,
+    color: colors.TEXT_GREY,
   },
 });
 

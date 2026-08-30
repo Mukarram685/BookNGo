@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import AppText from '../common/AppText';
+import AppButton from '../common/AppButton';
 import { useTranslation } from 'react-i18next';
-import colors from '../../constants/colors';
+import colors from '../../utils/colors';
 import { scale, verticalScale } from 'react-native-size-matters';
 
 interface BookingCardProps {
@@ -51,9 +52,11 @@ const BookingCard = ({ booking, onView }: BookingCardProps) => {
                     <AppText size={11} color={colors.TEXT_GREY} weight="700">{t('booking_card_total_price') || "TOTAL PRICE"}</AppText>
                     <AppText size={18} weight="800" color={colors.PRIMARY}>Rs. {booking.price}</AppText>
                 </View>
-                <TouchableOpacity style={styles.viewButton} onPress={onView} activeOpacity={0.8}>
-                    <AppText size={14} weight="700" color={colors.WHITE}>{t('booking_card_view') || "View"}</AppText>
-                </TouchableOpacity>
+                <AppButton
+                    title={t('booking_card_view') || "View"}
+                    onPress={onView}
+                    style={styles.viewButton}
+                />
             </View>
         </View>
     );

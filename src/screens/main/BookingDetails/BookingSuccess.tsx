@@ -8,8 +8,9 @@ import Share from 'react-native-share';
 import Svg, { Path, Circle } from 'react-native-svg';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
+import AppButton from '../../../component/common/AppButton';
 import Header from '../../../component/Header';
-import Colors from '../../../utils/Colors.util';
+import colors, { Colors } from '../../../utils/colors';
 import { TicketDetails } from '../../../interface/booking.interface';
 
 const SuccessTickIcon = () => (
@@ -124,17 +125,18 @@ const BookingSuccess = () => {
                     </ViewShot>
 
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.shareBtn} onPress={shareTicket} activeOpacity={0.8}>
-                            <AppText size={16} weight="700" color={Colors.WHITE}>{t('share_receipt') || "Share Receipt"}</AppText>
-                        </TouchableOpacity>
+                        <AppButton
+                            title={t('share_receipt') || "Share Receipt"}
+                            onPress={shareTicket}
+                            style={styles.shareBtn}
+                        />
 
-                        <TouchableOpacity
-                            style={styles.homeBtn}
+                        <AppButton
+                            title={t('back_to_home') || "Back to Home"}
                             onPress={() => navigation.navigate('BottomTabs')}
-                            activeOpacity={0.7}
-                        >
-                            <AppText size={16} weight="700" color="#172C6B">{t('back_to_home') || "Back to Home"}</AppText>
-                        </TouchableOpacity>
+                            variant="outline"
+                            style={styles.homeBtn}
+                        />
                     </View>
                 </ScrollView>
             </View>

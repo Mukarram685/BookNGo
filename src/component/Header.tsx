@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { Arrow, Hamburger } from '../assets/svg';
-import colors from '../constants/colors';
+import colors from '../utils/colors';
 import SideMenuModal from './common/SideMenuModal';
 
 interface AppHeaderProps {

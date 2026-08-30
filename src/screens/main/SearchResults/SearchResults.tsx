@@ -5,7 +5,7 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
-import Colors from '../../../utils/Colors.util';
+import colors, { Colors } from '../../../utils/colors';
 import BusCard from '../../../component/Bus/BusCard';
 import { BusSchedule } from '../../../interface/bus.interface';
 import { useSearchBuses } from '../../../hooks/useSearchBuses';

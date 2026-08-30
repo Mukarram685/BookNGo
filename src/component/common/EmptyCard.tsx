@@ -10,7 +10,7 @@ import Svg, { Path, Ellipse, G, Circle } from 'react-native-svg';
 import { scale, verticalScale } from 'react-native-size-matters';
 import AppText from './AppText';
 import AppButton from './AppButton';
-import Colors from '../../utils/Colors.util';
+import colors, { Colors } from '../../utils/colors';
 
 interface EmptyCardProps {
     title?: string;

@@ -7,7 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
-import Colors from '../../../utils/Colors.util';
+import AppButton from '../../../component/common/AppButton';
+import colors, { Colors } from '../../../utils/colors';
 import Header from '../../../component/Header';
 import { logout } from '../../../store/slice/auth.slice';
 import { useGetProfile } from '../../../hooks/useProfile';
@@ -174,15 +175,12 @@ const Profile = () => {
                     )}
                 </View>
 
-                <TouchableOpacity 
-                    style={styles.logoutButton} 
-                    onPress={confirmLogout} 
-                    activeOpacity={0.7}
-                >
-                    <AppText size={15} weight="800" color={Colors.RED}>
-                        Log out
-                    </AppText>
-                </TouchableOpacity>
+                <AppButton
+                    title={t('profile_logout') || "Log out"}
+                    onPress={confirmLogout}
+                    variant="danger-outline"
+                    style={styles.logoutButton}
+                />
 
         </ScreenWrapper>
     );

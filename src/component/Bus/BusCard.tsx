@@ -5,9 +5,10 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
+import AppButton from '../common/AppButton';
 import { BusSchedule } from '../../interface/bus.interface';
 import { Bus as BusIcon, Wifi, AC, Seat, LocationB, Arrow } from '../../assets/svg';
-import colors from '../../constants/colors';
+import colors from '../../utils/colors';
 
 interface BusCardProps {
   item: BusSchedule;
@@ -170,21 +171,20 @@ const BusCard = ({ item }: BusCardProps) => {
             )}
           </View>
 
-          <TouchableOpacity
-            style={styles.selectButton}
-            activeOpacity={0.85}
+          <AppButton
+            title={t('select_seat') || 'Select Seat'}
             onPress={handleBookPress}
-          >
-            <AppText size={13} weight="800" color={colors.WHITE}>
-              {t('select_seat') || 'Select Seat'}
-            </AppText>
-            <Arrow
-              width={scale(12)}
-              height={scale(12)}
-              fill={colors.WHITE}
-              style={{ transform: [{ rotate: '180deg' }], marginLeft: scale(6) }}
-            />
-          </TouchableOpacity>
+            style={styles.selectButton}
+            icon={
+              <Arrow
+                width={scale(12)}
+                height={scale(12)}
+                fill={colors.WHITE}
+                style={{ transform: [{ rotate: '180deg' }] }}
+              />
+            }
+            iconPosition="right"
+          />
         </View>
       </View>
     </View>

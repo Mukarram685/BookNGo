@@ -5,7 +5,7 @@ import {
   TextStyle,
 } from 'react-native';
 import { scale } from 'react-native-size-matters';
-import Colors from '../../utils/Colors.util';
+import colors from '../../utils/colors';
 
 type AppTextProps = TextProps & {
   size?: number;
@@ -17,7 +17,7 @@ type AppTextProps = TextProps & {
 
 const AppText: React.FC<AppTextProps> = ({
   size = scale(14),
-  color = Colors.BLACK,
+  color = colors.BLACK,
   weight = 'normal',
   align = 'left',
   style,

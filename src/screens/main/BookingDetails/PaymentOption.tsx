@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
-import Colors, { alpha } from '../../../utils/Colors.util';
+import colors, { Colors, alpha } from '../../../utils/colors';
 import AppText from '../../../component/common/AppText';
 
 interface PaymentOptionProps {

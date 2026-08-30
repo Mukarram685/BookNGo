@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
 import EmptyCard from '../common/EmptyCard';
 import AppInput from '../TextInput/TextInput';
-import Colors from '../../utils/Colors.util';
+import colors, { Colors } from '../../utils/colors';
 import { PAKISTAN_CITIES } from '../../constants/Cities.constant';
 
 const SearchIcon = ({ color, size }: { color: string; size: number }) => (

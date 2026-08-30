@@ -5,7 +5,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import AppText from '../../../component/common/AppText';
-import Colors from '../../../utils/Colors.util';
+import AppButton from '../../../component/common/AppButton';
+import colors, { Colors } from '../../../utils/colors';
 import { From, To, Calendar } from '../../../assets/svg';
 import { SearchSchema } from '../../../helpers/bus.helper';
 import CitySelector from '../../../component/Bus/CitySelector';
@@ -101,15 +102,11 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         </View>
                     )}
 
-                    <TouchableOpacity
-                        style={styles.searchButton}
-                        activeOpacity={0.8}
+                    <AppButton
+                        title={t('home_search_button') || "Search Buses"}
                         onPress={() => handleSubmit()}
-                    >
-                        <AppText size={16} weight="700" color={Colors.WHITE}>
-                            {t('home_search_button') || "Search Buses"}
-                        </AppText>
-                    </TouchableOpacity>
+                        style={styles.searchButton}
+                    />
                 </View>
             )}
         </Formik>

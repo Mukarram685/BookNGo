@@ -14,7 +14,7 @@ import Share from 'react-native-share';
 import Toast from 'react-native-toast-message';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
-import Colors from '../../../utils/Colors.util';
+import colors, { Colors } from '../../../utils/colors';
 import Header from '../../../component/Header';
 import AppButton from '../../../component/common/AppButton';
 import { useCancelBooking } from '../../../hooks/useCancelBooking';

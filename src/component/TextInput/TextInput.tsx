@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { Eye, EyeOff } from '../../assets/svg';
-import Colors from '../../utils/Colors.util';
+import colors, { Colors } from '../../utils/colors';
 
 type AppInputProps = TextInputProps & {
     label?: string;

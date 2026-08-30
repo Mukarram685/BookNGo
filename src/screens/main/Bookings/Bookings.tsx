@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
-import Colors from '../../../utils/Colors.util';
+import colors, { Colors } from '../../../utils/colors';
 import Header from '../../../component/Header';
 import BookingCard from '../../../component/Booking/BookingCard';
 import EmptyCard from '../../../component/common/EmptyCard';

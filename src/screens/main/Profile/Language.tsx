@@ -6,7 +6,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
-import Colors from '../../../utils/Colors.util';
+import colors, { Colors } from '../../../utils/colors';
 import Header from '../../../component/Header';
 import { setLanguage } from '../../../store/slice/language.slice';
 import Svg, { Path } from 'react-native-svg';

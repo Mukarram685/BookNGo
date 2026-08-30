@@ -4,7 +4,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
 import { Seat as SeatIcon } from '../../assets/svg';
-import colors from '../../constants/colors';
+import colors from '../../utils/colors';
 
 export const SeatLegend: React.FC = () => {
     const { t } = useTranslation();
