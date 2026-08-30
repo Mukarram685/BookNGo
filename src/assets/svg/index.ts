@@ -40,6 +40,17 @@ import Invite from './invite.svg';
 import MoreApps from './more_apps.svg';
 import Emergency from './emergency.svg';
 import CloseCircle from './close_circle.svg';
+import VerifiedBadge from './verified_badge.svg';
+import CameraBadge from './camera_badge.svg';
+import Wallet from './wallet.svg';
+import Card from './card.svg';
+import MapPin from './map_pin.svg';
+import Headset from './headset.svg';
+import Gift from './gift.svg';
+import Ticket from './ticket.svg';
+import Clock from './clock.svg';
+import CheckCircle from './check_circle.svg';
+import CrossCircle from './cross_circle.svg';
 
 export {
     Radio,
@@ -84,6 +95,17 @@ export {
     MoreApps,
     Emergency,
     CloseCircle,
+    VerifiedBadge,
+    CameraBadge,
+    Wallet,
+    Card,
+    MapPin,
+    Headset,
+    Gift,
+    Ticket,
+    Clock,
+    CheckCircle,
+    CrossCircle,
 }
 
 

@@ -100,7 +100,7 @@ const Profile = () => {
         <ScreenWrapper 
             backgroundColor={Colors.BACKGROUND} 
             header={<Header title={t('profile_title') || 'Profile'} />}
-            gradient='upper'
+            gradient='both'
         >
                 
                 <View style={styles.profileCard}>
@@ -182,12 +182,6 @@ const Profile = () => {
                     <AppText size={15} weight="800" color={Colors.RED}>
                         Log out
                     </AppText>
-                    <Arrow
-                        width={scale(14)}
-                        height={scale(14)}
-                        style={{ transform: [{ rotate: '180deg' }] }}
-                        fill={Colors.RED}
-                    />
                 </TouchableOpacity>
 
         </ScreenWrapper>
@@ -266,10 +260,10 @@ const styles = StyleSheet.create({
     logoutButton: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: Colors.SURFACE,
+        justifyContent: 'center',
+        // backgroundColor: Colors.SURFACE,
         borderRadius: scale(18),
-        paddingVertical: verticalScale(14),
+        paddingVertical: verticalScale(10),
         paddingHorizontal: scale(16),
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,

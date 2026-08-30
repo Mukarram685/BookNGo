@@ -16,6 +16,7 @@ interface AppHeaderProps {
   showSupportButton?: boolean;
   showMenuButton?: boolean;
   showNotificationButton?: boolean;
+  showSettingsButton?: boolean;
   title?: string;
   subtitle?: string;
   nameOnly?: boolean;
@@ -36,6 +37,8 @@ export default function Header({
   showName = true,
   showSupportButton = false,
   showMenuButton,
+  showNotificationButton = false,
+  showSettingsButton = false,
   title,
   subtitle,
   nameOnly = false,
@@ -93,19 +96,24 @@ export default function Header({
             </TouchableOpacity>
           ) : (
             showAvatar && (
-              avatarUrl ? (
-                <Image
-                  source={{ uri: avatarUrl }}
-                  style={styles.avatar}
-                  resizeMode="cover"
-                />
-              ) : (
-                <View style={styles.avatarCircle}>
-                  <Text style={styles.avatarText}>
-                    {getInitials(resolvedDisplayName)}
-                  </Text>
-                </View>
-              )
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('Profile')}
+              >
+                {avatarUrl ? (
+                  <Image
+                    source={{ uri: avatarUrl }}
+                    style={styles.avatar}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <View style={styles.avatarCircle}>
+                    <Text style={styles.avatarText}>
+                      {getInitials(resolvedDisplayName)}
+                    </Text>
+                  </View>
+                )}
+              </TouchableOpacity>
             )
           )}
 
@@ -137,10 +145,7 @@ export default function Header({
               style={styles.menuButton}
               activeOpacity={0.7}
               hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
-              onPress={() => {
-                console.log('Menu button pressed');
-                setMenuVisible(true)
-              }}
+              onPress={() => setMenuVisible(true)}
             >
               <View pointerEvents="none">
                 <Hamburger width={scale(20)} height={scale(20)} />

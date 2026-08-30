@@ -211,5 +211,19 @@
   "language_english": "انگریزی",
   "language_urdu": "اردو",
   "language_screen_title": "زبان",
-  "personal_info_screen_title": "ذاتی معلومات"
+  "personal_info_screen_title": "ذاتی معلومات",
+  "profile_edit": "پروفائل ایڈٹ کریں",
+  "wallet_title": "بوک اینڈ گو والٹ",
+  "wallet_available_balance": "دستیاب بیلنس",
+  "wallet_top_up": "+ والٹ ٹاپ اپ کریں",
+  "my_bookings": "میری بکنگز",
+  "view_all": "سب دیکھیں",
+  "stat_all_bookings": "تمام بکنگز",
+  "stat_upcoming": "آنے والے",
+  "stat_completed": "مکمل",
+  "stat_cancelled": "منسوخ شدہ",
+  "menu_title": "مینو",
+  "menu_payment_methods": "ادائیگی کے طریقے",
+  "menu_saved_addresses": "محفوظ شدہ پتے",
+  "menu_invite_earn": "دعوت دیں اور کمائیں"
 }

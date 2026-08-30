@@ -8,7 +8,7 @@ import {
     Share,
     Alert,
     Linking,
-    TouchableWithoutFeedback,
+    Pressable,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -51,12 +51,12 @@ const SideMenuModal: React.FC<SideMenuModalProps> = ({ visible, onClose }) => {
     const handleEmergencyAlert = () => {
         onClose();
         Alert.alert(
-            t('menu_emergency_alert') || 'Emergency Assistance',
-            'Do you need immediate emergency assistance or support helpline?',
+            t('emergency_assistance_title') || 'Emergency Assistance',
+            t('emergency_assistance_msg') || 'Do you need immediate emergency assistance or support helpline?',
             [
                 { text: t('cancel') || 'Cancel', style: 'cancel' },
                 {
-                    text: 'Call Helpline (1122)',
+                    text: t('call_helpline') || 'Call Helpline (1122)',
                     style: 'destructive',
                     onPress: () => Linking.openURL('tel:1122'),
                 },
@@ -101,115 +101,169 @@ const SideMenuModal: React.FC<SideMenuModalProps> = ({ visible, onClose }) => {
         }
     };
 
-    return (
-        <Modal
-            visible={visible}
-            transparent
-            animationType="fade"
-            onRequestClose={onClose}
-        >
-            <TouchableWithoutFeedback onPress={onClose}>
-                <View style={styles.modalOverlay}>
-                    <TouchableWithoutFeedback>
-                        <View style={styles.modalCard}>
-                            {/* Close Button Header */}
-                            <View style={styles.header}>
-                                <TouchableOpacity
-                                    activeOpacity={0.7}
-                                    onPress={onClose}
-                                    style={styles.closeButtonWrapper}
+return (
+    <Modal
+        visible={visible}
+        transparent={true}
+        animationType="fade"
+        statusBarTranslucent={true}
+        onRequestClose={onClose}
+    >
+        <View style={styles.modalOverlay}>
+            <Pressable
+                style={styles.overlayTouchable}
+                onPress={onClose}
+            />
+
+            <View style={styles.modalCard}>
+                {/* Close Button Header */}
+                <View style={styles.header}>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={onClose}
+                        style={styles.closeButtonWrapper}
+                        hitSlop={{
+                            top: 10,
+                            bottom: 10,
+                            left: 10,
+                            right: 10,
+                        }}
+                    >
+                        <CloseCircle
+                            width={scale(28)}
+                            height={scale(28)}
+                        />
+                    </TouchableOpacity>
+                </View>
+
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={styles.scrollContent}
+                >
+                    {/* Language Row */}
+                    <View style={styles.menuRow}>
+                        <View style={styles.iconCircle}>
+                            <Globe
+                                width={scale(18)}
+                                height={scale(18)}
+                            />
+                        </View>
+
+                        <AppText
+                            size={15}
+                            weight="700"
+                            color="#1E293B"
+                            style={styles.menuTitle}
+                        >
+                            {t('menu_language') || 'Language'}
+                        </AppText>
+
+                        <View style={styles.langPillContainer}>
+                            <TouchableOpacity
+                                style={[
+                                    styles.langPill,
+                                    currentLang === 'en' &&
+                                        styles.langPillActive,
+                                ]}
+                                activeOpacity={0.8}
+                                onPress={() =>
+                                    handleLanguageChange('en')
+                                }
+                            >
+                                <AppText
+                                    size={12}
+                                    weight="800"
+                                    color={
+                                        currentLang === 'en'
+                                            ? Colors.WHITE
+                                            : '#475569'
+                                    }
                                 >
-                                    <CloseCircle width={scale(28)} height={scale(28)} />
-                                </TouchableOpacity>
+                                    ENG
+                                </AppText>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[
+                                    styles.langPill,
+                                    currentLang === 'ur' &&
+                                        styles.langPillActive,
+                                ]}
+                                activeOpacity={0.8}
+                                onPress={() =>
+                                    handleLanguageChange('ur')
+                                }
+                            >
+                                <AppText
+                                    size={12}
+                                    weight="800"
+                                    color={
+                                        currentLang === 'ur'
+                                            ? Colors.WHITE
+                                            : '#475569'
+                                    }
+                                >
+                                    اردو
+                                </AppText>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    {/* Menu Items */}
+                    {SIDE_MENU_ITEMS.map((item) => (
+                        <TouchableOpacity
+                            key={item.id}
+                            style={styles.menuRow}
+                            activeOpacity={0.7}
+                            onPress={() => handleItemPress(item)}
+                        >
+                            <View
+                                style={[
+                                    styles.iconCircle,
+                                    item.isEmergency &&
+                                        styles.emergencyIconCircle,
+                                ]}
+                            >
+                                <item.Icon
+                                    width={scale(18)}
+                                    height={scale(18)}
+                                />
                             </View>
 
-                            <ScrollView
-                                showsVerticalScrollIndicator={false}
-                                contentContainerStyle={styles.scrollContent}
+                            <AppText
+                                size={15}
+                                weight="700"
+                                color={
+                                    item.isEmergency
+                                        ? '#E11D48'
+                                        : '#1E293B'
+                                }
+                                style={styles.menuTitle}
                             >
-                                {/* 1. Language Row with Pill Toggle */}
-                                <View style={styles.menuRow}>
-                                    <View style={styles.iconCircle}>
-                                        <Globe width={scale(18)} height={scale(18)} />
-                                    </View>
-                                    <AppText size={15} weight="700" color="#1E293B" style={styles.menuTitle}>
-                                        {t('menu_language') || 'Language'}
-                                    </AppText>
+                                {t(item.titleKey) ||
+                                    item.defaultTitle}
+                            </AppText>
+                        </TouchableOpacity>
+                    ))}
 
-                                    {/* Language Switcher Pill */}
-                                    <View style={styles.langPillContainer}>
-                                        <TouchableOpacity
-                                            style={[
-                                                styles.langPill,
-                                                currentLang === 'en' && styles.langPillActive,
-                                            ]}
-                                            activeOpacity={0.8}
-                                            onPress={() => handleLanguageChange('en')}
-                                        >
-                                            <AppText
-                                                size={12}
-                                                weight="800"
-                                                color={currentLang === 'en' ? Colors.WHITE : '#475569'}
-                                            >
-                                                ENG
-                                            </AppText>
-                                        </TouchableOpacity>
-
-                                        <TouchableOpacity
-                                            style={[
-                                                styles.langPill,
-                                                currentLang === 'ur' && styles.langPillActive,
-                                            ]}
-                                            activeOpacity={0.8}
-                                            onPress={() => handleLanguageChange('ur')}
-                                        >
-                                            <AppText
-                                                size={12}
-                                                weight="800"
-                                                color={currentLang === 'ur' ? Colors.WHITE : '#475569'}
-                                            >
-                                                اردو
-                                            </AppText>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-
-                                {/* Remaining Menu Items from Data */}
-                                {SIDE_MENU_ITEMS.map((item) => (
-                                    <TouchableOpacity
-                                        key={item.id}
-                                        style={styles.menuRow}
-                                        activeOpacity={0.7}
-                                        onPress={() => handleItemPress(item)}
-                                    >
-                                        <View style={[styles.iconCircle, item.isEmergency && styles.emergencyIconCircle]}>
-                                            <item.Icon width={scale(18)} height={scale(18)} />
-                                        </View>
-                                        <AppText
-                                            size={15}
-                                            weight="700"
-                                            color={item.isEmergency ? '#E11D48' : '#1E293B'}
-                                            style={styles.menuTitle}
-                                        >
-                                            {t(item.titleKey) || item.defaultTitle}
-                                        </AppText>
-                                    </TouchableOpacity>
-                                ))}
-
-                                {/* App Version Footer */}
-                                <View style={styles.footer}>
-                                    <AppText size={12} weight="600" color="#94A3B8">
-                                        {t('menu_app_version', { version: APP_VERSION }) || `App Version ${APP_VERSION}`}
-                                    </AppText>
-                                </View>
-                            </ScrollView>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </View>
-            </TouchableWithoutFeedback>
-        </Modal>
-    );
-};
+                    {/* Version */}
+                    <View style={styles.footer}>
+                        <AppText
+                            size={12}
+                            weight="600"
+                            color="#94A3B8"
+                        >
+                            {t('menu_app_version', {
+                                version: APP_VERSION,
+                            }) ||
+                                `App Version ${APP_VERSION}`}
+                        </AppText>
+                    </View>
+                </ScrollView>
+            </View>
+        </View>
+    </Modal>
+)};
 
 export default SideMenuModal;
 

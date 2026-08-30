@@ -211,5 +211,19 @@
   "language_english": "ENG",
   "language_urdu": "اردو",
   "language_screen_title": "Language",
-  "personal_info_screen_title": "Personal Information"
+  "personal_info_screen_title": "Personal Information",
+  "profile_edit": "Edit Profile",
+  "wallet_title": "BookNGo Wallet",
+  "wallet_available_balance": "Available Balance",
+  "wallet_top_up": "Top Up Wallet +",
+  "my_bookings": "My Bookings",
+  "view_all": "View All",
+  "stat_all_bookings": "All Bookings",
+  "stat_upcoming": "Upcoming",
+  "stat_completed": "Completed",
+  "stat_cancelled": "Cancelled",
+  "menu_title": "Menu",
+  "menu_payment_methods": "Payment Methods",
+  "menu_saved_addresses": "Saved Addresses",
+  "menu_invite_earn": "Invite & Earn"
 }

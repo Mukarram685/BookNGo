@@ -9,6 +9,7 @@ import {
     Help,
     MoreApps,
     Emergency,
+    Profile,
 } from '../assets/svg';
 
 export interface MenuItemData {
@@ -24,6 +25,14 @@ export interface MenuItemData {
 }
 
 export const SIDE_MENU_ITEMS: MenuItemData[] = [
+    {
+        id: 'profile',
+        titleKey: 'profile_title',
+        defaultTitle: 'Profile',
+        Icon: Profile,
+        actionType: 'navigate',
+        targetScreen: 'Profile',
+    },
     {
         id: 'notifications',
         titleKey: 'menu_notifications',
