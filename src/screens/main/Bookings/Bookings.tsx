@@ -6,10 +6,10 @@ import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import Colors from '../../../utils/Colors.util';
 import Header from '../../../component/Header';
 import BookingCard from '../../../component/Booking/BookingCard';
+import EmptyCard from '../../../component/common/EmptyCard';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useMyBookings } from '../../../hooks/useMyBookings';
 import AppLoader from '../../../component/common/AppLoader';
-import AppText from '../../../component/common/AppText';
 
 interface BookingData {
     _id: string;
@@ -27,7 +27,7 @@ interface BookingData {
 
 const Bookings = () => {
     const { t } = useTranslation();
-    const navigation = useNavigation();
+    const navigation = useNavigation<any>();
     const { data, isLoading, refetch } = useMyBookings();
 
     const handleView = (booking: Record<string, unknown>) => {
@@ -38,7 +38,7 @@ const Bookings = () => {
         return <AppLoader />;
     }
 
-    const rawBookings = (data?.bookings as BookingData[]) || [];
+    const rawBookings = ((data as any)?.bookings as BookingData[]) || [];
 
     const mappedBookings = rawBookings.map((b) => ({
         id: b._id,
@@ -48,9 +48,9 @@ const Bookings = () => {
             month: 'short',
             year: 'numeric',
         }),
-        time: b.schedule?.departureTime,
+        time: b.schedule?.departureTime || 'N/A',
         status: b.bookingStatus || 'Confirmed',
-        price: b.totalAmount.toLocaleString(),
+        price: b.totalAmount ? b.totalAmount.toLocaleString() : '0',
         fullData: b
     })) || [];
 
@@ -70,11 +70,13 @@ const Bookings = () => {
                 onRefresh={refetch}
                 refreshing={isLoading}
                 ListEmptyComponent={() => (
-                    <View style={styles.emptyContainer}>
-                        <AppText size={16} color={Colors.TEXT_GREY} align="center">
-                            No bookings found
-                        </AppText>
-                    </View>
+                    <EmptyCard
+                        title={t('no_bookings_title') || 'No Bookings Yet'}
+                        message={t('no_bookings_desc') || "You haven't booked any bus trips yet. Book your first trip to get started!"}
+                        actionButtonTitle={t('explore_buses') || 'Explore Buses'}
+                        onActionPress={() => navigation.navigate('Home')}
+                        containerStyle={styles.emptyContainer}
+                    />
                 )}
             />
         </ScreenWrapper>
@@ -83,12 +85,10 @@ const Bookings = () => {
 
 const styles = StyleSheet.create({
     emptyContainer: {
-        alignItems: 'center',
-        flex: 1,
-        justifyContent: 'center',
-        marginTop: scale(150),
+        marginTop: verticalScale(40),
     },
     listContainer: {
+        flexGrow: 1,
         paddingBottom: scale(100),
         paddingTop: verticalScale(10),
     },

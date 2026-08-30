@@ -9,6 +9,7 @@ import Colors from '../../../utils/Colors.util';
 import BusCard from '../../../component/Bus/BusCard';
 import { BusSchedule } from '../../../interface/bus.interface';
 import { useSearchBuses } from '../../../hooks/useSearchBuses';
+import EmptyCard from '../../../component/common/EmptyCard';
 import Header from '../../../component/Header';
 
 type RootStackParamList = {
@@ -96,9 +97,11 @@ const SearchResults = () => {
                     refreshing={isFetching}
                     ListEmptyComponent={
                         (!isLoading) ? (
-                            <View style={styles.emptyContainer}>
-                                <AppText color={Colors.DARK_GRAY} weight="500">{t('search_results_empty') || "No buses found for this route."}</AppText>
-                            </View>
+                            <EmptyCard
+                                title={t('no_buses_found') || "No Buses Available"}
+                                message={t('no_buses_desc') || "No buses found for this route. Please check another date or route."}
+                                containerStyle={styles.emptyContainer}
+                            />
                         ) : null
                     }
                 />
@@ -112,6 +115,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
+        flexGrow: 1,
         paddingBottom: verticalScale(20),
     },
     header: {
@@ -120,7 +124,6 @@ const styles = StyleSheet.create({
         marginBottom: verticalScale(10),
     },
     emptyContainer: {
-        alignItems: 'center',
         marginTop: verticalScale(20),
     }
 });

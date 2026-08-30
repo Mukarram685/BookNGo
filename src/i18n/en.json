@@ -159,5 +159,14 @@
   "privacy_policy_title": "Privacy Policy",
   "terms_conditions_title": "Terms & Conditions",
   "language_title": "Language",
-  "select_language": "Select Language"
+  "select_language": "Select Language",
+  "no_bookings_title": "No bookings found",
+  "no_bookings_desc": "You don't have any active bookings yet. Book a bus ticket to see your trip itinerary here.",
+  "explore_buses": "Explore Buses",
+  "no_buses_found": "No results found",
+  "no_buses_desc": "Try adjusting your filters, using a different departure date or searching for other nearby cities.",
+  "no_routes_found": "No routes available",
+  "no_routes_desc": "There are currently no active bus routes scheduled. Please pull down to refresh or check back soon.",
+  "no_cities_found_title": "No cities found",
+  "no_cities_found_desc": "Try checking the spelling or typing the name of another city in Pakistan."
 }

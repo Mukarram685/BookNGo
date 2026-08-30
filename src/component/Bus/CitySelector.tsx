@@ -10,6 +10,7 @@ import {
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
+import EmptyCard from '../common/EmptyCard';
 import AppInput from '../TextInput/TextInput';
 import Colors from '../../utils/Colors.util';
 import { PAKISTAN_CITIES } from '../../constants/Cities.constant';
@@ -145,11 +146,15 @@ const CitySelector: React.FC<CitySelectorProps> = ({
                             </TouchableOpacity>
                         )}
                         ListEmptyComponent={
-                            <View style={styles.emptyContainer}>
-                                <AppText size={14} color={Colors.TEXT_GREY}>
-                                    {t('no_cities_found', { query: searchQuery }) || `No cities found matching "${searchQuery}"`}
-                                </AppText>
-                            </View>
+                            <EmptyCard
+                                illustrationSize={scale(95)}
+                                title={t('no_cities_found_title') || "No cities found"}
+                                message={searchQuery 
+                                    ? `No matching city found for "${searchQuery}". Please check your spelling or search another city.`
+                                    : (t('no_cities_found_desc') || "Try checking the spelling or typing the name of another city in Pakistan.")
+                                }
+                                containerStyle={styles.emptyContainer}
+                            />
                         }
                         contentContainerStyle={styles.listContent}
                     />

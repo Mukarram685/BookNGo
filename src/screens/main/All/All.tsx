@@ -8,6 +8,7 @@ import Colors from '../../../utils/Colors.util';
 import BusCard from '../../../component/Bus/BusCard';
 import { BusSchedule } from '../../../interface/bus.interface';
 import { useSearchBuses } from '../../../hooks/useSearchBuses';
+import EmptyCard from '../../../component/common/EmptyCard';
 import Header from '../../../component/Header';
 
 const All = () => {
@@ -82,9 +83,11 @@ const All = () => {
                     refreshing={isFetching}
                     ListEmptyComponent={
                         (!isLoading) ? (
-                            <View style={styles.emptyContainer}>
-                                <AppText color={Colors.DARK_GRAY} weight="500">{t('no_routes_available') || "No routes found."}</AppText>
-                            </View>
+                            <EmptyCard
+                                title={t('no_routes_found') || "No Routes Available"}
+                                message={t('no_routes_desc') || "There are no active bus routes available right now."}
+                                containerStyle={styles.emptyContainer}
+                            />
                         ) : null
                     }
                 />
@@ -98,6 +101,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
+        flexGrow: 1,
         paddingBottom: verticalScale(80),
     },
     header: {
@@ -105,7 +109,6 @@ const styles = StyleSheet.create({
         paddingVertical: verticalScale(10),
     },
     emptyContainer: {
-        alignItems: 'center',
         marginTop: verticalScale(20),
     }
 });
