@@ -4,8 +4,8 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import AppText from '../common/AppText';
 import { useTranslation } from 'react-i18next';
 import AppInput from '../TextInput/TextInput';
-import Colors from '../../utils/Colors.util';
-import { User, Phone, Radio, Male, Female } from '../../assets/svg';
+import colors from '../../constants/colors';
+import { User, Phone, Radio } from '../../assets/svg';
 
 interface PassengerFormProps {
     seatNumber: number;
@@ -34,9 +34,9 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.seatBadge}>
-                    <AppText size={12} weight="800" color={Colors.WHITE}>S-{seatNumber}</AppText>
+                    <AppText size={12} weight="800" color={colors.WHITE}>S-{seatNumber}</AppText>
                 </View>
-                <AppText size={16} weight="800" color="#0F172A">{t('passenger_details_title') || "Passenger Details"}</AppText>
+                <AppText size={16} weight="800" color={colors.SLATE_DARK}>{t('passenger_details_title') || "Passenger Details"}</AppText>
             </View>
 
             <AppInput
@@ -70,7 +70,7 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
 
             {/* Gender Selection Section with Active Radio Buttons & Icons */}
             <View style={styles.genderContainer}>
-                <AppText size={13} color="#475467" weight="700" style={{ marginBottom: verticalScale(10) }}>
+                <AppText size={13} color={colors.SLATE_MEDIUM} weight="700" style={{ marginBottom: verticalScale(10) }}>
                     {t('booking_details_gender') || "Gender"}
                 </AppText>
 
@@ -86,7 +86,7 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
                         </View>
                         <AppText
                             size={14}
-                            color={currentGender === 'Male' ? '#0052CC' : '#475467'}
+                            color={currentGender === 'Male' ? colors.BLUE_PRIMARY : colors.SLATE_MEDIUM}
                             weight="700"
                             style={{ marginLeft: scale(8) }}
                         >
@@ -105,7 +105,7 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
                         </View>
                         <AppText
                             size={14}
-                            color={currentGender === 'Female' ? '#0052CC' : '#475467'}
+                            color={currentGender === 'Female' ? colors.BLUE_PRIMARY : colors.SLATE_MEDIUM}
                             weight="700"
                             style={{ marginLeft: scale(8) }}
                         >
@@ -120,13 +120,13 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.WHITE,
         borderRadius: scale(18),
         padding: scale(18),
         marginBottom: verticalScale(16),
         borderWidth: 1,
-        borderColor: '#E2E8F0',
-        shadowColor: '#0052CC',
+        borderColor: colors.BORDER_GREY,
+        shadowColor: colors.BLUE_PRIMARY,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.04,
         shadowRadius: 10,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         marginBottom: verticalScale(16),
     },
     seatBadge: {
-        backgroundColor: '#0052CC',
+        backgroundColor: colors.BLUE_PRIMARY,
         paddingHorizontal: scale(10),
         paddingVertical: verticalScale(4),
         borderRadius: scale(8),
@@ -158,36 +158,38 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#F8FAFC',
+        backgroundColor: colors.SLATE_LIGHT,
         borderRadius: scale(12),
         paddingHorizontal: scale(12),
         paddingVertical: verticalScale(11),
         borderWidth: 1.5,
-        borderColor: '#E2E8F0',
+        borderColor: colors.BORDER_GREY,
     },
     genderCardActive: {
-        backgroundColor: '#EBF3FF',
-        borderColor: '#0052CC',
+        backgroundColor: colors.BLUE_LIGHT_BG,
+        borderColor: colors.BLUE_PRIMARY,
     },
     radioCircle: {
         width: scale(18),
         height: scale(18),
         borderRadius: scale(9),
         borderWidth: 2,
-        borderColor: '#94A3B8',
+        borderColor: colors.TEXT_GREY,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.WHITE,
     },
     radioCircleActive: {
-        borderColor: '#0052CC',
+        borderColor: colors.BLUE_PRIMARY,
     },
     radioDot: {
         width: scale(9),
         height: scale(9),
         borderRadius: scale(4.5),
-        backgroundColor: '#0052CC',
+        backgroundColor: colors.BLUE_PRIMARY,
     },
 });
+
+export default PassengerForm;
 
 export default PassengerForm;

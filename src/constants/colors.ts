@@ -1,0 +1,74 @@
+const colors = {
+  // Brand Colors
+  PRIMARY: '#172C6B', // Dark Navy (Logo/Headers)
+  SECONDARY: '#268AFF', // Bright Blue (Buttons/Actions)
+  ACCENT: '#7ED3EF', // Sky Blue (Highlights)
+  SUCCESS: '#2CC93C', // Vibrant Green
+
+  // Neutral Palette
+  BLACK: '#000000',
+  WHITE: '#FFFFFF',
+  BACKGROUND: '#F8FAFF', // Very Light Blue Tint
+  SURFACE: '#FFFFFF',
+  BORDER_GREY: '#E2E8F0',
+  DARK_GRAY: '#475569',
+  TEXT_GREY: '#94A3B8',
+
+  // Seat Selection Colors
+  SEAT_AVAILABLE: '#4A69BD',
+  SEAT_BOOKED: '#A61C1C',
+  SEAT_SELECTED: '#CBD5E1',
+  SEAT_SELECTED_BORDER: '#B0B8C4',
+
+  // Functional Colors
+  RED: '#FF3B31',
+  YELLOW: '#FFC107',
+  DARK_BG: '#0F172A', // Deep Slate for dark mode elements
+  INPUT_BG: '#F1F5F9',
+  TRANSPARENT: 'rgba(0,0,0,0)',
+
+  // Supporting Brand & Theme Colors
+  BLUE_MEDIUM: '#253D84',
+  BLUE_LIGHT: '#3B5399',
+  BLUE_PRIMARY: '#0052CC',
+  BLUE_LIGHT_BG: '#EBF3FF',
+  BLUE_BORDER: '#B9D5FF',
+  BLUE_DARK: '#1E40AF',
+
+  // Additional Badge & Status Colors
+  GREEN_SUCCESS: '#16A34A',
+  GREEN_LIGHT_BG: '#E6F7ED',
+  GREEN_ALERT_BG: '#DCFCE7',
+  AMBER_WARNING: '#D97706',
+  AMBER_LIGHT_BG: '#FEF3C7',
+  SLATE_DARK: '#0F172A',
+  SLATE_MEDIUM: '#475467',
+  SLATE_MUTED: '#64748B',
+  SLATE_LIGHT: '#F8FAFC',
+};
+
+export default colors;
+export { colors, colors as Colors };
+
+export function alpha(color: string, alphaValue: number): string {
+  const rgbaColor = hexToRgba(color);
+  return `rgba(${rgbaColor.r}, ${rgbaColor.g}, ${rgbaColor.b}, ${alphaValue})`;
+}
+
+function hexToRgba(hex: string): { r: number; g: number; b: number } {
+  let r = 0;
+  let g = 0;
+  let b = 0;
+
+  if (hex?.length === 4) {
+    r = parseInt(hex[1] + hex[1], 16);
+    g = parseInt(hex[2] + hex[2], 16);
+    b = parseInt(hex[3] + hex[3], 16);
+  } else if (hex?.length === 7) {
+    r = parseInt(hex[1] + hex[2], 16);
+    g = parseInt(hex[3] + hex[4], 16);
+    b = parseInt(hex[5] + hex[6], 16);
+  }
+
+  return { r, g, b };
+}

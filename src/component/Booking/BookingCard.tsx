@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import AppText from '../common/AppText';
 import { useTranslation } from 'react-i18next';
-import Colors from '../../utils/Colors.util';
+import colors from '../../constants/colors';
 import { scale, verticalScale } from 'react-native-size-matters';
 
 interface BookingCardProps {
@@ -25,11 +25,11 @@ const BookingCard = ({ booking, onView }: BookingCardProps) => {
         <View style={styles.card}>
             <View style={styles.header}>
                 <View style={styles.headerTextContainer}>
-                    <AppText size={16} weight="bold" color={Colors.PRIMARY}>{booking.route}</AppText>
-                    <AppText size={12} color={Colors.TEXT_GREY}>{t('booking_details_id') || "ID"}: #{booking.id}</AppText>
+                    <AppText size={16} weight="bold" color={colors.PRIMARY}>{booking.route}</AppText>
+                    <AppText size={12} color={colors.TEXT_GREY}>{t('booking_details_id') || "ID"}: #{booking.id}</AppText>
                 </View>
-                <View style={[styles.statusBadge, { backgroundColor: isCompleted ? '#E6F7ED' : '#FEF3C7' }]}>
-                    <AppText size={10} weight="800" color={isCompleted ? '#2CC93C' : '#D97706'}>
+                <View style={[styles.statusBadge, { backgroundColor: isCompleted ? colors.GREEN_LIGHT_BG : colors.AMBER_LIGHT_BG }]}>
+                    <AppText size={10} weight="800" color={isCompleted ? colors.SUCCESS : colors.AMBER_WARNING}>
                         {booking.status.toUpperCase()}
                     </AppText>
                 </View>
@@ -37,22 +37,22 @@ const BookingCard = ({ booking, onView }: BookingCardProps) => {
             
             <View style={styles.details}>
                 <View style={styles.detailItem}>
-                    <AppText size={11} color={Colors.TEXT_GREY} weight="700">{t('booking_details_date') || "DATE"}</AppText>
-                    <AppText size={14} weight="600" color={Colors.PRIMARY}>{booking.date}</AppText>
+                    <AppText size={11} color={colors.TEXT_GREY} weight="700">{t('booking_details_date') || "DATE"}</AppText>
+                    <AppText size={14} weight="600" color={colors.PRIMARY}>{booking.date}</AppText>
                 </View>
                 <View style={styles.detailItem}>
-                    <AppText size={11} color={Colors.TEXT_GREY} weight="700">{t('booking_details_time') || "TIME"}</AppText>
-                    <AppText size={14} weight="600" color={Colors.PRIMARY}>{booking.time}</AppText>
+                    <AppText size={11} color={colors.TEXT_GREY} weight="700">{t('booking_details_time') || "TIME"}</AppText>
+                    <AppText size={14} weight="600" color={colors.PRIMARY}>{booking.time}</AppText>
                 </View>
             </View>
 
             <View style={styles.footer}>
                 <View>
-                    <AppText size={11} color={Colors.TEXT_GREY} weight="700">{t('booking_card_total_price') || "TOTAL PRICE"}</AppText>
-                    <AppText size={18} weight="800" color={Colors.PRIMARY}>Rs. {booking.price}</AppText>
+                    <AppText size={11} color={colors.TEXT_GREY} weight="700">{t('booking_card_total_price') || "TOTAL PRICE"}</AppText>
+                    <AppText size={18} weight="800" color={colors.PRIMARY}>Rs. {booking.price}</AppText>
                 </View>
                 <TouchableOpacity style={styles.viewButton} onPress={onView} activeOpacity={0.8}>
-                    <AppText size={14} weight="700" color={Colors.WHITE}>{t('booking_card_view') || "View"}</AppText>
+                    <AppText size={14} weight="700" color={colors.WHITE}>{t('booking_card_view') || "View"}</AppText>
                 </TouchableOpacity>
             </View>
         </View>
@@ -61,13 +61,13 @@ const BookingCard = ({ booking, onView }: BookingCardProps) => {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: Colors.WHITE,
+        backgroundColor: colors.WHITE,
         borderRadius: scale(16),
         padding: scale(18),
         marginVertical: verticalScale(8),
         borderWidth: 1,
-        borderColor: Colors.BORDER_GREY,
-        shadowColor: '#000',
+        borderColor: colors.BORDER_GREY,
+        shadowColor: colors.BLACK,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.03,
         shadowRadius: 10,
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         paddingVertical: scale(12),
         borderTopWidth: 1,
         borderBottomWidth: 1,
-        borderColor: Colors.BORDER_GREY,
+        borderColor: colors.BORDER_GREY,
     },
     detailItem: {
         flex: 1,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     viewButton: {
-        backgroundColor: '#172C6B', // Brand navy
+        backgroundColor: colors.PRIMARY,
         paddingHorizontal: scale(24),
         paddingVertical: scale(10),
         borderRadius: scale(10),

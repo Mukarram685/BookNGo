@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Header from '../../../component/Header';
-import Colors from '../../../utils/Colors.util';
+import colors, { alpha } from '../../../constants/colors';
 import SeatItem from '../../../component/Seat/SeatItem';
 import SeatLegend from '../../../component/Seat/SeatLegend';
 import CabinHeader from '../../../component/Seat/CabinHeader';
@@ -214,19 +214,19 @@ const styles = StyleSheet.create({
     },
     loadingOverlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(255,255,255,0.4)',
+        backgroundColor: alpha(colors.WHITE, 0.4),
         zIndex: 999,
         justifyContent: 'center',
         alignItems: 'center',
     },
     busCabin: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.WHITE,
         borderRadius: scale(24),
         borderWidth: 1,
-        borderColor: '#E2E8F0',
+        borderColor: colors.BORDER_GREY,
         paddingBottom: verticalScale(20),
         paddingTop: verticalScale(12),
-        shadowColor: '#0052CC',
+        shadowColor: colors.BLUE_PRIMARY,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.05,
         shadowRadius: 10,
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
         right: 0,
     },
     checkoutContent: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: colors.WHITE,
         borderRadius: scale(20),
         paddingVertical: verticalScale(12),
         paddingHorizontal: scale(16),
@@ -267,8 +267,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#E2E8F0',
-        shadowColor: '#0052CC',
+        borderColor: colors.BORDER_GREY,
+        shadowColor: colors.BLUE_PRIMARY,
         shadowOffset: { width: 0, height: -4 },
         shadowOpacity: 0.08,
         shadowRadius: 12,
@@ -284,20 +284,20 @@ const styles = StyleSheet.create({
         width: scale(40),
         height: scale(40),
         borderRadius: scale(14),
-        backgroundColor: '#DCFCE7',
+        backgroundColor: colors.GREEN_ALERT_BG,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: scale(10),
     },
     payButton: {
-        backgroundColor: '#0052CC',
+        backgroundColor: colors.BLUE_PRIMARY,
         paddingHorizontal: scale(20),
         paddingVertical: verticalScale(11),
         borderRadius: scale(12),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        shadowColor: '#0052CC',
+        shadowColor: colors.BLUE_PRIMARY,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         shadowRadius: 4,

@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
 import { BusSchedule } from '../../interface/bus.interface';
 import { Bus as BusIcon, Wifi, AC, Seat, LocationB, Arrow } from '../../assets/svg';
+import colors from '../../constants/colors';
 
 interface BusCardProps {
   item: BusSchedule;
@@ -47,14 +48,14 @@ const BusCard = ({ item }: BusCardProps) => {
             />
           </View>
           <View style={styles.nameAndClass}>
-            <AppText size={16} weight="800" color="#0F172A" numberOfLines={1}>
+            <AppText size={16} weight="800" color={colors.SLATE_DARK} numberOfLines={1}>
               {item.busName || 'Test Express 314'}
             </AppText>
             <View style={styles.luxuryBadge}>
-              <AppText size={10} color="#0052CC" style={{ marginRight: 3 }}>
+              <AppText size={10} color={colors.BLUE_PRIMARY} style={{ marginRight: 3 }}>
                 👑
               </AppText>
-              <AppText size={11} weight="700" color="#0052CC">
+              <AppText size={11} weight="700" color={colors.BLUE_PRIMARY}>
                 {item.busType || 'Luxury'}
               </AppText>
             </View>
@@ -62,10 +63,10 @@ const BusCard = ({ item }: BusCardProps) => {
         </View>
 
         <View style={styles.priceContainer}>
-          <AppText size={18} weight="900" color="#0052CC" numberOfLines={1}>
+          <AppText size={18} weight="900" color={colors.BLUE_PRIMARY} numberOfLines={1}>
             Rs. {formattedPrice}
           </AppText>
-          <AppText size={11} color="#64748B" weight="500" style={{ marginTop: 1 }}>
+          <AppText size={11} color={colors.SLATE_MUTED} weight="500" style={{ marginTop: 1 }}>
             {t('per_seat') || 'Per seat'}
           </AppText>
         </View>
@@ -76,15 +77,15 @@ const BusCard = ({ item }: BusCardProps) => {
         <View style={styles.routeRow}>
           {/* Departure */}
           <View style={styles.timeLocContainer}>
-            <AppText size={17} weight="900" color="#0F172A">
+            <AppText size={17} weight="900" color={colors.SLATE_DARK}>
               {item.departureTime || '08:00 AM'}
             </AppText>
-            <AppText size={13} color="#475467" weight="600" numberOfLines={1} style={{ marginTop: 2 }}>
+            <AppText size={13} color={colors.SLATE_MEDIUM} weight="600" numberOfLines={1} style={{ marginTop: 2 }}>
               {item.fromCity || 'Lahore'}
             </AppText>
             <View style={styles.terminalRow}>
-              <LocationB width={scale(11)} height={scale(11)} color="#64748B" />
-              <AppText size={10} color="#64748B" weight="500" numberOfLines={1} style={{ marginLeft: 3 }}>
+              <LocationB width={scale(11)} height={scale(11)} color={colors.SLATE_MUTED} />
+              <AppText size={10} color={colors.SLATE_MUTED} weight="500" numberOfLines={1} style={{ marginLeft: 3 }}>
                 {item.fromCity || 'Lahore'} Terminal
               </AppText>
             </View>
@@ -93,40 +94,40 @@ const BusCard = ({ item }: BusCardProps) => {
           {/* Duration & Route Graphic */}
           <View style={styles.durationContainer}>
             <View style={styles.durationPill}>
-              <AppText size={10} weight="700" color="#475467">
+              <AppText size={10} weight="700" color={colors.SLATE_MEDIUM}>
                 {item.duration || '4h'}
               </AppText>
             </View>
 
             <View style={styles.routeLineWrap}>
               <Svg width="100%" height={24} viewBox="0 0 100 24">
-                <Circle cx="4" cy="12" r="3" fill="#FFFFFF" stroke="#0052CC" strokeWidth={2} />
-                <Path d="M10 12 H42" stroke="#B9D5FF" strokeWidth={1.5} strokeDasharray="3,3" />
-                <Circle cx="50" cy="12" r="10" fill="#EBF3FF" />
-                <Path d="M58 12 H90" stroke="#B9D5FF" strokeWidth={1.5} strokeDasharray="3,3" />
-                <Circle cx="96" cy="12" r="3" fill="#FFFFFF" stroke="#0052CC" strokeWidth={2} />
+                <Circle cx="4" cy="12" r="3" fill={colors.WHITE} stroke={colors.BLUE_PRIMARY} strokeWidth={2} />
+                <Path d="M10 12 H42" stroke={colors.BLUE_BORDER} strokeWidth={1.5} strokeDasharray="3,3" />
+                <Circle cx="50" cy="12" r="10" fill={colors.BLUE_LIGHT_BG} />
+                <Path d="M58 12 H90" stroke={colors.BLUE_BORDER} strokeWidth={1.5} strokeDasharray="3,3" />
+                <Circle cx="96" cy="12" r="3" fill={colors.WHITE} stroke={colors.BLUE_PRIMARY} strokeWidth={2} />
               </Svg>
               <View style={styles.busIconBadge}>
-                <BusIcon width={scale(11)} height={scale(11)} color="#0052CC" />
+                <BusIcon width={scale(11)} height={scale(11)} color={colors.BLUE_PRIMARY} />
               </View>
             </View>
 
-            <AppText size={11} weight="700" color="#16A34A" style={{ marginTop: 2 }}>
+            <AppText size={11} weight="700" color={colors.GREEN_SUCCESS} style={{ marginTop: 2 }}>
               {t('direct_route') || 'Direct'}
             </AppText>
           </View>
 
           {/* Arrival */}
           <View style={[styles.timeLocContainer, { alignItems: 'flex-end' }]}>
-            <AppText size={17} weight="900" color="#0F172A">
+            <AppText size={17} weight="900" color={colors.SLATE_DARK}>
               {item.arrivalTime || '12:00 PM'}
             </AppText>
-            <AppText size={13} color="#475467" weight="600" numberOfLines={1} style={{ marginTop: 2 }}>
+            <AppText size={13} color={colors.SLATE_MEDIUM} weight="600" numberOfLines={1} style={{ marginTop: 2 }}>
               {item.toCity || 'Karachi'}
             </AppText>
             <View style={styles.terminalRow}>
-              <LocationB width={scale(11)} height={scale(11)} color="#64748B" />
-              <AppText size={10} color="#64748B" weight="500" numberOfLines={1} style={{ marginLeft: 3 }}>
+              <LocationB width={scale(11)} height={scale(11)} color={colors.SLATE_MUTED} />
+              <AppText size={10} color={colors.SLATE_MUTED} weight="500" numberOfLines={1} style={{ marginLeft: 3 }}>
                 {item.toCity || 'Karachi'} Terminal
               </AppText>
             </View>
@@ -138,31 +139,31 @@ const BusCard = ({ item }: BusCardProps) => {
           <View style={styles.amenitiesContainer}>
             {/* Seat Layout */}
             <View style={styles.amenityChip}>
-              <Seat width={scale(12)} height={scale(12)} color="#1E40AF" />
-              <AppText size={11} weight="600" color="#1E40AF" style={{ marginLeft: 4 }}>
+              <Seat width={scale(12)} height={scale(12)} color={colors.BLUE_DARK} />
+              <AppText size={11} weight="600" color={colors.BLUE_DARK} style={{ marginLeft: 4 }}>
                 {seatLayoutText}
               </AppText>
             </View>
 
             {/* AC */}
             <View style={styles.amenityChip}>
-              <AC width={scale(12)} height={scale(12)} color="#1E40AF" />
-              <AppText size={11} weight="600" color="#1E40AF" style={{ marginLeft: 4 }}>
+              <AC width={scale(12)} height={scale(12)} color={colors.BLUE_DARK} />
+              <AppText size={11} weight="600" color={colors.BLUE_DARK} style={{ marginLeft: 4 }}>
                 AC
               </AppText>
             </View>
 
             {/* Wi-Fi */}
             <View style={styles.amenityChip}>
-              <Wifi width={scale(12)} height={scale(12)} color="#1E40AF" />
-              <AppText size={11} weight="600" color="#1E40AF" style={{ marginLeft: 4 }}>
+              <Wifi width={scale(12)} height={scale(12)} color={colors.BLUE_DARK} />
+              <AppText size={11} weight="600" color={colors.BLUE_DARK} style={{ marginLeft: 4 }}>
                 Wi-Fi
               </AppText>
             </View>
 
             {extraCount > 0 && (
               <View style={styles.extraChip}>
-                <AppText size={11} weight="600" color="#64748B">
+                <AppText size={11} weight="600" color={colors.SLATE_MUTED}>
                   +{extraCount} More
                 </AppText>
               </View>
@@ -174,13 +175,13 @@ const BusCard = ({ item }: BusCardProps) => {
             activeOpacity={0.85}
             onPress={handleBookPress}
           >
-            <AppText size={13} weight="800" color="#FFFFFF">
+            <AppText size={13} weight="800" color={colors.WHITE}>
               {t('select_seat') || 'Select Seat'}
             </AppText>
             <Arrow
               width={scale(12)}
               height={scale(12)}
-              fill="#FFFFFF"
+              fill={colors.WHITE}
               style={{ transform: [{ rotate: '180deg' }], marginLeft: scale(6) }}
             />
           </TouchableOpacity>
@@ -192,15 +193,15 @@ const BusCard = ({ item }: BusCardProps) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.WHITE,
     borderRadius: scale(18),
     borderLeftWidth: scale(5),
-    borderLeftColor: '#0052CC',
+    borderLeftColor: colors.BLUE_PRIMARY,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: colors.BORDER_GREY,
     padding: scale(14),
     marginVertical: verticalScale(8),
-    shadowColor: '#0052CC',
+    shadowColor: colors.BLUE_PRIMARY,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.06,
     shadowRadius: 12,
@@ -223,9 +224,9 @@ const styles = StyleSheet.create({
     height: scale(48),
     borderRadius: scale(12),
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: colors.BORDER_GREY,
     padding: scale(3),
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.WHITE,
     marginRight: scale(10),
     justifyContent: 'center',
     alignItems: 'center',
@@ -239,7 +240,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   luxuryBadge: {
-    backgroundColor: '#EBF3FF',
+    backgroundColor: colors.BLUE_LIGHT_BG,
     paddingHorizontal: scale(7),
     paddingVertical: verticalScale(2),
     borderRadius: scale(6),
@@ -254,10 +255,10 @@ const styles = StyleSheet.create({
     marginLeft: scale(8),
   },
   innerRouteBox: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.SLATE_LIGHT,
     borderRadius: scale(14),
     borderWidth: 1,
-    borderColor: '#F1F5F9',
+    borderColor: colors.INPUT_BG,
     padding: scale(12),
   },
   routeRow: {
@@ -279,7 +280,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(2),
   },
   durationPill: {
-    backgroundColor: '#E2E8F0',
+    backgroundColor: colors.BORDER_GREY,
     paddingHorizontal: scale(8),
     paddingVertical: verticalScale(2),
     borderRadius: scale(8),
@@ -305,7 +306,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(12),
     paddingTop: verticalScale(10),
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
+    borderTopColor: colors.BORDER_GREY,
   },
   amenitiesContainer: {
     flexDirection: 'row',
@@ -315,7 +316,7 @@ const styles = StyleSheet.create({
     marginRight: scale(6),
   },
   amenityChip: {
-    backgroundColor: '#EFF6FF',
+    backgroundColor: colors.BLUE_LIGHT_BG,
     borderRadius: scale(6),
     paddingHorizontal: scale(7),
     paddingVertical: verticalScale(3),
@@ -325,21 +326,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   extraChip: {
-    backgroundColor: '#F1F5F9',
+    backgroundColor: colors.INPUT_BG,
     borderRadius: scale(6),
     paddingHorizontal: scale(6),
     paddingVertical: verticalScale(3),
     marginBottom: verticalScale(2),
   },
   selectButton: {
-    backgroundColor: '#0052CC',
+    backgroundColor: colors.BLUE_PRIMARY,
     borderRadius: scale(10),
     paddingHorizontal: scale(14),
     paddingVertical: verticalScale(9),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#0052CC',
+    shadowColor: colors.BLUE_PRIMARY,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
