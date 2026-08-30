@@ -43,13 +43,13 @@ const Language = () => {
     return (
         <ScreenWrapper 
             backgroundColor={Colors.BACKGROUND} 
-            header={<Header title="Language" showBack={true} />}
+            header={<Header title={t('language_title') || "Language"} showBack={true} />}
         >
             <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
             <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
                 
                 <AppText size={13} color={Colors.TEXT_GREY} weight="800" style={styles.sectionHeader}>
-                    SELECT APP LANGUAGE
+                    {t('select_language') || "SELECT APP LANGUAGE"}
                 </AppText>
 
                 {/* Languages Card Container */}

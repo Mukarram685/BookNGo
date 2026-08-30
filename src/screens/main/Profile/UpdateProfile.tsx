@@ -3,6 +3,7 @@ import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Colors from '../../../utils/Colors.util';
@@ -11,6 +12,7 @@ import { useGetProfile, useUpdateProfile } from '../../../hooks/useProfile';
 
 const UpdateProfile = () => {
     const navigation = useNavigation();
+    const { t } = useTranslation();
     const authUser = useSelector((state: any) => state.auth.user);
     const { data: profile } = useGetProfile(authUser?.id || authUser?._id);
     const updateProfileMutation = useUpdateProfile();
@@ -62,7 +64,7 @@ const UpdateProfile = () => {
     return (
         <ScreenWrapper 
             backgroundColor={Colors.BACKGROUND} 
-            header={<Header title="Personal Information" showBack={true} />}
+            header={<Header title={t('personal_info_screen_title') || "Personal Information"} showBack={true} />}
         >  
                 {/* Centered Avatar */}
                 <View style={styles.avatarSection}>
@@ -77,33 +79,33 @@ const UpdateProfile = () => {
                 <View style={styles.formCard}>
                     <View style={styles.inputGroup}>
                         <AppText size={12} color={Colors.TEXT_GREY} weight="800" style={styles.label}>
-                            FULL NAME
+                            {t('full_name') || "FULL NAME"}
                         </AppText>
                         <TextInput
                             style={styles.textInput}
                             value={name}
                             onChangeText={setName}
-                            placeholder="Enter your name"
+                            placeholder={t('auth_signup_namePlaceholder') || "Enter your name"}
                             placeholderTextColor={Colors.TEXT_GREY}
                         />
                     </View>
 
                     <View style={styles.inputGroup}>
                         <AppText size={12} color={Colors.TEXT_GREY} weight="800" style={styles.label}>
-                            EMAIL ADDRESS
+                            {t('email_address') || "EMAIL ADDRESS"}
                         </AppText>
                         <TextInput
                             style={[styles.textInput, styles.disabledInput]}
                             value={email}
                             editable={false}
-                            placeholder="Email address"
+                            placeholder={t('auth_signup_emailPlaceholder') || "Email address"}
                             placeholderTextColor={Colors.TEXT_GREY}
                         />
                     </View>
 
                     <View style={styles.inputGroup}>
                         <AppText size={12} color={Colors.TEXT_GREY} weight="800" style={styles.label}>
-                            CNIC
+                            {t('auth_signup_cnicLabel') || "CNIC"}
                         </AppText>
                         <TextInput
                             style={styles.textInput}
@@ -118,13 +120,13 @@ const UpdateProfile = () => {
 
                     <View style={styles.inputGroup}>
                         <AppText size={12} color={Colors.TEXT_GREY} weight="800" style={styles.label}>
-                            PHONE NUMBER
+                            {t('phone_number') || "PHONE NUMBER"}
                         </AppText>
                         <TextInput
                             style={styles.textInput}
                             value={phone}
                             onChangeText={setPhone}
-                            placeholder="Enter phone number"
+                            placeholder={t('auth_signup_phonePlaceholder') || "Enter phone number"}
                             placeholderTextColor={Colors.TEXT_GREY}
                             keyboardType="phone-pad"
                         />
@@ -139,7 +141,7 @@ const UpdateProfile = () => {
                     activeOpacity={0.8}
                 >
                     <AppText size={16} weight="700" color={Colors.WHITE}>
-                        {updateProfileMutation.isPending ? 'Updating...' : 'Save Changes'}
+                        {updateProfileMutation.isPending ? t('bookingReview_processing') || 'Updating...' : t('save_changes') || 'Save Changes'}
                     </AppText>
                 </TouchableOpacity>
         </ScreenWrapper>

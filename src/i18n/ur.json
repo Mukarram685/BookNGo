@@ -202,5 +202,14 @@
   "support_session_modal_title": "لائیو سپورٹ سیشن",
   "support_send_msg": "پیغام بھیجیں",
   "support_input_placeholder": "اپنا مسئلہ یا بکنگ آئی ڈی درج کریں...",
-  "support_ticket_success": "سپورٹ سیشن شروع ہو گیا۔ ٹکٹ #BNG-8492 تفویض کر دیا گیا۔"
+  "support_ticket_success": "سپورٹ سیشن شروع ہو گیا۔ ٹکٹ #BNG-8492 تفویض کر دیا گیا۔",
+  "hi_greeting": "سلام، {{name}}",
+  "emergency_assistance_title": "ایمرجنسی امداد",
+  "emergency_assistance_msg": "کیا آپ کو فوری طور پر ایمرجنسی امداد یا ہیلپ لائن کی ضرورت ہے؟",
+  "call_helpline": "ہیلپ لائن پر کال کریں (1122)",
+  "personal_info_title": "ذاتی معلومات",
+  "language_english": "انگریزی",
+  "language_urdu": "اردو",
+  "language_screen_title": "زبان",
+  "personal_info_screen_title": "ذاتی معلومات"
 }

@@ -202,5 +202,14 @@
   "support_session_modal_title": "Live Support Session",
   "support_send_msg": "Send Message",
   "support_input_placeholder": "Describe your issue or booking ID...",
-  "support_ticket_success": "Support session started. Ticket #BNG-8492 assigned."
+  "support_ticket_success": "Support session started. Ticket #BNG-8492 assigned.",
+  "hi_greeting": "Hi, {{name}}",
+  "emergency_assistance_title": "Emergency Assistance",
+  "emergency_assistance_msg": "Do you need immediate emergency assistance or support helpline?",
+  "call_helpline": "Call Helpline (1122)",
+  "personal_info_title": "Personal Information",
+  "language_english": "ENG",
+  "language_urdu": "اردو",
+  "language_screen_title": "Language",
+  "personal_info_screen_title": "Personal Information"
 }

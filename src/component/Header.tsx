@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { Arrow, Hamburger } from '../assets/svg';
-import Colors from '../utils/Colors.util';
+import colors from '../constants/colors';
 import SideMenuModal from './common/SideMenuModal';
 
 interface AppHeaderProps {
@@ -34,8 +34,8 @@ const COLOR_TITLE = '#1A1A1A';
 export default function Header({
   showAvatar = true,
   showName = true,
-  showSupportButton = true,
-  showMenuButton = true,
+  showSupportButton = false,
+  showMenuButton,
   title,
   subtitle,
   nameOnly = false,
@@ -48,6 +48,7 @@ export default function Header({
   showBack = false,
 }: AppHeaderProps) {
   const navigation = useNavigation<any>();
+  const route = useRoute<any>();
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
   const authUser = useSelector((state: any) => state.auth.user);
@@ -66,7 +67,9 @@ export default function Header({
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   };
 
-  const shouldShowMenu = showMenuButton || showSupportButton;
+  const routeName = route?.name;
+  const isAllowedMenuScreen = routeName === 'Home' || routeName === 'Bookings' || routeName === 'All';
+  const shouldShowMenu = showMenuButton !== undefined ? showMenuButton : isAllowedMenuScreen;
 
   return (
     <View
@@ -86,7 +89,7 @@ export default function Header({
               activeOpacity={0.7}
               onPress={() => navigation.goBack()}
             >
-              <Arrow width={scale(18)} height={scale(18)} fill={Colors.PRIMARY} />
+              <Arrow width={scale(18)} height={scale(18)} fill={colors.PRIMARY} />
             </TouchableOpacity>
           ) : (
             showAvatar && (
@@ -116,7 +119,7 @@ export default function Header({
             {showName && (
               <>
                 <Text style={styles.title} numberOfLines={1}>
-                  {title ? title : (nameOnly ? resolvedDisplayName : t(`Hi, ${resolvedDisplayName}`)) }
+                  {title ? title : (nameOnly ? resolvedDisplayName : t('hi_greeting', { name: resolvedDisplayName })) }
                 </Text>
                 {subtitle ? (
                   <Text style={styles.subtitle} numberOfLines={1}>
@@ -133,9 +136,15 @@ export default function Header({
             <TouchableOpacity
               style={styles.menuButton}
               activeOpacity={0.7}
-              onPress={() => setMenuVisible(true)}
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+              onPress={() => {
+                console.log('Menu button pressed');
+                setMenuVisible(true)
+              }}
             >
-              <Hamburger width={scale(20)} height={scale(20)} />
+              <View pointerEvents="none">
+                <Hamburger width={scale(20)} height={scale(20)} />
+              </View>
             </TouchableOpacity>
           )}
         </View>
@@ -156,7 +165,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   avatar: {
-    borderColor: Colors.WHITE,
+    borderColor: colors.WHITE,
     borderRadius: scale(24),
     borderWidth: 1,
     height: scale(48),
@@ -164,27 +173,27 @@ const styles = StyleSheet.create({
   },
   avatarCircle: {
     alignItems: 'center',
-    backgroundColor: '#172C6B', // Brand Navy
-    borderColor: Colors.WHITE,
+    backgroundColor: colors.PRIMARY,
+    borderColor: colors.WHITE,
     borderRadius: scale(24),
     borderWidth: 2,
     height: scale(48),
     justifyContent: 'center',
-    shadowColor: Colors.BLACK,
+    shadowColor: colors.BLACK,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     width: scale(48),
   },
   avatarText: {
-    color: Colors.WHITE,
+    color: colors.WHITE,
     fontSize: scale(18),
     fontWeight: '800',
   },
   backButton: {
     alignItems: 'center',
-    backgroundColor: Colors.WHITE,
-    borderColor: Colors.BORDER_GREY,
+    backgroundColor: colors.WHITE,
+    borderColor: colors.BORDER_GREY,
     borderRadius: scale(20),
     borderWidth: 1,
     height: scale(40),
@@ -200,13 +209,13 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     alignItems: 'center',
-    backgroundColor: Colors.WHITE,
-    borderColor: Colors.BORDER_GREY,
+    backgroundColor: colors.WHITE,
+    borderColor: colors.BORDER_GREY,
     borderRadius: scale(22),
     borderWidth: 1,
     height: scale(44),
     justifyContent: 'center',
-    shadowColor: Colors.BLACK,
+    shadowColor: colors.BLACK,
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.08,
     shadowRadius: 3,
