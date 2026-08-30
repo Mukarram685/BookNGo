@@ -31,7 +31,15 @@ import Logout from './logout.svg';
 import More from './more.svg';
 import All from './all.svg';
 import LocationB from './location-blue.svg';
-import HeadPhoneB from './headphone-blue.svg'
+import HeadPhoneB from './headphone-blue.svg';
+import Hamburger from './hamburger.svg';
+import Globe from './globe.svg';
+import Feedback from './feedback.svg';
+import Privacy from './privacy.svg';
+import Invite from './invite.svg';
+import MoreApps from './more_apps.svg';
+import Emergency from './emergency.svg';
+import CloseCircle from './close_circle.svg';
 
 export {
     Radio,
@@ -67,7 +75,15 @@ export {
     More,
     All,
     LocationB,
-    HeadPhoneB
+    HeadPhoneB,
+    Hamburger,
+    Globe,
+    Feedback,
+    Privacy,
+    Invite,
+    MoreApps,
+    Emergency,
+    CloseCircle,
 }
 
 
