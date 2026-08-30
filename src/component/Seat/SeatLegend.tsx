@@ -11,16 +11,22 @@ export const SeatLegend: React.FC = () => {
         <View style={styles.legendCard}>
             <View style={styles.legendRow}>
                 <View style={styles.legendItem}>
-                    <SeatIcon width={scale(18)} height={scale(18)} color="#94A3B8" />
-                    <AppText size={12} weight="600" color="#475467">{t('seatSelection_selected') || "Selected"}</AppText>
+                    <SeatIcon width={scale(18)} height={scale(18)} color="#172C6B" />
+                    <AppText size={12} weight="600" color="#172C6B">
+                        {t('seatSelection_available') || "Available"}
+                    </AppText>
                 </View>
                 <View style={styles.legendItem}>
-                    <SeatIcon width={scale(18)} height={scale(18)} color="#0052CC" />
-                    <AppText size={12} weight="600" color="#475467">{t('seatSelection_available') || "Available"}</AppText>
+                    <SeatIcon width={scale(18)} height={scale(18)} color="#16A34A" />
+                    <AppText size={12} weight="600" color="#16A34A">
+                        {t('seatSelection_selected') || "Selected"}
+                    </AppText>
                 </View>
                 <View style={styles.legendItem}>
                     <SeatIcon width={scale(18)} height={scale(18)} color="#DC2626" />
-                    <AppText size={12} weight="600" color="#475467">{t('seatSelection_booked') || "Reserved"}</AppText>
+                    <AppText size={12} weight="600" color="#DC2626">
+                        {t('seatSelection_booked') || "Reserved"}
+                    </AppText>
                 </View>
             </View>
         </View>
@@ -37,7 +43,7 @@ const styles = StyleSheet.create({
         marginBottom: verticalScale(14),
         paddingHorizontal: scale(14),
         paddingVertical: verticalScale(14),
-        shadowColor: '#0052CC',
+        shadowColor: '#000000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.04,
         shadowRadius: 6,
