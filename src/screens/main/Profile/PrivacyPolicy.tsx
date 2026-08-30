@@ -6,6 +6,8 @@ import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import Colors from '../../../utils/Colors.util';
 import Header from '../../../component/Header';
+import { Privacy } from '../../../assets/svg';
+import { PRIVACY_POLICY_SECTIONS, POLICY_LAST_UPDATED } from '../../../data/privacyPolicy.data';
 
 const PrivacyPolicy = () => {
     const { t } = useTranslation();
@@ -15,82 +17,141 @@ const PrivacyPolicy = () => {
             backgroundColor={Colors.BACKGROUND} 
             header={<Header title={t('profile_privacy') || 'Privacy Policy'} showBack={true} />}
         >
-                <View style={styles.card}>
-                    <AppText size={18} weight="900" color={Colors.PRIMARY} style={styles.title}>
-                        Privacy Policy
-                    </AppText>
-                    <AppText size={12} color={Colors.TEXT_GREY} weight="600" style={styles.date}>
-                        Last Updated: August 2026
-                    </AppText>
-                    
-                    <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.paragraph}>
-                        Welcome to BookNGo. We value your privacy and are committed to protecting your personal data. This privacy policy describes how we collect, use, and share your information when you use our services.
-                    </AppText>
+            <StatusBar barStyle="dark-content" backgroundColor={Colors.BACKGROUND} />
+            <ScrollView 
+                contentContainerStyle={styles.scrollContent} 
+                showsVerticalScrollIndicator={false}
+            >
+                {/* Header Banner Card */}
+                <View style={styles.bannerCard}>
+                    <View style={styles.iconCircle}>
+                        <Privacy width={scale(24)} height={scale(24)} />
+                    </View>
+                    <View style={styles.bannerTextContainer}>
+                        <AppText size={18} weight="900" color={Colors.PRIMARY}>
+                            BookNGo Privacy Policy
+                        </AppText>
+                        <AppText size={12} color={Colors.TEXT_GREY} weight="600" style={styles.dateText}>
+                            Last Updated: {POLICY_LAST_UPDATED}
+                        </AppText>
+                    </View>
+                </View>
 
-                    <AppText size={16} weight="800" color={Colors.PRIMARY} style={styles.sectionTitle}>
-                        1. Information We Collect
-                    </AppText>
-                    <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.paragraph}>
-                        We collect personal details such as your name, email address, phone number, and payment information when you register an account or book tickets on our platform.
-                    </AppText>
+                {/* Policy Sections */}
+                {PRIVACY_POLICY_SECTIONS.map((section) => (
+                    <View key={section.id} style={styles.sectionCard}>
+                        <AppText size={16} weight="800" color={Colors.PRIMARY} style={styles.sectionTitle}>
+                            {section.title}
+                        </AppText>
+                        <AppText size={14} color="#334155" weight="500" style={styles.paragraph}>
+                            {section.content}
+                        </AppText>
 
-                    <AppText size={16} weight="800" color={Colors.PRIMARY} style={styles.sectionTitle}>
-                        2. How We Use Your Information
-                    </AppText>
-                    <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.paragraph}>
-                        Your data is used to process bookings, confirm ticket details, provide customer support, send update notifications, and improve the overall app experience.
-                    </AppText>
+                        {section.points && section.points.length > 0 && (
+                            <View style={styles.pointsList}>
+                                {section.points.map((point, index) => (
+                                    <View key={index} style={styles.pointRow}>
+                                        <View style={styles.bulletDot} />
+                                        <AppText size={13} color="#475569" weight="500" style={styles.pointText}>
+                                            {point}
+                                        </AppText>
+                                    </View>
+                                ))}
+                            </View>
+                        )}
+                    </View>
+                ))}
 
-                    <AppText size={16} weight="800" color={Colors.PRIMARY} style={styles.sectionTitle}>
-                        3. Data Protection & Security
-                    </AppText>
-                    <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.paragraph}>
-                        We implement strict security measures to protect your sensitive details from unauthorized access, loss, or disclosure. Payment information is securely handled via encrypted industry-standard protocols.
-                    </AppText>
-
-                    <AppText size={16} weight="800" color={Colors.PRIMARY} style={styles.sectionTitle}>
-                        4. Contact Us
-                    </AppText>
-                    <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.paragraph}>
-                        If you have any questions or suggestions regarding our Privacy Policy, please feel free to reach out to us via the Help Center.
+                <View style={styles.footerNote}>
+                    <AppText size={12} color={Colors.TEXT_GREY} align="center" weight="500">
+                        Thank you for trusting BookNGo with your travel reservations.
                     </AppText>
                 </View>
+            </ScrollView>
         </ScreenWrapper>
     );
 };
 
+export default PrivacyPolicy;
+
 const styles = StyleSheet.create({
-    card: {
+    scrollContent: {
+        paddingTop: verticalScale(12),
+        paddingBottom: verticalScale(40),
+    },
+    bannerCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: Colors.SURFACE,
+        borderRadius: scale(18),
+        padding: scale(16),
+        borderWidth: 1,
+        borderColor: Colors.BORDER_GREY,
+        marginBottom: verticalScale(14),
+        shadowColor: Colors.PRIMARY,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 2,
+    },
+    iconCircle: {
+        width: scale(46),
+        height: scale(46),
+        borderRadius: scale(23),
+        backgroundColor: '#EEF2FF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: scale(14),
+    },
+    bannerTextContainer: {
+        flex: 1,
+    },
+    dateText: {
+        marginTop: verticalScale(3),
+    },
+    sectionCard: {
         backgroundColor: Colors.SURFACE,
         borderColor: Colors.BORDER_GREY,
-        borderRadius: scale(18),
+        borderRadius: scale(16),
         borderWidth: 1,
-        elevation: 3,
-        marginVertical: verticalScale(15),
-        padding: scale(20),
+        elevation: 2,
+        marginBottom: verticalScale(12),
+        padding: scale(16),
         shadowColor: Colors.BLACK,
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.03,
-        shadowRadius: 12,
+        shadowRadius: 6,
     },
-    container: {
-        paddingBottom: verticalScale(30),
-        paddingHorizontal: scale(20),
-        paddingTop: verticalScale(15),
-    },
-    date: {
-        marginBottom: verticalScale(16),
+    sectionTitle: {
+        marginBottom: verticalScale(8),
+        letterSpacing: 0.2,
     },
     paragraph: {
         lineHeight: verticalScale(20),
     },
-    sectionTitle: {
-        marginBottom: verticalScale(8),
-        marginTop: verticalScale(18),
+    pointsList: {
+        marginTop: verticalScale(10),
     },
-    title: {
-        marginBottom: verticalScale(4),
+    pointRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        marginBottom: verticalScale(6),
+    },
+    bulletDot: {
+        width: scale(6),
+        height: scale(6),
+        borderRadius: scale(3),
+        backgroundColor: '#172C6B',
+        marginTop: verticalScale(7),
+        marginRight: scale(10),
+    },
+    pointText: {
+        flex: 1,
+        lineHeight: verticalScale(18),
+    },
+    footerNote: {
+        marginTop: verticalScale(16),
+        marginBottom: verticalScale(10),
+        paddingHorizontal: scale(20),
     },
 });
-
-export default PrivacyPolicy;
