@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, FlatList } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -115,20 +115,25 @@ const BookingReview = () => {
                         <AppText size={16} weight="700" color={Colors.PRIMARY} style={{ marginBottom: verticalScale(12) }}>
                             {t('bookingReview_passengers', { count: passengers.length }) || `Passengers (${passengers.length})`}
                         </AppText>
-                        {passengers.map((p, index) => (
-                            <View key={index} style={styles.passengerItem}>
-                                <View style={styles.passengerInfo}>
-                                    <View style={styles.seatBadgeSmall}>
-                                        <AppText size={10} weight="800" color={Colors.WHITE}>Seat {p.seatNumber}</AppText>
+                        <FlatList
+                            data={passengers}
+                            scrollEnabled={false}
+                            keyExtractor={(p, index) => index.toString()}
+                            renderItem={({ item: p }) => (
+                                <View style={styles.passengerItem}>
+                                    <View style={styles.passengerInfo}>
+                                        <View style={styles.seatBadgeSmall}>
+                                            <AppText size={10} weight="800" color={colors.WHITE}>Seat {p.seatNumber}</AppText>
+                                        </View>
+                                        <View>
+                                            <AppText size={14} weight="700" color={colors.PRIMARY}>{p.passengerName}</AppText>
+                                            <AppText size={12} color={colors.TEXT_GREY}>{p.passengerCNIC}</AppText>
+                                        </View>
                                     </View>
-                                    <View>
-                                        <AppText size={14} weight="700" color={Colors.PRIMARY}>{p.passengerName}</AppText>
-                                        <AppText size={12} color={Colors.TEXT_GREY}>{p.passengerCNIC}</AppText>
-                                    </View>
+                                    <AppText size={13} color={colors.DARK_GRAY} weight="600">{p.gender}</AppText>
                                 </View>
-                                <AppText size={13} color={Colors.DARK_GRAY} weight="600">{p.gender}</AppText>
-                            </View>
-                        ))}
+                            )}
+                        />
 
                         <View style={styles.divider} />
 

@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
+    FlatList,
     Share,
     Alert,
     Linking,
@@ -225,41 +226,45 @@ const SideMenuModal: React.FC<SideMenuModalProps> = ({ visible, onClose }) => {
                         </View>
 
                         {/* Menu Items */}
-                        {SIDE_MENU_ITEMS.map((item) => (
-                            <TouchableOpacity
-                                key={item.id}
-                                style={styles.menuRow}
-                                activeOpacity={0.7}
-                                onPress={() => handleItemPress(item)}
-                            >
-                                <View
-                                    style={[
-                                        styles.iconCircle,
-                                        item.isEmergency &&
-                                            styles.emergencyIconCircle,
-                                    ]}
+                        <FlatList
+                            data={SIDE_MENU_ITEMS}
+                            keyExtractor={(item) => item.id}
+                            scrollEnabled={false}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    style={styles.menuRow}
+                                    activeOpacity={0.7}
+                                    onPress={() => handleItemPress(item)}
                                 >
-                                    <item.Icon
-                                        width={scale(18)}
-                                        height={scale(18)}
-                                    />
-                                </View>
+                                    <View
+                                        style={[
+                                            styles.iconCircle,
+                                            item.isEmergency &&
+                                                styles.emergencyIconCircle,
+                                        ]}
+                                    >
+                                        <item.Icon
+                                            width={scale(18)}
+                                            height={scale(18)}
+                                        />
+                                    </View>
 
-                                <AppText
-                                    size={15}
-                                    weight="700"
-                                    color={
-                                        item.isEmergency
-                                            ? colors.RED_PRIMARY
-                                            : colors.SLATE_DARK
-                                    }
-                                    style={styles.menuTitle}
-                                >
-                                    {t(item.titleKey) ||
-                                        item.defaultTitle}
-                                </AppText>
-                            </TouchableOpacity>
-                        ))}
+                                    <AppText
+                                        size={15}
+                                        weight="700"
+                                        color={
+                                            item.isEmergency
+                                                ? colors.RED_PRIMARY
+                                                : colors.SLATE_DARK
+                                        }
+                                        style={styles.menuTitle}
+                                    >
+                                        {t(item.titleKey) ||
+                                            item.defaultTitle}
+                                    </AppText>
+                                </TouchableOpacity>
+                            )}
+                        />
 
                         {/* Version */}
                         <View style={styles.footer}>

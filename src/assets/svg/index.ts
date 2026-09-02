@@ -53,6 +53,8 @@ import CheckCircle from './check_circle.svg';
 import CrossCircle from './cross_circle.svg';
 import Star from './star.svg';
 import Info from './info.svg';
+import ShieldCheck from './shield_check.svg';
+import Bell from './bell.svg';
 
 export {
     Radio,
@@ -110,6 +112,8 @@ export {
     CrossCircle,
     Star,
     Info,
+    ShieldCheck,
+    Bell,
 }
 
 

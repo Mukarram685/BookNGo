@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { View, TouchableOpacity, Platform, StyleSheet, LayoutAnimation, UIManager, Animated } from 'react-native';
+import { View, TouchableOpacity, Platform, StyleSheet, LayoutAnimation, UIManager, Animated, FlatList } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import AppText from '../component/common/AppText';
 import Home from '../screens/main/Home/Home';
@@ -101,58 +101,65 @@ const TabButton: React.FC<TabButtonProps> = ({
 const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigation }) => {
     return (
         <View style={styles.tabBarContainer}>
-            {state.routes.map((route, index) => {
-                const { options } = descriptors[route.key];
-                const isFocused = state.index === index;
+            <FlatList
+                horizontal
+                data={state.routes}
+                keyExtractor={(route) => route.key}
+                scrollEnabled={false}
+                contentContainerStyle={{ flex: 1, flexDirection: 'row', justifyContent: 'space-around' }}
+                renderItem={({ item: route, index }) => {
+                    const { options } = descriptors[route.key];
+                    const isFocused = state.index === index;
 
-                const label = options.tabBarLabel !== undefined
-                    ? (options.tabBarLabel as string)
-                    : options.title !== undefined
-                    ? options.title
-                    : route.name;
+                    const label = options.tabBarLabel !== undefined
+                        ? (options.tabBarLabel as string)
+                        : options.title !== undefined
+                        ? options.title
+                        : route.name;
 
-                const IconComponent = getTabIcon(route.name);
+                    const IconComponent = getTabIcon(route.name);
 
-                const onPress = () => {
-                    const event = navigation.emit({
-                        type: 'tabPress',
-                        target: route.key,
-                        canPreventDefault: true,
-                    });
-
-                    if (!isFocused && !event.defaultPrevented) {
-                        LayoutAnimation.configureNext({
-                            duration: 500, // Custom duration (500ms) to slow down Layout transition
-                            create: {
-                                type: LayoutAnimation.Types.easeInEaseOut,
-                                property: LayoutAnimation.Properties.opacity,
-                            },
-                            update: {
-                                type: LayoutAnimation.Types.easeInEaseOut,
-                            },
+                    const onPress = () => {
+                        const event = navigation.emit({
+                            type: 'tabPress',
+                            target: route.key,
+                            canPreventDefault: true,
                         });
-                        navigation.navigate(route.name);
-                    }
-                };
 
-                const onLongPress = () => {
-                    navigation.emit({
-                        type: 'tabLongPress',
-                        target: route.key,
-                    });
-                };
+                        if (!isFocused && !event.defaultPrevented) {
+                            LayoutAnimation.configureNext({
+                                duration: 500,
+                                create: {
+                                    type: LayoutAnimation.Types.easeInEaseOut,
+                                    property: LayoutAnimation.Properties.opacity,
+                                },
+                                update: {
+                                    type: LayoutAnimation.Types.easeInEaseOut,
+                                },
+                            });
+                            navigation.navigate(route.name);
+                        }
+                    };
 
-                return (
-                    <TabButton
-                        key={route.key}
-                        isFocused={isFocused}
-                        label={label}
-                        IconComponent={IconComponent}
-                        onPress={onPress}
-                        onLongPress={onLongPress}
-                    />
-                );
-            })}
+                    const onLongPress = () => {
+                        navigation.emit({
+                            type: 'tabLongPress',
+                            target: route.key,
+                        });
+                    };
+
+                    return (
+                        <TabButton
+                            key={route.key}
+                            isFocused={isFocused}
+                            label={label}
+                            IconComponent={IconComponent}
+                            onPress={onPress}
+                            onLongPress={onLongPress}
+                        />
+                    );
+                }}
+            />
         </View>
     );
 };

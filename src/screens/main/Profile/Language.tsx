@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, StatusBar, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { scale, verticalScale } from 'react-native-size-matters';
@@ -54,28 +54,37 @@ const Language = () => {
 
                 {/* Languages Card Container */}
                 <View style={styles.languagesCard}>
-                    {languages.map((lang, index) => {
-                        const isSelected = currentLang === lang.code;
-                        const isLast = index === languages.length - 1;
+                    <FlatList
+                        data={languages}
+                        scrollEnabled={false}
+                        keyExtractor={(item) => item.code}
+                        renderItem={({ item: lang, index }) => {
+                            const isSelected = currentLang === lang.code;
+                            const isLast = index === languages.length - 1;
 
-                        return (
-                            <TouchableOpacity
-                                key={lang.code}
-                                style={[styles.langRow, isLast && { borderBottomWidth: 0 }]}
-                                onPress={() => handleSelectLanguage(lang.code)}
-                                activeOpacity={0.7}
-                            >
-                                <AppText 
-                                    size={15} 
-                                    weight={isSelected ? "800" : "600"} 
-                                    color={isSelected ? "#172C6B" : Colors.PRIMARY}
+                            return (
+                                <TouchableOpacity
+                                    key={lang.code}
+                                    style={[styles.langRow, isLast && { borderBottomWidth: 0 }]}
+                                    onPress={() => handleSelectLanguage(lang.code)}
+                                    activeOpacity={0.7}
                                 >
-                                    {lang.name}
-                                </AppText>
-                                {isSelected && <CheckIcon />}
-                            </TouchableOpacity>
-                        );
-                    })}
+                                    <AppText 
+                                        size={15} 
+                                        weight={isSelected ? "800" : "600"} 
+                                        color={isSelected ? Colors.PRIMARY : Colors.SLATE_DARK}
+                                    >
+                                        {lang.name}
+                                    </AppText>
+                                    {isSelected && (
+                                        <View style={styles.checkBadge}>
+                                            <CheckIcon />
+                                        </View>
+                                    )}
+                                </TouchableOpacity>
+                            );
+                        }}
+                    />
                 </View>
 
             </ScrollView>

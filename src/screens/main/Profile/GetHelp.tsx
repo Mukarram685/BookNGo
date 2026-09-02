@@ -4,6 +4,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     ScrollView,
+    FlatList,
     StatusBar,
     Linking,
     Modal,
@@ -186,51 +187,61 @@ const GetHelp = () => {
                 </AppText>
 
                 <View style={styles.channelsCard}>
-                    {SUPPORT_CHANNELS.map((channel, index) => {
-                        const isLast = index === SUPPORT_CHANNELS.length - 1;
-                        return (
-                            <TouchableOpacity
-                                key={channel.id}
-                                style={[styles.channelRow, isLast && styles.noBorder]}
-                                activeOpacity={0.7}
-                                onPress={() => handleChannelPress(channel)}
-                            >
-                                <View style={styles.channelIconCircle}>
-                                    {renderChannelIcon(channel.actionType)}
-                                </View>
-                                <View style={styles.channelTextContainer}>
-                                    <AppText size={15} weight="800" color={Colors.PRIMARY}>
-                                        {channel.title}
-                                    </AppText>
-                                    <AppText size={12} color="#64748B" weight="500" style={styles.channelSubtitle}>
-                                        {channel.subtitle} • <AppText size={12} weight="700" color={Colors.PRIMARY}>{channel.detail}</AppText>
-                                    </AppText>
-                                </View>
-                                <Arrow
-                                    width={scale(12)}
-                                    height={scale(12)}
-                                    style={{ transform: [{ rotate: '180deg' }] }}
-                                    fill="#94A3B8"
-                                />
-                            </TouchableOpacity>
-                        );
-                    })}
+                    <FlatList
+                        data={SUPPORT_CHANNELS}
+                        scrollEnabled={false}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item: channel, index }) => {
+                            const isLast = index === SUPPORT_CHANNELS.length - 1;
+                            return (
+                                <TouchableOpacity
+                                    key={channel.id}
+                                    style={[styles.channelRow, isLast && styles.noBorder]}
+                                    activeOpacity={0.7}
+                                    onPress={() => handleChannelPress(channel)}
+                                >
+                                    <View style={styles.channelIconCircle}>
+                                        {renderChannelIcon(channel.actionType)}
+                                    </View>
+                                    <View style={styles.channelTextContainer}>
+                                        <AppText size={15} weight="800" color={colors.PRIMARY}>
+                                            {channel.title}
+                                        </AppText>
+                                        <AppText size={12} color="#64748B" weight="500" style={styles.channelSubtitle}>
+                                            {channel.subtitle} • <AppText size={12} weight="700" color={colors.PRIMARY}>{channel.detail}</AppText>
+                                        </AppText>
+                                    </View>
+                                    <Arrow
+                                        width={scale(12)}
+                                        height={scale(12)}
+                                        style={{ transform: [{ rotate: '180deg' }] }}
+                                        fill="#94A3B8"
+                                    />
+                                </TouchableOpacity>
+                            );
+                        }}
+                    />
                 </View>
 
                 {/* 3. Frequently Asked Questions Section */}
-                <AppText size={13} color={Colors.TEXT_GREY} weight="800" style={styles.sectionHeader}>
+                <AppText size={13} color={colors.TEXT_GREY} weight="800" style={styles.sectionHeader}>
                     {t('support_faqs_title') || 'FREQUENTLY ASKED QUESTIONS'}
                 </AppText>
 
                 <View style={styles.faqCard}>
-                    {SUPPORT_FAQS.map((faq, index) => (
-                        <FAQRow
-                            key={faq.id}
-                            item={faq}
-                            isOpen={openIndex === index}
-                            onToggle={() => handleToggle(index)}
-                        />
-                    ))}
+                    <FlatList
+                        data={SUPPORT_FAQS}
+                        scrollEnabled={false}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item: faq, index }) => (
+                            <FAQRow
+                                key={faq.id}
+                                item={faq}
+                                isOpen={openIndex === index}
+                                onToggle={() => handleToggle(index)}
+                            />
+                        )}
+                    />
                 </View>
             </ScrollView>
 
@@ -276,14 +287,14 @@ const GetHelp = () => {
                                 </View>
 
                                 {/* Chat Messages List */}
-                                <ScrollView
+                                <FlatList
                                     style={styles.chatScroll}
                                     contentContainerStyle={styles.chatScrollContent}
                                     showsVerticalScrollIndicator={false}
-                                >
-                                    {chatMessages.map(msg => (
+                                    data={chatMessages}
+                                    keyExtractor={(msg) => msg.id}
+                                    renderItem={({ item: msg }) => (
                                         <View
-                                            key={msg.id}
                                             style={[
                                                 styles.chatBubble,
                                                 msg.sender === 'user' ? styles.userBubble : styles.agentBubble,
@@ -297,16 +308,16 @@ const GetHelp = () => {
                                                 {msg.text}
                                             </AppText>
                                             <AppText
-                                                size={10}
-                                                weight="500"
-                                                color={msg.sender === 'user' ? '#93C5FD' : '#94A3B8'}
-                                                style={styles.msgTime}
+                                                size={9}
+                                                weight="600"
+                                                color={msg.sender === 'user' ? 'rgba(255,255,255,0.7)' : '#94A3B8'}
+                                                style={styles.chatTimeText}
                                             >
                                                 {msg.time}
                                             </AppText>
                                         </View>
-                                    ))}
-                                </ScrollView>
+                                    )}
+                                />
 
                                 {/* Chat Input Bar */}
                                 <View style={styles.inputContainer}>

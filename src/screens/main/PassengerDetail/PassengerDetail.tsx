@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform, Switch } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform, Switch, FlatList } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -123,16 +123,20 @@ const PassengerDetail = () => {
                     touched={touched.passengers?.[0] as any}
                   />
                 ) : (
-                  values.passengers.map((passenger, index) => (
-                    <PassengerForm
-                      key={passenger.seatNumber}
-                      seatNumber={passenger.seatNumber}
-                      values={passenger}
-                      onChange={(field, val) => setFieldValue(`passengers[${index}].${field}`, val)}
-                      errors={errors.passengers?.[index as any]}
-                      touched={touched.passengers?.[index as any]}
-                    />
-                  ))
+                  <FlatList
+                    data={values.passengers}
+                    scrollEnabled={false}
+                    keyExtractor={(passenger) => passenger.seatNumber.toString()}
+                    renderItem={({ item: passenger, index }) => (
+                      <PassengerForm
+                        seatNumber={passenger.seatNumber}
+                        values={passenger}
+                        onChange={(field, val) => setFieldValue(`passengers[${index}].${field}`, val)}
+                        errors={errors.passengers?.[index as any]}
+                        touched={touched.passengers?.[index as any]}
+                      />
+                    )}
+                  />
                 )}
               </ScrollView>
 
