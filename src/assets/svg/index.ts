@@ -51,6 +51,8 @@ import Ticket from './ticket.svg';
 import Clock from './clock.svg';
 import CheckCircle from './check_circle.svg';
 import CrossCircle from './cross_circle.svg';
+import Star from './star.svg';
+import Info from './info.svg';
 
 export {
     Radio,
@@ -106,6 +108,8 @@ export {
     Clock,
     CheckCircle,
     CrossCircle,
+    Star,
+    Info,
 }
 
 

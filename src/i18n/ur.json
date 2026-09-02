@@ -225,5 +225,21 @@
   "menu_title": "مینو",
   "menu_payment_methods": "ادائیگی کے طریقے",
   "menu_saved_addresses": "محفوظ شدہ پتے",
-  "menu_invite_earn": "دعوت دیں اور کمائیں"
+  "menu_invite_earn": "دعوت دیں اور کمائیں",
+  "verified_user": "تصدیق شدہ صارف",
+  "label_email": "ای میل",
+  "label_phone": "فون نمبر",
+  "label_cnic": "قومی شناختی کارڈ",
+  "label_account_type": "اکاؤنٹ کی قسم",
+  "value_individual": "انفرادی",
+  "label_member_since": "رکنیت کی تاریخ",
+  "label_loyalty_points": "وفاداری پوائنٹس",
+  "value_loyalty_points": "1,250 پوائنٹس",
+  "booking_stats": "بکنگ کے اعداد و شمار",
+  "view_all_bookings": "تمام بکنگز دیکھیں",
+  "total_bookings": "کل بکنگز",
+  "app_settings": "ایپ کی ترتیبات",
+  "privacy_security": "رازداری اور تحفظ",
+  "about_bookngo": "بوک اینڈ گو کے بارے میں",
+  "profile_subtitle": "اپنے اکاؤنٹ اور ترجیحات کا انتظام کریں"
 }

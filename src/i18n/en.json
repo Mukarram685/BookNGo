@@ -225,5 +225,21 @@
   "menu_title": "Menu",
   "menu_payment_methods": "Payment Methods",
   "menu_saved_addresses": "Saved Addresses",
-  "menu_invite_earn": "Invite & Earn"
+  "menu_invite_earn": "Invite & Earn",
+  "verified_user": "Verified User",
+  "label_email": "Email",
+  "label_phone": "Phone Number",
+  "label_cnic": "CNIC",
+  "label_account_type": "Account Type",
+  "value_individual": "Individual",
+  "label_member_since": "Member Since",
+  "label_loyalty_points": "Loyalty Points",
+  "value_loyalty_points": "1,250 Points",
+  "booking_stats": "Booking Stats",
+  "view_all_bookings": "View All Bookings",
+  "total_bookings": "Total Bookings",
+  "app_settings": "App Settings",
+  "privacy_security": "Privacy & Security",
+  "about_bookngo": "About BookNGo",
+  "profile_subtitle": "Manage your account and preferences"
 }
