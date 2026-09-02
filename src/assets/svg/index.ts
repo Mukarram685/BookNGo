@@ -55,6 +55,11 @@ import Star from './star.svg';
 import Info from './info.svg';
 import ShieldCheck from './shield_check.svg';
 import Bell from './bell.svg';
+import TicketStat from './ticket_stat.svg';
+import CalendarStat from './calendar_stat.svg';
+import CheckStat from './check_stat.svg';
+import CrossStat from './cross_stat.svg';
+import Pencil from './pencil.svg';
 
 export {
     Radio,
@@ -114,6 +119,11 @@ export {
     Info,
     ShieldCheck,
     Bell,
+    TicketStat,
+    CalendarStat,
+    CheckStat,
+    CrossStat,
+    Pencil,
 }
 
 
