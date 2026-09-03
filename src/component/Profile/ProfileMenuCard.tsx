@@ -87,7 +87,6 @@ const ProfileMenuCard: React.FC = () => {
                 {t('app_settings') || 'App Settings'}
             </AppText>
 
-            {/* Dynamic FlatList Menu */}
             <FlatList
                 data={menuItems}
                 keyExtractor={(item) => item.id}
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
     cardContainer: {
         backgroundColor: colors.WHITE,
         borderRadius: scale(20),
-        padding: scale(16),
+        padding: scale(12),
         borderWidth: 1,
         borderColor: colors.BORDER_GREY,
         marginBottom: verticalScale(16),

@@ -49,7 +49,6 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
 
     return (
         <View style={styles.cardContainer}>
-            {/* Rich Royal Blue Linear Gradient Background */}
             <View style={styles.gradientContainer} pointerEvents="none">
                 <Svg width="100%" height="100%">
                     <Defs>
@@ -63,7 +62,6 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
                 </Svg>
             </View>
 
-            {/* Top Row: Avatar, User Name, Verified Badge & Edit Profile Button */}
             <View style={styles.topRow}>
                 <View style={styles.avatarSection}>
                     <View style={styles.avatarCircleLarge}>
@@ -81,7 +79,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
                 </View>
 
                 <View style={styles.nameSection}>
-                    <AppText size={20} weight="800" color={colors.WHITE} numberOfLines={1}>
+                    <AppText size={16} weight="800" color={colors.WHITE} numberOfLines={1}>
                         {name || 'Muhammad Ali'}
                     </AppText>
 
@@ -99,24 +97,21 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
                     onPress={() => navigation.navigate('UpdateProfile')}
                 >
                     <EditPencilIcon width={scale(12)} height={scale(12)} />
-                    <AppText size={12} weight="600" color={colors.WHITE} style={{ marginLeft: scale(6) }}>
+                    <AppText size={12} color={colors.WHITE} style={{ marginLeft: scale(6) }}>
                         {t('profile_edit') || 'Edit Profile'}
                     </AppText>
                 </TouchableOpacity>
             </View>
 
-            {/* 2-Column Info Grid with subtle dividers */}
             <View style={styles.gridContainer}>
-                {/* Left Column */}
                 <View style={styles.gridColumn}>
-                    {/* Email */}
                     <View style={styles.gridItem}>
-                        <CardMailIcon width={scale(14)} height={scale(14)} fill={colors.WHITE} />
+                        <CardMailIcon width={scale(14)} height={scale(14)} />
                         <View style={styles.itemTextWrapper}>
                             <AppText size={11} weight="500" color="#BFDBFE">
                                 {t('label_email') || 'Email'}
                             </AppText>
-                            <AppText size={13} weight="600" color={colors.WHITE} numberOfLines={1}>
+                            <AppText size={12} weight="600" color={colors.WHITE} numberOfLines={1}>
                                 {email || 'ali.muhammad@gmail.com'}
                             </AppText>
                         </View>
@@ -124,14 +119,13 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
 
                     <View style={styles.itemDivider} />
 
-                    {/* CNIC */}
                     <View style={styles.gridItem}>
-                        <CardCnicIcon width={scale(14)} height={scale(14)} fill={colors.WHITE} />
+                        <CardCnicIcon width={scale(14)} height={scale(14)} />
                         <View style={styles.itemTextWrapper}>
                             <AppText size={11} weight="500" color="#BFDBFE">
                                 {t('label_cnic') || 'CNIC'}
                             </AppText>
-                            <AppText size={13} weight="600" color={colors.WHITE} numberOfLines={1}>
+                            <AppText size={12} weight="600" color={colors.WHITE} numberOfLines={1}>
                                 {cnic || '35202-1234567-1'}
                             </AppText>
                         </View>
@@ -139,30 +133,27 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
 
                     <View style={styles.itemDivider} />
 
-                    {/* Member Since */}
                     <View style={styles.gridItem}>
-                        <CardCalendarIcon width={scale(14)} height={scale(14)} fill={colors.WHITE} />
+                        <CardCalendarIcon width={scale(14)} height={scale(14)} />
                         <View style={styles.itemTextWrapper}>
                             <AppText size={11} weight="500" color="#BFDBFE">
                                 {t('label_member_since') || 'Member Since'}
                             </AppText>
-                            <AppText size={13} weight="600" color={colors.WHITE} numberOfLines={1}>
+                            <AppText size={12} weight="600" color={colors.WHITE} numberOfLines={1}>
                                 {memberSince}
                             </AppText>
                         </View>
                     </View>
                 </View>
 
-                {/* Right Column */}
                 <View style={styles.gridColumn}>
-                    {/* Phone Number */}
                     <View style={styles.gridItem}>
-                        <CardPhoneIcon width={scale(14)} height={scale(14)} fill={colors.WHITE} />
+                        <CardPhoneIcon width={scale(14)} height={scale(14)}  />
                         <View style={styles.itemTextWrapper}>
                             <AppText size={11} weight="500" color="#BFDBFE">
                                 {t('label_phone') || 'Phone Number'}
                             </AppText>
-                            <AppText size={13} weight="600" color={colors.WHITE} numberOfLines={1}>
+                            <AppText size={12} weight="600" color={colors.WHITE} numberOfLines={1}>
                                 {phone || '+92 312 3456789'}
                             </AppText>
                         </View>
@@ -170,14 +161,13 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
 
                     <View style={styles.itemDivider} />
 
-                    {/* Account Type */}
                     <View style={styles.gridItem}>
-                        <CardUserIcon width={scale(14)} height={scale(14)} fill={colors.WHITE} />
+                        <CardUserIcon width={scale(14)} height={scale(14)}  />
                         <View style={styles.itemTextWrapper}>
                             <AppText size={11} weight="500" color="#BFDBFE">
                                 {t('label_account_type') || 'Account Type'}
                             </AppText>
-                            <AppText size={13} weight="600" color={colors.WHITE} numberOfLines={1}>
+                            <AppText size={12} weight="600" color={colors.WHITE} numberOfLines={1}>
                                 {accountType}
                             </AppText>
                         </View>

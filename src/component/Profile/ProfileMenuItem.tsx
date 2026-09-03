@@ -34,16 +34,16 @@ const ProfileMenuItem: React.FC<ProfileMenuItemProps> = ({ data }) => {
                 {title}
             </AppText>
             {rightText ? (
-                <AppText size={12} weight="600" color={colors.SLATE_MUTED} style={styles.rightDetailText}>
+                <AppText size={12} weight="600" color={colors.PRIMARY} style={styles.rightDetailText}>
                     {rightText}
                 </AppText>
             ) : null}
-            <Arrow
+            {/* <Arrow
                 width={scale(14)}
                 height={scale(14)}
                 style={{ transform: [{ rotate: '180deg' }] }}
                 fill={colors.TEXT_GREY}
-            />
+            /> */}
         </TouchableOpacity>
     );
 };
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     menuRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: verticalScale(12),
+        paddingVertical: verticalScale(5),
         borderBottomWidth: 1,
         borderBottomColor: colors.SLATE_DIVIDER,
     },
