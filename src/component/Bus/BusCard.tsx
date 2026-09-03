@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, FlatList, ScrollView } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
@@ -7,13 +7,36 @@ import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
 import AppButton from '../common/AppButton';
 import { BusSchedule } from '../../interface/bus.interface';
-import { Bus as BusIcon, Wifi, AC, Seat, LocationB, Arrow } from '../../assets/svg';
+import {
+  Bus as BusIcon,
+  Wifi,
+  AC,
+  Seat,
+  Charger,
+  Food,
+  Drink,
+  TV,
+  LocationB,
+} from '../../assets/svg';
 import colors from '../../utils/colors';
 
 interface BusCardProps {
   item: BusSchedule;
   onBookPress?: (item: BusSchedule) => void;
 }
+
+const getAmenityIcon = (name: string) => {
+  if (!name) return null;
+  const lower = name.toLowerCase();
+  if (lower.includes('wifi') || lower.includes('wi-fi') || lower.includes('internet')) return Wifi;
+  if (lower.includes('ac') || lower.includes('air') || lower.includes('cool')) return AC;
+  if (lower.includes('charg') || lower.includes('power') || lower.includes('usb') || lower.includes('plug')) return Charger;
+  if (lower.includes('tv') || lower.includes('television') || lower.includes('screen') || lower.includes('media')) return TV;
+  if (lower.includes('food') || lower.includes('snack') || lower.includes('meal') || lower.includes('refreshment')) return Food;
+  if (lower.includes('water') || lower.includes('drink') || lower.includes('bottle') || lower.includes('beverage')) return Drink;
+  if (lower.includes('seat') || lower.includes('reclin') || lower.includes('sleep') || lower.includes('layout')) return Seat;
+  return null;
+};
 
 const BusCard = ({ item }: BusCardProps) => {
   const { t } = useTranslation();
@@ -24,17 +47,11 @@ const BusCard = ({ item }: BusCardProps) => {
   };
 
   const formattedPrice = (item.price || 0).toLocaleString();
-  
-  const amenitiesList = item.amenities || [];
-  const hasAC = amenitiesList.some(a => a.toLowerCase().includes('ac'));
-  const hasWifi = amenitiesList.some(a => a.toLowerCase().includes('wifi'));
+  const amenitiesList = Array.isArray(item.amenities) ? item.amenities : [];
   const seatLayoutText = item.seatLayout ? `${item.seatLayout} Seats` : '2x2 Seats';
-  
-  const extraCount = Math.max(0, amenitiesList.length - (hasAC ? 1 : 0) - (hasWifi ? 1 : 0));
 
   return (
     <View style={styles.cardContainer}>
-      {/* Top Header Section */}
       <View style={styles.headerRow}>
         <View style={styles.companyInfoContainer}>
           <View style={styles.logoBox}>
@@ -53,9 +70,6 @@ const BusCard = ({ item }: BusCardProps) => {
               {item.busName || 'Test Express 314'}
             </AppText>
             <View style={styles.luxuryBadge}>
-              <AppText size={10} color={colors.BLUE_PRIMARY} style={{ marginRight: 3 }}>
-                👑
-              </AppText>
               <AppText size={11} weight="700" color={colors.BLUE_PRIMARY}>
                 {item.busType || 'Luxury'}
               </AppText>
@@ -73,10 +87,8 @@ const BusCard = ({ item }: BusCardProps) => {
         </View>
       </View>
 
-      {/* Inner Route Card Box */}
       <View style={styles.innerRouteBox}>
         <View style={styles.routeRow}>
-          {/* Departure */}
           <View style={styles.timeLocContainer}>
             <AppText size={17} weight="900" color={colors.SLATE_DARK}>
               {item.departureTime || '08:00 AM'}
@@ -92,7 +104,6 @@ const BusCard = ({ item }: BusCardProps) => {
             </View>
           </View>
 
-          {/* Duration & Route Graphic */}
           <View style={styles.durationContainer}>
             <View style={styles.durationPill}>
               <AppText size={10} weight="700" color={colors.SLATE_MEDIUM}>
@@ -118,7 +129,6 @@ const BusCard = ({ item }: BusCardProps) => {
             </AppText>
           </View>
 
-          {/* Arrival */}
           <View style={[styles.timeLocContainer, { alignItems: 'flex-end' }]}>
             <AppText size={17} weight="900" color={colors.SLATE_DARK}>
               {item.arrivalTime || '12:00 PM'}
@@ -135,54 +145,47 @@ const BusCard = ({ item }: BusCardProps) => {
           </View>
         </View>
 
-        {/* Footer inside Route Box */}
         <View style={styles.footerRow}>
           <View style={styles.amenitiesContainer}>
-            {/* Seat Layout */}
-            <View style={styles.amenityChip}>
-              <Seat width={scale(12)} height={scale(12)} color={colors.BLUE_DARK} />
-              <AppText size={11} weight="600" color={colors.BLUE_DARK} style={{ marginLeft: 4 }}>
-                {seatLayoutText}
-              </AppText>
-            </View>
-
-            {/* AC */}
-            <View style={styles.amenityChip}>
-              <AC width={scale(12)} height={scale(12)} color={colors.BLUE_DARK} />
-              <AppText size={11} weight="600" color={colors.BLUE_DARK} style={{ marginLeft: 4 }}>
-                AC
-              </AppText>
-            </View>
-
-            {/* Wi-Fi */}
-            <View style={styles.amenityChip}>
-              <Wifi width={scale(12)} height={scale(12)} color={colors.BLUE_DARK} />
-              <AppText size={11} weight="600" color={colors.BLUE_DARK} style={{ marginLeft: 4 }}>
-                Wi-Fi
-              </AppText>
-            </View>
-
-            {extraCount > 0 && (
-              <View style={styles.extraChip}>
-                <AppText size={11} weight="600" color={colors.SLATE_MUTED}>
-                  +{extraCount} More
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{ flexDirection: 'row', alignItems: 'center' }}
+            >
+              <View style={styles.amenityChip}>
+                <Seat width={scale(12)} height={scale(12)} color={colors.BLUE_DARK} />
+                <AppText size={11} weight="600" color={colors.BLUE_DARK} style={{ marginLeft: 4 }}>
+                  {seatLayoutText}
                 </AppText>
               </View>
-            )}
+
+              <FlatList
+                horizontal
+                scrollEnabled={false}
+                showsHorizontalScrollIndicator={false}
+                data={amenitiesList}
+                keyExtractor={(amenityName, index) => `${amenityName}-${index}`}
+                renderItem={({ item: amenityName }) => {
+                  const IconComp = getAmenityIcon(amenityName);
+                  return (
+                    <View style={styles.amenityChip}>
+                      {IconComp ? (
+                        <IconComp width={scale(12)} height={scale(12)} color={colors.BLUE_DARK} />
+                      ) : null}
+                      <AppText size={11} weight="600" color={colors.BLUE_DARK} style={{ marginLeft: IconComp ? 4 : 0 }}>
+                        {amenityName}
+                      </AppText>
+                    </View>
+                  );
+                }}
+              />
+            </ScrollView>
           </View>
 
           <AppButton
             title={t('select_seat') || 'Select Seat'}
             onPress={handleBookPress}
             style={styles.selectButton}
-            icon={
-              <Arrow
-                width={scale(12)}
-                height={scale(12)}
-                fill={colors.WHITE}
-                style={{ transform: [{ rotate: '180deg' }] }}
-              />
-            }
             iconPosition="right"
           />
         </View>
@@ -190,6 +193,8 @@ const BusCard = ({ item }: BusCardProps) => {
     </View>
   );
 };
+
+export default BusCard;
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -311,7 +316,6 @@ const styles = StyleSheet.create({
   amenitiesContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap',
     flex: 1,
     marginRight: scale(6),
   },
@@ -321,22 +325,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(7),
     paddingVertical: verticalScale(3),
     marginRight: scale(5),
-    marginBottom: verticalScale(2),
     flexDirection: 'row',
     alignItems: 'center',
   },
-  extraChip: {
-    backgroundColor: colors.INPUT_BG,
-    borderRadius: scale(6),
-    paddingHorizontal: scale(6),
-    paddingVertical: verticalScale(3),
-    marginBottom: verticalScale(2),
-  },
   selectButton: {
     backgroundColor: colors.BLUE_PRIMARY,
+    height: verticalScale(38),
     borderRadius: scale(10),
-    paddingHorizontal: scale(14),
-    paddingVertical: verticalScale(9),
+    paddingHorizontal: scale(10),
+    paddingVertical: verticalScale(2),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -347,5 +344,3 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
 });
-
-export default BusCard;

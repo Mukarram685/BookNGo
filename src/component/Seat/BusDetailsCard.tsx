@@ -1,75 +1,74 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
-import Svg, { Path } from 'react-native-svg';
 import AppText from '../common/AppText';
 import colors, { Colors } from '../../utils/colors';
-import { Wifi, Charger, AC, Bus } from '../../assets/svg';
+import { Wifi, Charger, AC, Food, Drink, Seat, Bus } from '../../assets/svg';
 
-// Custom WC Icon
-const WCIcon = () => (
-    <Svg width={scale(16)} height={scale(16)} viewBox="0 0 24 24" fill="none">
-        <Path
-            d="M9 22V11m0 0V8a2 2 0 012-2h2a2 2 0 012 2v3m-6 0h6m0 0v11M12 2a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"
-            stroke="#475569"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-        />
-    </Svg>
-);
+interface BusDetailsCardProps {
+    amenities?: string[];
+}
 
-export const BusDetailsCard: React.FC = () => {
+const getAmenityIcon = (name: string) => {
+    if (!name) return null;
+    const lower = name.toLowerCase();
+    if (lower.includes('wifi') || lower.includes('wi-fi') || lower.includes('internet')) return Wifi;
+    if (lower.includes('ac') || lower.includes('air') || lower.includes('cool')) return AC;
+    if (lower.includes('charg') || lower.includes('power') || lower.includes('usb') || lower.includes('plug')) return Charger;
+    if (lower.includes('food') || lower.includes('snack') || lower.includes('meal') || lower.includes('refreshment')) return Food;
+    if (lower.includes('water') || lower.includes('drink') || lower.includes('bottle') || lower.includes('beverage')) return Drink;
+    if (lower.includes('seat') || lower.includes('reclin') || lower.includes('sleep') || lower.includes('layout')) return Seat;
+    return null;
+};
+
+export const BusDetailsCard: React.FC<BusDetailsCardProps> = ({ amenities = [] }) => {
+    const listToRender = amenities.length > 0 ? amenities : ['Free WiFi', 'USB Charging', 'Air Conditioning', 'Comfortable Seats'];
+
     return (
         <View style={styles.detailsCard}>
             <View style={styles.detailsHeader}>
-                <Bus width={scale(20)} height={scale(20)} fill={Colors.PRIMARY} />
-                <AppText size={16} weight="700" color={Colors.PRIMARY} style={{ marginLeft: scale(8) }}>
-                    Bus Details
+                <Bus width={scale(20)} height={scale(20)} fill={colors.PRIMARY} />
+                <AppText size={16} weight="700" color={colors.PRIMARY} style={{ marginLeft: scale(8) }}>
+                    Bus Details & Amenities
                 </AppText>
             </View>
             
-            <View style={styles.amenitiesGrid}>
-                <View style={styles.amenityItem}>
-                    <View style={styles.amenityIconBox}>
-                        <Wifi width={scale(16)} height={scale(16)} fill={Colors.DARK_GRAY} />
-                    </View>
-                    <AppText size={12} weight="600" color={Colors.DARK_GRAY}>Free WiFi</AppText>
-                </View>
-
-                <View style={styles.amenityItem}>
-                    <View style={styles.amenityIconBox}>
-                        <Charger width={scale(16)} height={scale(16)} fill={Colors.DARK_GRAY} />
-                    </View>
-                    <AppText size={12} weight="600" color={Colors.DARK_GRAY}>USB Port</AppText>
-                </View>
-
-                <View style={styles.amenityItem}>
-                    <View style={styles.amenityIconBox}>
-                        <AC width={scale(16)} height={scale(16)} fill={Colors.DARK_GRAY} />
-                    </View>
-                    <AppText size={12} weight="600" color={Colors.DARK_GRAY}>Fully AC</AppText>
-                </View>
-
-                <View style={styles.amenityItem}>
-                    <View style={styles.amenityIconBox}>
-                        <WCIcon />
-                    </View>
-                    <AppText size={12} weight="600" color={Colors.DARK_GRAY}>On-board WC</AppText>
-                </View>
-            </View>
+            <FlatList
+                data={listToRender}
+                scrollEnabled={false}
+                numColumns={2}
+                keyExtractor={(item, index) => `${item}-${index}`}
+                contentContainerStyle={styles.amenitiesGrid}
+                renderItem={({ item: amenityName }) => {
+                    const IconComp = getAmenityIcon(amenityName);
+                    return (
+                        <View style={styles.amenityItem}>
+                            <View style={styles.amenityIconBox}>
+                                {IconComp ? (
+                                    <IconComp width={scale(16)} height={scale(16)} fill={colors.DARK_GRAY} />
+                                ) : (
+                                    <Bus width={scale(16)} height={scale(16)} fill={colors.DARK_GRAY} />
+                                )}
+                            </View>
+                            <AppText size={12} weight="600" color={colors.DARK_GRAY} numberOfLines={1} style={{ flex: 1 }}>
+                                {amenityName}
+                            </AppText>
+                        </View>
+                    );
+                }}
+            />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     detailsCard: {
-        backgroundColor: Colors.SURFACE,
+        backgroundColor: colors.SURFACE,
         borderRadius: scale(20),
         padding: scale(18),
         borderWidth: 1,
-        borderColor: Colors.BORDER_GREY,
-        shadowColor: '#000',
+        borderColor: colors.BORDER_GREY,
+        shadowColor: colors.BLACK,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.04,
         shadowRadius: 6,
@@ -81,8 +80,6 @@ const styles = StyleSheet.create({
         marginBottom: verticalScale(15),
     },
     amenitiesGrid: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
         rowGap: verticalScale(12),
     },
     amenityItem: {
@@ -90,6 +87,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         columnGap: scale(8),
+        marginBottom: verticalScale(8),
     },
     amenityIconBox: {
         width: scale(32),

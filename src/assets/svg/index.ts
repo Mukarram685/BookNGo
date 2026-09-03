@@ -60,6 +60,7 @@ import CalendarStat from './calendar_stat.svg';
 import CheckStat from './check_stat.svg';
 import CrossStat from './cross_stat.svg';
 import Pencil from './pencil.svg';
+import TV from './tv.svg';
 
 export {
     Radio,
@@ -124,6 +125,7 @@ export {
     CheckStat,
     CrossStat,
     Pencil,
+    TV,
 }
 
 
