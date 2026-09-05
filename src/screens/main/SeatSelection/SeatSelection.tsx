@@ -7,7 +7,7 @@ import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import AppButton from '../../../component/common/AppButton';
 import Header from '../../../component/Header';
-import colors, { alpha } from '../../../utils/colors';
+import colors, { alpha, Colors } from '../../../utils/colors';
 import SeatItem from '../../../component/Seat/SeatItem';
 import SeatLegend from '../../../component/Seat/SeatLegend';
 import CabinHeader from '../../../component/Seat/CabinHeader';
@@ -99,7 +99,7 @@ const SeatSelection = () => {
                     rowSeats.push(
                         <View key={`aisle-${i}`} style={styles.aisleTextWrapper}>
                             <AppText size={9} color={Colors.TEXT_GREY} weight="600" style={styles.verticalText}>
-                                AISLE
+                                
                             </AppText>
                         </View>
                     );

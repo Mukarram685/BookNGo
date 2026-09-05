@@ -1,325 +1,228 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
+import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
 import AppButton from '../../../component/common/AppButton';
-import colors, { Colors } from '../../../utils/colors';
+import colors from '../../../utils/colors';
 import Header from '../../../component/Header';
 import { useGetProfile, useUpdateProfile } from '../../../hooks/useProfile';
+import { logout } from '../../../store/slice/auth.slice';
+import { OneSignal } from 'react-native-onesignal';
+import { User, Headset } from '../../../assets/svg';
+import PersonalInfoCard from '../../../component/Profile/PersonalInfoCard';
+import ChangePasswordCard from '../../../component/Profile/ChangePasswordCard';
 
 const UpdateProfile = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+
   const authUser = useSelector((state: any) => state.auth.user);
   const { data: profile } = useGetProfile(authUser?.id || authUser?._id);
   const updateProfileMutation = useUpdateProfile();
 
-  const [name, setName] = useState(authUser?.name || profile?.name || '');
-  const [phone, setPhone] = useState(
-    authUser?.phone ||
-      authUser?.phoneNumber ||
-      profile?.phone ||
-      profile?.phoneNumber ||
-      '',
-  );
-  const [cnic, setCnic] = useState(authUser?.cnic || profile?.cnic || '');
-  const email = authUser?.email || profile?.email || '';
+  // Name splitting into First Name and Last Name
+  const fullName = authUser?.name || profile?.name || 'Haider Iftikhar';
+  const nameParts = fullName.trim().split(' ');
+  const initialFirstName = nameParts[0] || 'Haider';
+  const initialLastName = nameParts.slice(1).join(' ') || 'Iftikhar';
 
-  const formatCNIC = (text: string) => {
-    const cleaned = text.replace(/\D/g, '').slice(0, 13);
-    if (cleaned.length > 12) {
-      return `${cleaned.slice(0, 5)}-${cleaned.slice(5, 12)}-${cleaned.slice(
-        12,
-      )}`;
-    } else if (cleaned.length > 5) {
-      return `${cleaned.slice(0, 5)}-${cleaned.slice(5)}`;
-    }
-    return cleaned;
-  };
+  const [firstName, setFirstName] = useState(initialFirstName);
+  const [lastName, setLastName] = useState(initialLastName);
+  const [phone, setPhone] = useState(
+    authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber || '+92 312 3456789',
+  );
+  const [cnic, setCnic] = useState(authUser?.cnic || profile?.cnic || '35202-1234567-1');
+  const [dob, setDob] = useState(authUser?.dateOfBirth || profile?.dateOfBirth || '07/15/1998');
+  const [gender, setGender] = useState(authUser?.gender || profile?.gender || 'Male');
+
+  const email = authUser?.email || profile?.email || 'haider@example.com';
 
   useEffect(() => {
-    if (authUser?.name) setName(authUser.name);
-    if (authUser?.phone || authUser?.phoneNumber)
-      setPhone(authUser.phone || authUser.phoneNumber);
-    if (authUser?.cnic) setCnic(authUser.cnic);
-  }, [authUser]);
+    if (authUser?.name || profile?.name) {
+      const parts = (authUser?.name || profile?.name || '').trim().split(' ');
+      setFirstName(parts[0] || '');
+      setLastName(parts.slice(1).join(' ') || '');
+    }
+    if (authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber) {
+      setPhone(authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber);
+    }
+    if (authUser?.cnic || profile?.cnic) {
+      setCnic(authUser?.cnic || profile?.cnic);
+    }
+  }, [authUser, profile]);
 
-  const handleUpdate = () => {
-    if (!name.trim()) {
+  const handleSaveProfile = () => {
+    const combinedName = `${firstName} ${lastName}`.trim();
+    if (!combinedName) {
+      Alert.alert(t('error') || 'Error', t('enter_name_error') || 'Please enter your name');
       return;
     }
+
     updateProfileMutation.mutate(
       {
         id: authUser?.id || authUser?._id,
-        data: { name, phoneNumber: phone, cnic },
+        data: { name: combinedName, phoneNumber: phone, cnic, dateOfBirth: dob, gender },
       },
       {
         onSuccess: () => {
-          navigation.goBack();
+          Alert.alert(t('success') || 'Success', t('profile_updated_successfully') || 'Profile updated successfully');
         },
       },
     );
   };
 
-  const getInitials = (nameStr: string) => {
-    if (!nameStr) return 'UN';
-    const parts = nameStr.trim().split(' ');
-    if (parts.length === 1) {
-      return parts[0].substring(0, 2).toUpperCase();
+  const handlePasswordChange = ({ currentPass, newPass, confirmPass }: { currentPass: string; newPass: string; confirmPass: string }) => {
+    if (!currentPass || !newPass || !confirmPass) {
+      Alert.alert(t('error') || 'Error', t('fill_all_password_fields') || 'Please fill all password fields');
+      return;
     }
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    if (newPass !== confirmPass) {
+      Alert.alert(t('error') || 'Error', t('passwords_do_not_match') || 'New passwords do not match');
+      return;
+    }
+
+    // Call update profile / password mutation
+    handleSaveProfile();
+  };
+
+  const handleLogout = () => {
+    Alert.alert(
+      t('profile_logoutConfirmTitle') || 'Logout',
+      t('profile_logoutConfirmDesc') || 'Are you sure you want to logout?',
+      [
+        { text: t('cancel') || 'Cancel', style: 'cancel' },
+        {
+          text: t('profile_logout') || 'Logout',
+          style: 'destructive',
+          onPress: () => {
+            OneSignal.logout();
+            dispatch(logout());
+          },
+        },
+      ],
+      { cancelable: true },
+    );
   };
 
   return (
     <ScreenWrapper
-      backgroundColor={Colors.BACKGROUND}
+      backgroundColor={colors.SLATE_LIGHT}
+      gradient="upper"
       header={
         <Header
-          title={t('personal_info_screen_title') || 'Personal Information'}
+          title={t('profile_settings_title') || 'Profile & Settings'}
           showBack={true}
         />
       }
     >
-      {/* Centered Avatar */}
-      <View style={styles.avatarSection}>
-        <View style={styles.avatarLarge}>
-          <AppText size={28} weight="900" color={Colors.WHITE}>
-            {getInitials(name)}
-          </AppText>
-        </View>
-      </View>
+      <View style={styles.container}>
+        {/* Top Profile Summary Header */}
+        {/* <View style={styles.profileHeaderCard}> */}
+          {/* <View style={styles.avatarCircle}>
+            <User width={scale(32)} height={scale(32)} fill={colors.BLUE_PRIMARY} />
+          </View> */}
+          {/* <AppText size={20} weight="800" color={colors.SLATE_DARK} style={styles.displayName}> */}
+            {/* {`${firstName} ${lastName}`.trim() || 'Haider Iftikhar'} */}
+          {/* </AppText> */}
+          {/* <AppText size={12} weight="500" color={colors.SLATE_MEDIUM}>
+            {t('user_account_subtitle') || 'User Account • Pakistan'}
+          </AppText> */}
+        {/* </View> */}
 
-      {/* Form Fields Card */}
-      <View style={styles.formCard}>
-        <View style={styles.inputGroup}>
-          <AppText
-            size={12}
-            color={Colors.TEXT_GREY}
-            weight="800"
-            style={styles.label}
-          >
-            {t('full_name') || 'FULL NAME'}
-          </AppText>
-          <TextInput
-            style={styles.textInput}
-            value={name}
-            onChangeText={setName}
-            placeholder={t('auth_signup_namePlaceholder') || 'Enter your name'}
-            placeholderTextColor={Colors.TEXT_GREY}
-          />
-        </View>
+        <PersonalInfoCard
+          firstName={firstName}
+          setFirstName={setFirstName}
+          lastName={lastName}
+          setLastName={setLastName}
+          email={email}
+          phone={phone}
+          setPhone={setPhone}
+          cnic={cnic}
+          setCnic={setCnic}
+          dob={dob}
+          setDob={setDob}
+          gender={gender}
+          setGender={setGender}
+          isVerified={true}
+        />
 
-        <View style={styles.inputGroup}>
-          <AppText
-            size={12}
-            color={Colors.TEXT_GREY}
-            weight="800"
-            style={styles.label}
-          >
-            {t('email_address') || 'EMAIL ADDRESS'}
-          </AppText>
-          <TextInput
-            style={[styles.textInput, styles.disabledInput]}
-            value={email}
-            editable={false}
-            placeholder={t('auth_signup_emailPlaceholder') || 'Email address'}
-            placeholderTextColor={Colors.TEXT_GREY}
-          />
-        </View>
+        <ChangePasswordCard
+          onSavePress={handlePasswordChange}
+          isLoading={updateProfileMutation.isPending}
+        />
 
-        <View style={styles.inputGroup}>
-          <AppText
-            size={12}
-            color={Colors.TEXT_GREY}
-            weight="800"
-            style={styles.label}
-          >
-            {t('auth_signup_cnicLabel') || 'CNIC'}
-          </AppText>
-          <TextInput
-            style={styles.textInput}
-            value={cnic}
-            onChangeText={val => setCnic(formatCNIC(val))}
-            placeholder="00000-0000000-0"
-            placeholderTextColor={Colors.TEXT_GREY}
-            keyboardType="numeric"
-            maxLength={15}
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <AppText
-            size={12}
-            color={Colors.TEXT_GREY}
-            weight="800"
-            style={styles.label}
-          >
-            {t('phone_number') || 'PHONE NUMBER'}
-          </AppText>
-          <TextInput
-            style={styles.textInput}
-            value={phone}
-            onChangeText={setPhone}
-            placeholder={
-              t('auth_signup_phonePlaceholder') || 'Enter phone number'
-            }
-            placeholderTextColor={Colors.TEXT_GREY}
-            keyboardType="phone-pad"
-          />
-        </View>
-      </View>
-
-      <View style={styles.infoContent}>
-        <AppText size={13} weight="800" color={Colors.SLATE_DARK}>
-          Your information is secure
-        </AppText>
-
-        <AppText
-          size={11}
-          weight="500"
-          color={Colors.SLATE_MUTED}
-          style={styles.infoText}
+        <TouchableOpacity
+          style={styles.logoutOutlineButton}
+          onPress={handleLogout}
+          activeOpacity={0.8}
         >
-          Your personal information is protected and only used to manage your
-          BookNGo account.
-        </AppText>
+          <AppText size={15} weight="700" color="#EF4444">
+            {t('profile_logout') || 'Logout'}
+          </AppText>
+        </TouchableOpacity>
       </View>
-
-      {/* Update Button */}
-      <AppButton
-        title={
-          updateProfileMutation.isPending
-            ? t('bookingReview_processing') || 'Updating...'
-            : t('save_changes') || 'Save Changes'
-        }
-        onPress={handleUpdate}
-        loading={updateProfileMutation.isPending}
-        style={styles.submitButton}
-      />
     </ScreenWrapper>
   );
 };
 
+export default UpdateProfile;
+
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: scale(20),
+    // paddingHorizontal: scale(16),
     paddingTop: verticalScale(10),
-    paddingBottom: verticalScale(30),
+    paddingBottom: verticalScale(40),
   },
-  avatarSection: {
-    alignItems: 'center',
-    marginVertical: verticalScale(20),
-  },
-  avatarLarge: {
-    width: scale(88),
-    height: scale(88),
-    borderRadius: scale(44),
-    backgroundColor: '#172C6B', // Brand Navy
+  helpIconButton: {
+    width: scale(38),
+    height: scale(38),
+    borderRadius: scale(19),
+    backgroundColor: colors.WHITE,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#172C6B',
+    shadowColor: colors.BLACK,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  profileHeaderCard: {
+    alignItems: 'center',
+    marginVertical: verticalScale(16),
+  },
+  avatarCircle: {
+    width: scale(72),
+    height: scale(72),
+    borderRadius: scale(36),
+    backgroundColor: '#DBEAFE',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: verticalScale(10),
+    borderWidth: 3,
+    borderColor: colors.WHITE,
+    shadowColor: colors.BLUE_PRIMARY,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
+    shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
-    borderWidth: 3,
-    borderColor: Colors.WHITE,
   },
-  formCard: {
-    backgroundColor: Colors.SURFACE,
-    borderRadius: scale(18),
-    padding: scale(20),
-    borderWidth: 1,
-    borderColor: Colors.BORDER_GREY,
+  displayName: {
+    marginBottom: verticalScale(2),
+  },
+  logoutOutlineButton: {
+    height: verticalScale(48),
+    borderRadius: scale(24),
+    borderWidth: 1.5,
+    borderColor: '#EF4444',
+    backgroundColor: colors.WHITE,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: verticalScale(6),
     marginBottom: verticalScale(30),
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 12,
-    elevation: 3,
-  },
-  inputGroup: {
-    marginBottom: verticalScale(18),
-  },
-  label: {
-    marginBottom: verticalScale(6),
-    marginLeft: scale(2),
-    letterSpacing: 0.8,
-  },
-  textInput: {
-    backgroundColor: '#F8FAFF', // Light theme text field back
-    borderWidth: 1,
-    borderColor: Colors.BORDER_GREY,
-    borderRadius: scale(12),
-    paddingHorizontal: scale(14),
-    height: verticalScale(46),
-    fontSize: scale(14),
-    color: Colors.PRIMARY,
-    fontWeight: '600',
-  },
-  disabledInput: {
-    backgroundColor: '#F1F5F9', // Slightly darker back for read-only
-    color: Colors.DARK_GRAY,
-  },
-
-  infoCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-
-    backgroundColor: Colors.BLUE_LIGHT_BG,
-
-    borderRadius: scale(16),
-
-    paddingHorizontal: scale(13),
-    paddingVertical: verticalScale(12),
-
-    marginTop: verticalScale(14),
-
-    borderWidth: 1,
-    borderColor: Colors.BLUE_BORDER,
-  },
-
-  infoCircle: {
-    width: scale(32),
-    height: scale(32),
-
-    borderRadius: scale(16),
-
-    backgroundColor: Colors.WHITE,
-
-    alignItems: 'center',
-    justifyContent: 'center',
-
-    marginRight: scale(10),
-  },
-
-  infoContent: {
-    flex: 1,
-  },
-
-  infoText: {
-    marginTop: verticalScale(2),
-    lineHeight: verticalScale(16),
-  },
-  submitButton: {
-    backgroundColor: '#172C6B', // Brand Navy
-    height: scale(50),
-    borderRadius: scale(12),
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: Colors.PRIMARY,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-    elevation: 4,
-  },
-  disabledButton: {
-    backgroundColor: Colors.TEXT_GREY,
   },
 });
-
-export default UpdateProfile;

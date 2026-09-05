@@ -45,14 +45,10 @@ const Language = () => {
             backgroundColor={Colors.BACKGROUND} 
             header={<Header title={t('language_title') || "Language"} showBack={true} />}
         >
-            <StatusBar barStyle="dark-content" translucent backgroundColor="transparent" />
-            <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-                
                 <AppText size={13} color={Colors.TEXT_GREY} weight="800" style={styles.sectionHeader}>
                     {t('select_language') || "SELECT APP LANGUAGE"}
                 </AppText>
 
-                {/* Languages Card Container */}
                 <View style={styles.languagesCard}>
                     <FlatList
                         data={languages}
@@ -86,8 +82,6 @@ const Language = () => {
                         }}
                     />
                 </View>
-
-            </ScrollView>
         </ScreenWrapper>
     );
 };
