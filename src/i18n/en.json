@@ -262,5 +262,15 @@
   "fill_all_password_fields": "Please fill all password fields",
   "passwords_do_not_match": "New passwords do not match",
   "success": "Success",
-  "error": "Error"
+  "error": "Error",
+  "journey_date": "Journey Date",
+  "seats_label": "Seats",
+  "seats_unit": "Seats",
+  "total_fare": "Total Fare",
+  "payment_label": "Payment",
+  "view_details": "View Details",
+  "download_ticket": "Download Ticket",
+  "copied": "Copied",
+  "copied_to_clipboard": "copied to clipboard",
+  "date": "Date"
 }

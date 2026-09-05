@@ -61,6 +61,12 @@ import CheckStat from './check_stat.svg';
 import CrossStat from './cross_stat.svg';
 import Pencil from './pencil.svg';
 import TV from './tv.svg';
+import Download from './download.svg';
+import Copy from './copy.svg';
+import JourneyCalendar from './journey_calendar.svg';
+import BusSeatOutline from './bus_seat_outline.svg';
+import TotalFareTag from './total_fare_tag.svg';
+import PaymentCard from './payment_card.svg';
 
 export {
     Radio,
@@ -126,6 +132,10 @@ export {
     CrossStat,
     Pencil,
     TV,
-}
-
-
+    Download,
+    Copy,
+    JourneyCalendar,
+    BusSeatOutline,
+    TotalFareTag,
+    PaymentCard,
+};

@@ -261,5 +261,14 @@
   "fill_all_password_fields": "براہ کرم پاس ورڈ کے تمام خانوں کو پر کریں",
   "passwords_do_not_match": "نئے پاس ورڈ آپس میں نہیں ملتے",
   "success": "کامیابی",
-  "error": "خرابی"
+  "error": "خرابی",
+  "journey_date": "سفر کی تاریخ",
+  "seats_label": "نشستیں",
+  "seats_unit": "نشستیں",
+  "total_fare": "کل کرایہ",
+  "payment_label": "ادائیگی",
+  "view_details": "تفصیلات دیکھیں",
+  "download_ticket": "ٹکٹ ڈاؤن لوڈ کریں",
+  "copied": "کاپی ہو گیا",
+  "copied_to_clipboard": "کلیپ بورڈ پر کاپی ہو گیا"
 }
