@@ -145,7 +145,7 @@ const Bookings = () => {
     );
 
     return (
-        <ScreenWrapper gradient="upper" header={<Header title={t('bookings_title') || 'My Bookings'} showBack={false} />}>
+        <ScreenWrapper isScrollable={false} gradient="upper" header={<Header title={t('bookings_title') || 'My Bookings'} showBack={false} />}>
             <FlatList
                 data={filteredBookings}
                 keyExtractor={(item) => item.id}
@@ -153,8 +153,8 @@ const Bookings = () => {
                 renderItem={({ item }) => (
                     <BookingCard
                         booking={item}
-                        onView={() => handleView(item.fullData || item)}
-                        onDownload={() => handleView(item.fullData || item)}
+                        onView={() => handleView(item)}
+                        onDownload={() => handleView(item)}
                     />
                 )}
                 contentContainerStyle={styles.listContainer}

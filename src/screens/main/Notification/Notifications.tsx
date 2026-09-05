@@ -27,6 +27,7 @@ const Notifications = () => {
 
     return (
         <ScreenWrapper
+            isScrollable={false}
             backgroundColor={Colors.BACKGROUND}
             header={<Header title={t('notifications_title') || 'Notifications'} showBack={true} />}
         >

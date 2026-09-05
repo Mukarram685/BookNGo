@@ -73,7 +73,7 @@ const SearchResults = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isLoading && !data} header={<Header title={t('search_results_title') || "Search Results"} />}>
+        <ScreenWrapper isScrollable={false} backgroundColor={Colors.BACKGROUND} isLoading={isLoading && !data} header={<Header title={t('search_results_title') || "Search Results"} />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
             <View style={styles.container}>
                 <View style={styles.header}>

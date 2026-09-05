@@ -59,7 +59,7 @@ const All = () => {
     };
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isLoading && !data} header={<Header title={t('all_routes_title') || "All Routes"} showBack={false} />}>
+        <ScreenWrapper isScrollable={false} backgroundColor={Colors.BACKGROUND} isLoading={isLoading && !data} header={<Header title={t('all_routes_title') || "All Routes"} showBack={false} />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
             <View style={styles.container}>
                 <View style={styles.header}>

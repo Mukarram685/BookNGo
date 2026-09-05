@@ -1,15 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useTranslation } from 'react-i18next';
 
-let Clipboard: any;
-try {
-    Clipboard = require('@react-native-clipboard/clipboard').default;
-} catch (e) {
-    Clipboard = { setString: () => {} };
-}
 import AppText from '../common/AppText';
 import colors from '../../utils/colors';
 import {
@@ -18,7 +12,6 @@ import {
     Eye,
     Download,
     More,
-    Copy,
     JourneyCalendar,
     BusSeatOutline,
     TotalFareTag,
@@ -89,15 +82,6 @@ const BookingCard: React.FC<BookingCardProps> = ({
     const statusBg = isCancelled ? '#FEF2F2' : isUpcoming ? '#F0FDF4' : '#F5F3FF';
     const statusTextColor = isCancelled ? '#EF4444' : isUpcoming ? '#16A34A' : '#9333EA';
 
-    const handleCopyId = () => {
-        try {
-            Clipboard.setString(displayBookingId);
-        } catch (e) {
-            // fallback
-        }
-        Alert.alert(t('copied') || 'Copied', `${displayBookingId} ${t('copied_to_clipboard') || 'copied to clipboard'}`);
-    };
-
     return (
         <View style={styles.cardContainer}>
             {/* Top Header Section */}
@@ -142,16 +126,9 @@ const BookingCard: React.FC<BookingCardProps> = ({
                             <AppText size={10} color={colors.SLATE_MUTED} weight="500">
                                 {t('booking_details_id') || 'Booking ID'}
                             </AppText>
-                            <TouchableOpacity
-                                style={styles.idCopyButton}
-                                activeOpacity={0.7}
-                                onPress={handleCopyId}
-                            >
-                                <AppText size={12} weight="800" color={colors.BLUE_PRIMARY} style={{ marginRight: scale(4) }}>
-                                    {displayBookingId}
-                                </AppText>
-                                <Copy width={scale(12)} height={scale(12)} stroke={colors.BLUE_PRIMARY} />
-                            </TouchableOpacity>
+                            <AppText size={12} weight="800" color={colors.BLUE_PRIMARY}>
+                                {displayBookingId}
+                            </AppText>
                         </View>
                     </View>
                 </View>
@@ -298,8 +275,8 @@ const BookingCard: React.FC<BookingCardProps> = ({
                     onPress={onView}
                     activeOpacity={0.8}
                 >
-                    <Eye width={scale(14)} height={scale(14)} fill="#1D4ED8" />
-                    <AppText size={12} weight="700" color="#1D4ED8" style={{ marginLeft: scale(6) }}>
+                    <Eye width={scale(14)} height={scale(14)} fill={colors.BLUE_PRIMARY} color={colors.BLUE_PRIMARY} />
+                    <AppText size={12} weight="700" color={colors.BLUE_PRIMARY} style={{ marginLeft: scale(6) }}>
                         {t('view_details') || 'View Details'}
                     </AppText>
                 </TouchableOpacity>
@@ -310,18 +287,10 @@ const BookingCard: React.FC<BookingCardProps> = ({
                     onPress={onDownload || onView}
                     activeOpacity={0.8}
                 >
-                    <Download width={scale(14)} height={scale(14)} fill={colors.WHITE} />
+                    <Download width={scale(14)} height={scale(14)} color={colors.WHITE} stroke={colors.WHITE} />
                     <AppText size={12} weight="700" color={colors.WHITE} style={{ marginLeft: scale(6) }}>
                         {t('download_ticket') || 'Download Ticket'}
                     </AppText>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.moreOptionsButton}
-                    onPress={onMore || onView}
-                    activeOpacity={0.8}
-                >
-                    <More width={scale(16)} height={scale(16)} fill={colors.SLATE_DARK} />
                 </TouchableOpacity>
             </View>
         </View>

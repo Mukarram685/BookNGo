@@ -28,14 +28,15 @@ const BookingDetails = () => {
   const { t } = useTranslation();
   const route = useRoute<BookingDetailsRouteProp>();
   const navigation = useNavigation<any>();
-  const { booking } = route.params;
-  const fullData = booking.fullData;
+  const routeParams = route?.params || {};
+  const booking = routeParams?.booking || {};
+  const rawBooking = booking?.fullData || booking;
   const viewShotRef = useRef<any>(null);
   const cancelBookingMutation = useCancelBooking();
 
   const currentStatus = (
-    fullData?.bookingStatus ||
-    booking.status ||
+    rawBooking?.bookingStatus ||
+    booking?.status ||
     'confirmed'
   ).toLowerCase();
   const isCancelled = currentStatus === 'cancelled';
@@ -71,7 +72,7 @@ const BookingDetails = () => {
           style: 'destructive',
           onPress: () => {
             cancelBookingMutation.mutate(
-              { bookingId: booking.id || fullData?._id },
+              { bookingId: booking?.id || rawBooking?._id },
               {
                 onSuccess: () => {
                   Toast.show({
@@ -99,14 +100,75 @@ const BookingDetails = () => {
     );
   };
 
-  const seatNumbers =
-    fullData?.seats?.map((s: any) => s.seatNumber).join(', ') || 'N/A';
-  const busNumber = fullData?.schedule?.bus?.busNumber || 'BS-4592';
+  const displayBookingId = booking?.bookingId || rawBooking?.pnrNumber
+
+  const seatsList = rawBooking?.seats || booking?.seats;
+  const seatNumbers = Array.isArray(seatsList)
+    ? seatsList
+        .map((s: any) => (typeof s === 'object' ? s?.seatNumber || s?.seatNo || s : s))
+        .filter(Boolean)
+        .join(', ')
+    : typeof seatsList === 'string'
+    ? seatsList
+    : '12, 13';
+
+  const busNumber =
+    rawBooking?.schedule?.bus?.busNumber ||
+    rawBooking?.schedule?.bus?.name ||
+    booking?.busName ||
+    'BS-4592';
+
+  const routeStr = booking?.route || '';
+  const routeParts = typeof routeStr === 'string' ? routeStr.split(' to ') : [];
   const fromCity =
-    fullData?.schedule?.route?.fromCity || booking.route.split(' to ')[0];
+    rawBooking?.schedule?.route?.fromCity ||
+    rawBooking?.fromCity ||
+    booking?.fromCity ||
+    routeParts[0] ||
+    'Lahore';
   const toCity =
-    fullData?.schedule?.route?.toCity || booking.route.split(' to ')[1];
-  const pnr = fullData?.pnr || 'PNR-NOT-FOUND';
+    rawBooking?.schedule?.route?.toCity ||
+    rawBooking?.toCity ||
+    booking?.toCity ||
+    routeParts[1] ||
+    'Karachi';
+
+  const pnr =
+    rawBooking?.pnr ||
+    rawBooking?.pnrNumber ||
+    booking?.bookingId ||
+    displayBookingId;
+
+  const dateFormatted =
+    booking?.date ||
+    (rawBooking?.schedule?.departureDate
+      ? new Date(rawBooking.schedule.departureDate).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        })
+      : '20 May 2025');
+
+  const timeFormatted =
+    booking?.time || rawBooking?.schedule?.departureTime || '08:00';
+
+  const passengerName =
+    rawBooking?.user?.name ||
+    rawBooking?.seats?.[0]?.passengerName
+  const passengerPhone =
+    rawBooking?.user?.phone ||
+    rawBooking?.seats?.[0]?.passengerPhone;
+  const passengerGender =
+    rawBooking?.user?.gender || rawBooking?.seats?.[0]?.gender || 'Male';
+
+  const ticketPrice =
+    typeof booking?.price === 'number'
+      ? booking.price
+      : typeof rawBooking?.totalAmount === 'number'
+      ? rawBooking.totalAmount
+      : rawBooking?.fare;
+  const serviceFee = booking?.serviceFee || rawBooking?.serviceFee || 0;
+  const totalAmount = ticketPrice + serviceFee;
 
   const requestPermission = async () => {
     if (Platform.OS === 'android') {
@@ -222,7 +284,7 @@ const BookingDetails = () => {
                   color={Colors.PRIMARY}
                   style={{ marginTop: 2 }}
                 >
-                  {booking.date}
+                  {dateFormatted}
                 </AppText>
               </View>
               <View style={styles.infoItem}>
@@ -235,7 +297,7 @@ const BookingDetails = () => {
                   color={Colors.PRIMARY}
                   style={{ marginTop: 2 }}
                 >
-                  {booking.time}
+                  {timeFormatted}
                 </AppText>
               </View>
             </View>
@@ -301,7 +363,7 @@ const BookingDetails = () => {
                   {t('booking_details_name') || 'Name'}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
-                  {fullData?.seats?.[0]?.passengerName || 'Mukarram Ali'}
+                  {passengerName}
                 </AppText>
               </View>
               <View style={styles.detailRow}>
@@ -309,7 +371,7 @@ const BookingDetails = () => {
                   {t('booking_details_phone') || 'Phone'}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
-                  {fullData?.seats?.[0]?.passengerPhone || '+92 312 4567890'}
+                  {passengerPhone}
                 </AppText>
               </View>
               <View style={styles.detailRow}>
@@ -317,7 +379,7 @@ const BookingDetails = () => {
                   {t('booking_details_gender') || 'Gender'}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
-                  {fullData?.seats?.[0]?.gender || 'Male'}
+                  {passengerGender}
                 </AppText>
               </View>
             </View>
@@ -338,7 +400,7 @@ const BookingDetails = () => {
                   {t('booking_details_ticket_fare') || 'Ticket Fare'}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
-                  Rs. {booking.price}
+                  Rs. {ticketPrice.toLocaleString()}
                 </AppText>
               </View>
               <View style={styles.detailRow}>
@@ -346,7 +408,7 @@ const BookingDetails = () => {
                   {t('booking_details_service_fee') || 'Service Fee'}
                 </AppText>
                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
-                  Rs. {booking.serviceFee || 0}
+                  Rs. {serviceFee}
                 </AppText>
               </View>
               <View style={styles.dividerSmall} />
@@ -355,7 +417,7 @@ const BookingDetails = () => {
                   {t('booking_details_total') || 'Total Amount'}
                 </AppText>
                 <AppText size={17} weight="900" color={Colors.PRIMARY}>
-                  Rs. {booking.price}
+                  Rs. {totalAmount.toLocaleString()}
                 </AppText>
               </View>
             </View>
