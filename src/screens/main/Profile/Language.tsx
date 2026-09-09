@@ -118,6 +118,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: Colors.BORDER_GREY,
     },
+    checkBadge: {
+        padding: scale(4),
+    },
 });
 
 export default Language;
