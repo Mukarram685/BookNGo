@@ -5,7 +5,7 @@ import Toast from 'react-native-toast-message';
 export const useForgotPassword = () => {
     return useMutation({
         mutationFn: async (data: { email: string }) => {
-            const response = await axiosInstance.post('forgot-password', data);
+            const response = await axiosInstance.post('/forgot-password', data);
             return response as any;
         },
         onSuccess: (data: any) => {
