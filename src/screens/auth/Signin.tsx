@@ -87,7 +87,11 @@ const Signin = () => {
                 containerStyle={styles.inputContainer}
               />
 
-              <TouchableOpacity style={styles.forgotPassword} activeOpacity={0.7}>
+              <TouchableOpacity
+                style={styles.forgotPassword}
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate('ForgotPassword')}
+              >
                 <AppText size={14} weight="600" color={Colors.SECONDARY}>
                   {t('auth_signin_forgotPassword')}
                 </AppText>
