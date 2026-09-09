@@ -19,7 +19,6 @@ const ForgotPassword = () => {
   const { t } = useTranslation();
   const [step, setStep] = useState<'email' | 'verify' | 'reset'>('email');
   const [targetEmail, setTargetEmail] = useState('');
-  const [enteredOtp, setEnteredOtp] = useState('');
   const [resendTimer, setResendTimer] = useState(0);
 
   const { mutate: requestOtp, isPending: isSendingOtp } = useForgotPassword();
@@ -62,15 +61,13 @@ const ForgotPassword = () => {
   };
 
   const handleVerifyOtp = (values: { otp: string }) => {
-    const trimmedOtp = values.otp.trim();
     verifyOtp(
       {
         email: targetEmail,
-        otp: trimmedOtp,
+        otp: values.otp.trim(),
       },
       {
         onSuccess: () => {
-          setEnteredOtp(trimmedOtp);
           setStep('reset');
         },
       }
@@ -81,7 +78,7 @@ const ForgotPassword = () => {
     resetPass(
       {
         email: targetEmail,
-        otp: enteredOtp,
+        otp: '', // OTP already verified in previous step
         newPassword: values.newPassword,
       },
       {
@@ -94,13 +91,6 @@ const ForgotPassword = () => {
 
   return (
     <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isSendingOtp || isVerifying || isResetting}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-      >
-        {/* Top Back Navigation Bar */}
         <TouchableOpacity
           style={styles.backButton}
           activeOpacity={0.7}
@@ -310,7 +300,6 @@ const ForgotPassword = () => {
             )}
           </Formik>
         )}
-      </ScrollView>
     </ScreenWrapper>
   );
 };
@@ -319,7 +308,6 @@ export default ForgotPassword;
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    paddingHorizontal: scale(16),
     paddingTop: verticalScale(16),
     paddingBottom: verticalScale(30),
     justifyContent: 'center',
