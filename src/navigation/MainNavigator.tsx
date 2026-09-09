@@ -13,6 +13,7 @@ import Language from '../screens/main/Profile/Language';
 import PrivacyPolicy from '../screens/main/Profile/PrivacyPolicy';
 import TermsConditions from '../screens/main/Profile/TermsConditions';
 import GetHelp from '../screens/main/Profile/GetHelp';
+import FeedbackScreen from '../screens/main/Profile/Feedback';
 import Notifications from '../screens/main/Notification/Notifications';
 
 import Profile from '../screens/main/Profile/Profile';
@@ -36,6 +37,7 @@ const MainNavigator = () => {
             <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
             <Stack.Screen name="TermsConditions" component={TermsConditions} />
             <Stack.Screen name="GetHelp" component={GetHelp} />
+            <Stack.Screen name="Feedback" component={FeedbackScreen} />
             <Stack.Screen name="Notifications" component={Notifications} />
         </Stack.Navigator>
     );
