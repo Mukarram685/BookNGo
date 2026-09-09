@@ -99,31 +99,20 @@ const Bookings = () => {
 
     const renderTabHeader = () => (
         <View style={styles.tabCardContainer}>
-            <FlatList
-                horizontal
-                scrollEnabled={false}
-                style={{ width: '100%' }}
-                contentContainerStyle={styles.tabsRow}
-                data={TABS}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item, index }) => {
+            <View style={styles.tabsRow}>
+                {TABS.map((item, index) => {
                     const isActive = activeTab === item.id;
                     const Icon = item.IconComponent;
                     const isLast = index === TABS.length - 1;
 
                     return (
-                        <View style={styles.tabItemWrapper}>
+                        <View key={item.id} style={styles.tabItemWrapper}>
                             <TouchableOpacity
                                 style={[styles.tabButton, isActive && styles.tabButtonActive]}
                                 onPress={() => setActiveTab(item.id)}
                                 activeOpacity={0.8}
                             >
-                                <Icon
-                                    width={scale(13)}
-                                    height={scale(13)}
-                                    fill={isActive ? colors.WHITE : '#475569'}
-                                    color={isActive ? colors.WHITE : '#475569'}
-                                />
+
                                 <AppText
                                     size={10.5}
                                     weight={isActive ? '700' : '600'}
@@ -139,8 +128,8 @@ const Bookings = () => {
                             )}
                         </View>
                     );
-                }}
-            />
+                })}
+            </View>
         </View>
     );
 

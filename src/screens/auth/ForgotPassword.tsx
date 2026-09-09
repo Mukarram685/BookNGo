@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, TouchableOpacity, StatusBar, ScrollView } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, StyleSheet, TouchableOpacity, StatusBar, ScrollView, TextInput } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { scale, verticalScale } from 'react-native-size-matters';
@@ -13,6 +13,92 @@ import AppButton from '../../component/common/AppButton';
 import colors, { Colors } from '../../utils/colors';
 import { Bus, Lock, Mail, Arrow, ShieldCheck } from '../../assets/svg';
 import { useForgotPassword, useVerifyOTP, useResetPassword } from '../../hooks/useForgotPassword';
+
+interface OtpInputBoxesProps {
+  value: string;
+  onChange: (val: string) => void;
+  error?: string;
+}
+
+const OtpInputBoxes: React.FC<OtpInputBoxesProps> = ({ value, onChange, error }) => {
+  const inputsRef = useRef<Array<any>>([]);
+  const digits = Array.from({ length: 6 }, (_, i) => (value && value[i]) || '');
+
+  const handleChangeText = (text: string, index: number) => {
+    const cleaned = text.replace(/[^0-9]/g, '');
+    if (!cleaned) {
+      const newDigits = [...digits];
+      newDigits[index] = '';
+      onChange(newDigits.join(''));
+      return;
+    }
+
+    if (cleaned.length > 1) {
+      const pasted = cleaned.slice(0, 6);
+      onChange(pasted);
+      const nextFocus = Math.min(pasted.length, 5);
+      inputsRef.current[nextFocus]?.focus();
+      return;
+    }
+
+    const newDigits = [...digits];
+    newDigits[index] = cleaned;
+    const newOtp = newDigits.join('');
+    onChange(newOtp);
+
+    if (index < 5) {
+      inputsRef.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyPress = (e: any, index: number) => {
+    if (e.nativeEvent.key === 'Backspace') {
+      if (!digits[index] && index > 0) {
+        inputsRef.current[index - 1]?.focus();
+        const newDigits = [...digits];
+        newDigits[index - 1] = '';
+        onChange(newDigits.join(''));
+      }
+    }
+  };
+
+  return (
+    <View style={styles.otpSectionContainer}>
+      <AppText size={12} weight="700" color={Colors.PRIMARY} style={{ marginBottom: verticalScale(6) }}>
+        6-Digit Verification Code
+      </AppText>
+      <View style={styles.otpBoxesRow}>
+        {Array.from({ length: 6 }).map((_, i) => {
+          const hasVal = Boolean(digits[i]);
+          return (
+            <TextInput
+              key={i}
+              ref={(el) => (inputsRef.current[i] = el)}
+              style={[
+                styles.otpBox,
+                hasVal && styles.otpBoxActive,
+                error ? styles.otpBoxError : null,
+              ]}
+              value={digits[i]}
+              onChangeText={(text) => handleChangeText(text, i)}
+              onKeyPress={(e) => handleKeyPress(e, i)}
+              keyboardType="number-pad"
+              maxLength={6}
+              selectTextOnFocus
+              placeholder="-"
+              placeholderTextColor={Colors.TEXT_GREY}
+            />
+          );
+        })}
+      </View>
+      {Boolean(error) && (
+        <AppText size={11} color={Colors.ERROR || '#EF4444'} style={styles.otpErrorText}>
+          {error}
+        </AppText>
+      )}
+    </View>
+  );
+};
 
 const ForgotPassword = () => {
   const navigation = useNavigation<any>();
@@ -181,11 +267,11 @@ const ForgotPassword = () => {
             })}
             onSubmit={handleVerifyOtp}
           >
-            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+            {({ setFieldValue, handleSubmit, values, errors, touched }) => (
               <View style={styles.card}>
                 <View style={styles.titleContainer}>
                   <AppText size={22} weight="800" color={Colors.PRIMARY} style={styles.welcomeText}>
-                    Verify Code �
+                    Verify Code 🔑
                   </AppText>
                   <AppText size={13} color={Colors.DARK_GRAY} weight="500" style={styles.subtitleText}>
                     We sent a 6-digit code to{' '}
@@ -196,19 +282,10 @@ const ForgotPassword = () => {
                   </AppText>
                 </View>
 
-                <AppInput
-                  label="6-Digit Verification Code"
-                  placeholder="e.g. 583921"
+                <OtpInputBoxes
                   value={values.otp}
-                  onChangeText={handleChange('otp')}
-                  onBlur={handleBlur('otp')}
-                  keyboardType="number-pad"
-                  maxLength={6}
+                  onChange={(val) => setFieldValue('otp', val)}
                   error={touched.otp && errors.otp ? String(errors.otp) : undefined}
-                  LeftIcon={ShieldCheck}
-                  placeholderTextColor={Colors.TEXT_GREY}
-                  inputStyle={[styles.inputStyle, styles.otpInput]}
-                  containerStyle={styles.inputContainer}
                 />
 
                 <View style={styles.resendRow}>
@@ -368,6 +445,38 @@ const styles = StyleSheet.create({
     letterSpacing: 4,
     fontWeight: '700',
     fontSize: scale(16),
+  },
+  otpSectionContainer: {
+    marginBottom: verticalScale(16),
+  },
+  otpBoxesRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: verticalScale(8),
+  },
+  otpBox: {
+    width: scale(42),
+    height: scale(50),
+    borderRadius: scale(12),
+    borderWidth: 1.5,
+    borderColor: Colors.BORDER_GREY,
+    backgroundColor: Colors.SURFACE,
+    textAlign: 'center',
+    fontSize: scale(18),
+    fontWeight: '800',
+    color: Colors.PRIMARY,
+  },
+  otpBoxActive: {
+    borderColor: Colors.PRIMARY,
+    backgroundColor: Colors.WHITE,
+  },
+  otpBoxError: {
+    borderColor: '#EF4444',
+  },
+  otpErrorText: {
+    marginTop: verticalScale(4),
+    marginLeft: scale(2),
   },
   resendRow: {
     flexDirection: 'row',
