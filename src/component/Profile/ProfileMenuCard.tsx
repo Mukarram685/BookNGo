@@ -14,6 +14,7 @@ import {
     ShieldCheck,
     Headset,
     Info,
+    Feedback as FeedbackIcon,
 } from '../../assets/svg';
 import ProfileMenuItem, { MenuItemData } from './ProfileMenuItem';
 
@@ -64,6 +65,12 @@ const ProfileMenuCard: React.FC = () => {
             title: t('privacy_security') || 'Privacy & Security',
             icon: <ShieldCheck width={scale(18)} height={scale(18)} />,
             onPress: () => navigation.navigate('PrivacyPolicy'),
+        },
+        {
+            id: 'feedback',
+            title: t('menu_feedback') || 'Share Feedback',
+            icon: <FeedbackIcon width={scale(18)} height={scale(18)} />,
+            onPress: () => navigation.navigate('Feedback'),
         },
         {
             id: 'support',

@@ -546,7 +546,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#172C6B',
         borderBottomRightRadius: scale(4),
     },
-    msgTime: {
+    chatTimeText: {
         marginTop: verticalScale(4),
         alignSelf: 'flex-end',
     },
