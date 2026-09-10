@@ -5,7 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { scale, verticalScale } from 'react-native-size-matters';
-import { Arrow, Hamburger } from '../assets/svg';
+import { Back, Hamburger } from '../assets/svg';
 import colors from '../utils/colors';
 import SideMenuModal from './common/SideMenuModal';
 
@@ -92,7 +92,7 @@ export default function Header({
               activeOpacity={0.7}
               onPress={() => navigation.goBack()}
             >
-              <Arrow width={scale(18)} height={scale(18)} fill={colors.PRIMARY} />
+              <Back width={scale(18)} height={scale(18)} fill={colors.PRIMARY} />
             </TouchableOpacity>
           ) : (
             showAvatar && (

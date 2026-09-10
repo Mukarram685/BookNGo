@@ -55,16 +55,10 @@ const FeedbackScreen = () => {
             isLoading={isPending}
             header={<Header title={t('menu_feedback') || 'Share Feedback'} showBack={true} />}
         >
-            <StatusBar barStyle="dark-content" backgroundColor={Colors.BACKGROUND} />
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                 style={styles.keyboardContainer}
             >
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={styles.scrollContent}
-                    keyboardShouldPersistTaps="handled"
-                >
                     {isSubmitted ? (
                         /* Success Confirmation Card */
                         <View style={styles.successCard}>
@@ -77,11 +71,11 @@ const FeedbackScreen = () => {
                             <AppText size={14} color="#64748B" weight="500" style={styles.successDesc}>
                                 Your feedback has been received. A confirmation has been sent to your email address, and our team will review your suggestions carefully.
                             </AppText>
-                            <AppButton
+                            {/* <AppButton
                                 title="Submit Another Response"
                                 onPress={() => setIsSubmitted(false)}
                                 style={styles.submitAnotherBtn}
-                            />
+                            /> */}
                             <TouchableOpacity
                                 style={styles.backHomeBtn}
                                 activeOpacity={0.7}
@@ -157,7 +151,6 @@ const FeedbackScreen = () => {
                                             containerStyle={styles.textAreaContainer}
                                         />
 
-                                        {/* Submit Button */}
                                         <AppButton
                                             title="Send Feedback"
                                             onPress={handleSubmit as any}
@@ -169,13 +162,11 @@ const FeedbackScreen = () => {
                         </View>
                     )}
 
-                    {/* Email Dispatch Info Note */}
                     <View style={styles.infoCard}>
                         <AppText size={12} color="#475569" weight="500" style={styles.infoText}>
                             ℹ️ Every submission is automatically emailed to our customer experience team and logged for quality control. You will also receive an email confirmation.
                         </AppText>
                     </View>
-                </ScrollView>
             </KeyboardAvoidingView>
         </ScreenWrapper>
     );
@@ -186,6 +177,7 @@ export default FeedbackScreen;
 const styles = StyleSheet.create({
     keyboardContainer: {
         flex: 1,
+        marginTop: verticalScale(12),
     },
     scrollContent: {
         paddingHorizontal: scale(16),
@@ -320,6 +312,10 @@ const styles = StyleSheet.create({
     },
     backHomeBtn: {
         paddingVertical: verticalScale(8),
+        borderRadius: scale(12),
+        paddingHorizontal: scale(16),
+        borderWidth: 1,
+        borderColor: Colors.PRIMARY,
     },
     infoCard: {
         backgroundColor: '#F1F5F9',

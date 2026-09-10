@@ -80,14 +80,14 @@ export const SIDE_MENU_ITEMS: MenuItemData[] = [
     //     Icon: Invite,
     //     actionType: 'share',
     // },
-    {
-        id: 'support',
-        titleKey: 'menu_support',
-        defaultTitle: 'Support',
-        Icon: Help,
-        actionType: 'navigate',
-        targetScreen: 'GetHelp',
-    },
+    // {
+    //     id: 'support',
+    //     titleKey: 'menu_support',
+    //     defaultTitle: 'Support',
+    //     Icon: Help,
+    //     actionType: 'navigate',
+    //     targetScreen: 'GetHelp',
+    // },
     // {
     //     id: 'more_apps',
     //     titleKey: 'menu_more_apps',

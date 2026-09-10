@@ -32,7 +32,6 @@ const Language = () => {
     const languages = [
         { code: 'en', name: t('english') || 'English' },
         { code: 'ur', name: t('urdu') || 'Urdu (اردو)' },
-        { code: 'fr', name: t('french') || 'French (Français)' },
     ];
 
     const handleSelectLanguage = (code: string) => {
@@ -45,9 +44,6 @@ const Language = () => {
             backgroundColor={Colors.BACKGROUND} 
             header={<Header title={t('language_title') || "Language"} showBack={true} />}
         >
-                <AppText size={13} color={Colors.TEXT_GREY} weight="800" style={styles.sectionHeader}>
-                    {t('select_language') || "SELECT APP LANGUAGE"}
-                </AppText>
 
                 <View style={styles.languagesCard}>
                     <FlatList
@@ -100,6 +96,7 @@ const styles = StyleSheet.create({
     languagesCard: {
         backgroundColor: Colors.SURFACE,
         borderRadius: scale(18),
+        marginTop: verticalScale(20),
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,
         shadowColor: '#000',

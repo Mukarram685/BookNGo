@@ -67,6 +67,7 @@ import JourneyCalendar from './journey_calendar.svg';
 import BusSeatOutline from './bus_seat_outline.svg';
 import TotalFareTag from './total_fare_tag.svg';
 import PaymentCard from './payment_card.svg';
+import Back from './arrow-circle-right.svg';
 
 export {
     Radio,
@@ -138,4 +139,5 @@ export {
     BusSeatOutline,
     TotalFareTag,
     PaymentCard,
+    Back
 };

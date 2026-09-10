@@ -42,18 +42,18 @@ const ProfileMenuCard: React.FC = () => {
             rightText: currentLangText,
             onPress: () => navigation.navigate('Language'),
         },
-        {
-            id: 'payment',
-            title: t('menu_payment_methods') || 'Payment Methods',
-            icon: <Card width={scale(18)} height={scale(18)} />,
-            onPress: () => showComingSoonToast(t('menu_payment_methods') || 'Payment Methods'),
-        },
-        {
-            id: 'address',
-            title: t('menu_saved_addresses') || 'Saved Addresses',
-            icon: <MapPin width={scale(18)} height={scale(18)} />,
-            onPress: () => showComingSoonToast(t('menu_saved_addresses') || 'Saved Addresses'),
-        },
+        // {
+        //     id: 'payment',
+        //     title: t('menu_payment_methods') || 'Payment Methods',
+        //     icon: <Card width={scale(18)} height={scale(18)} />,
+        //     onPress: () => showComingSoonToast(t('menu_payment_methods') || 'Payment Methods'),
+        // },
+        // {
+        //     id: 'address',
+        //     title: t('menu_saved_addresses') || 'Saved Addresses',
+        //     icon: <MapPin width={scale(18)} height={scale(18)} />,
+        //     onPress: () => showComingSoonToast(t('menu_saved_addresses') || 'Saved Addresses'),
+        // },
         {
             id: 'notifications',
             title: t('profile_notification') || 'Notifications',
@@ -72,12 +72,12 @@ const ProfileMenuCard: React.FC = () => {
             icon: <FeedbackIcon width={scale(18)} height={scale(18)} />,
             onPress: () => navigation.navigate('Feedback'),
         },
-        {
-            id: 'support',
-            title: t('support_center_title') || 'Help & Support',
-            icon: <Headset width={scale(18)} height={scale(18)} />,
-            onPress: () => navigation.navigate('GetHelp'),
-        },
+        // {
+        //     id: 'support',
+        //     title: t('support_center_title') || 'Help & Support',
+        //     icon: <Headset width={scale(18)} height={scale(18)} />,
+        //     onPress: () => navigation.navigate('GetHelp'),
+        // },
         {
             id: 'about',
             title: t('about_bookngo') || 'About BookNGo',
