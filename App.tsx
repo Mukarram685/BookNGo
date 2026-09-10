@@ -40,8 +40,11 @@ const OneSignalUserSync = () => {
           }
         }, 1000);
       } else {
-        console.log('[OneSignalUserSync] No active logged in user, logging out OneSignal session');
-        OneSignal.logout();
+        if (typeof OneSignal.logout === 'function') {
+          OneSignal.logout();
+        } else if (OneSignal.User && typeof OneSignal.User.logout === 'function') {
+          OneSignal.User.logout();
+        }
       }
     };
 
@@ -67,9 +70,9 @@ const App = () => {
   useEffect(() => {
     OneSignal.Debug.setLogLevel(LogLevel.Verbose);
     OneSignal.initialize(oneSignalAppId);
-    OneSignal.Notifications.requestPermission(true).then((granted) => {
+    Promise.resolve(OneSignal.Notifications.requestPermission(true)).then((granted) => {
       console.log('[OneSignal] Push Notification Permission Result:', granted);
-    });
+    }).catch(() => {});
 
     const clickHandler = (event: any) => {
       console.log('[OneSignal] Notification clicked:', JSON.stringify(event));

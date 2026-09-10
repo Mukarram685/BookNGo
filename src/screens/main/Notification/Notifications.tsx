@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     View,
     StyleSheet,
@@ -13,17 +13,23 @@ import AppText from '../../../component/common/AppText';
 import colors, { Colors } from '../../../utils/colors';
 import Header from '../../../component/Header';
 import EmptyCard from '../../../component/common/EmptyCard';
-import { INITIAL_NOTIFICATIONS, NotificationItem } from '../../../data/notifications.data';
+import { useNotifications, useMarkNotificationRead, UserNotification } from '../../../hooks/useNotifications';
+import AppLoader from '../../../component/common/AppLoader';
 
 const Notifications = () => {
     const { t } = useTranslation();
-    const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
+    const { data: notifications = [], isLoading, refetch } = useNotifications();
+    const { mutate: markAsRead } = useMarkNotificationRead();
 
     const handleNotificationPress = (id: string) => {
-        setNotifications(prev =>
-            prev.map(n => (n.id === id ? { ...n, read: true } : n))
-        );
+        if (id) {
+            markAsRead(id);
+        }
     };
+
+    if (isLoading && (!notifications || notifications.length === 0)) {
+        return <AppLoader />;
+    }
 
     return (
         <ScreenWrapper
@@ -35,19 +41,20 @@ const Notifications = () => {
 
             <FlatList
                 data={notifications}
-                keyExtractor={item => item.id}
+                keyExtractor={item => (item.id || item._id || String(Math.random()))}
                 contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={false}
-                renderItem={({ item }) => (
+                onRefresh={refetch}
+                refreshing={isLoading}
+                renderItem={({ item }: { item: UserNotification }) => (
                     <TouchableOpacity
                         style={[
                             styles.notificationCard,
                             !item.read && styles.unreadNotificationCard,
                         ]}
                         activeOpacity={0.8}
-                        onPress={() => handleNotificationPress(item.id)}
+                        onPress={() => handleNotificationPress(item.id || (item._id as string))}
                     >
-                        {/* Title & Time Header */}
                         <View style={styles.cardHeader}>
                             <AppText
                                 size={15}
@@ -59,11 +66,10 @@ const Notifications = () => {
                                 {item.title}
                             </AppText>
                             <AppText size={12} color="#94A3B8" weight="500" style={styles.timeText}>
-                                {item.timestamp}
+                                {item.timestamp || 'Recently'}
                             </AppText>
                         </View>
 
-                        {/* Description Text */}
                         <AppText
                             size={13}
                             color="#475569"
@@ -89,7 +95,7 @@ export default Notifications;
 
 const styles = StyleSheet.create({
     listContent: {
-         paddingTop: verticalScale(14),
+        paddingTop: verticalScale(14),
         paddingBottom: verticalScale(30),
         flexGrow: 1,
     },

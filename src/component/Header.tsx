@@ -71,8 +71,10 @@ export default function Header({
   };
 
   const routeName = route?.name;
-  const isAllowedMenuScreen = routeName === 'Home' || routeName === 'Bookings' || routeName === 'All';
-  const shouldShowMenu = showMenuButton !== undefined ? showMenuButton : isAllowedMenuScreen;
+  const isAllowedMenuScreen =
+    routeName === 'Home' || routeName === 'Bookings' || routeName === 'All';
+  const shouldShowMenu =
+    showMenuButton !== undefined ? showMenuButton : isAllowedMenuScreen;
 
   return (
     <View
@@ -87,13 +89,7 @@ export default function Header({
       <View style={styles.container}>
         <View style={styles.rowContainer}>
           {showBack ? (
-            <TouchableOpacity
-              style={styles.backButton}
-              activeOpacity={0.7}
-              onPress={() => navigation.goBack()}
-            >
-              <Back width={scale(18)} height={scale(18)} fill={colors.PRIMARY} />
-            </TouchableOpacity>
+            <Back />
           ) : (
             showAvatar && (
               <TouchableOpacity
@@ -127,7 +123,11 @@ export default function Header({
             {showName && (
               <>
                 <Text style={styles.title} numberOfLines={1}>
-                  {title ? title : (nameOnly ? resolvedDisplayName : t('hi_greeting', { name: resolvedDisplayName })) }
+                  {title
+                    ? title
+                    : nameOnly
+                    ? resolvedDisplayName
+                    : t('hi_greeting', { name: resolvedDisplayName })}
                 </Text>
                 {subtitle ? (
                   <Text style={styles.subtitle} numberOfLines={1}>
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: scale(16),
+    paddingHorizontal: scale(10),
   },
   menuButton: {
     alignItems: 'center',
@@ -237,12 +237,14 @@ const styles = StyleSheet.create({
     color: COLOR_TITLE,
     fontSize: scale(19),
     fontWeight: '800',
+    marginLeft: scale(4),
   },
   subtitle: {
     color: '#6B7280',
     fontSize: scale(12),
     fontWeight: '500',
     marginTop: verticalScale(2),
+    marginLeft: scale(4),
   },
   titleContainer: {
     flex: 1,
