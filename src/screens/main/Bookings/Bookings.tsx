@@ -12,13 +12,12 @@ import { useMyBookings } from '../../../hooks/useMyBookings';
 import AppLoader from '../../../component/common/AppLoader';
 import colors from '../../../utils/colors';
 import {
-    TicketStat,
     CalendarStat,
     CheckStat,
     CrossStat,
 } from '../../../assets/svg';
 
-type TabType = 'all' | 'upcoming' | 'completed' | 'cancelled';
+type TabType = 'upcoming' | 'completed' | 'cancelled';
 
 interface TabItem {
     id: TabType;
@@ -28,7 +27,7 @@ interface TabItem {
 }
 
 const TABS: TabItem[] = [
-    { id: 'all', titleKey: 'filter_all', fallbackTitle: 'All', IconComponent: TicketStat },
+    // { id: 'all', titleKey: 'filter_all', fallbackTitle: 'All', IconComponent: TicketStat },
     { id: 'upcoming', titleKey: 'stat_upcoming', fallbackTitle: 'Upcoming', IconComponent: CalendarStat },
     { id: 'completed', titleKey: 'stat_completed', fallbackTitle: 'Completed', IconComponent: CheckStat },
     { id: 'cancelled', titleKey: 'stat_cancelled', fallbackTitle: 'Cancelled', IconComponent: CrossStat },
@@ -38,7 +37,7 @@ const Bookings = () => {
     const { t } = useTranslation();
     const navigation = useNavigation<any>();
     const { data, isLoading, refetch } = useMyBookings();
-    const [activeTab, setActiveTab] = useState<TabType>('all');
+    const [activeTab, setActiveTab] = useState<TabType>('upcoming');
 
     const handleView = (booking: any) => {
         navigation.navigate('BookingDetails', { booking });

@@ -5,7 +5,8 @@ import AppText from '../common/AppText';
 import { useTranslation } from 'react-i18next';
 import AppInput from '../TextInput/TextInput';
 import colors from '../../utils/colors';
-import { User, Phone, Radio } from '../../assets/svg';
+import { User, Phone, Cnic } from '../../assets/svg';
+import { formatCNIC } from '../../helpers/auth.helper';
 
 interface PassengerFormProps {
     seatNumber: number;
@@ -51,10 +52,11 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
             <AppInput
                 placeholder={t('passenger_cnic_placeholder') || "CNIC (00000-0000000-0)"}
                 value={values.passengerCNIC}
-                onChangeText={(val) => onChange('passengerCNIC', val)}
+                onChangeText={(val) => onChange('passengerCNIC', formatCNIC(val))}
                 error={touched?.passengerCNIC ? errors?.passengerCNIC : undefined}
-                LeftIcon={Radio}
+                LeftIcon={Cnic}
                 keyboardType="numeric"
+                maxLength={15}
                 containerStyle={styles.input}
             />
 

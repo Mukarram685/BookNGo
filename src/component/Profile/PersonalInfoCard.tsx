@@ -4,6 +4,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
 import colors from '../../utils/colors';
+import { formatCNIC } from '../../helpers/auth.helper';
 
 interface PersonalInfoCardProps {
     firstName: string;
@@ -120,10 +121,11 @@ const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
                 <TextInput
                     style={styles.textInput}
                     value={cnic}
-                    onChangeText={setCnic}
+                    onChangeText={(text) => setCnic(formatCNIC(text))}
                     placeholder="35202-1234567-1"
                     placeholderTextColor={colors.SLATE_MUTED}
                     keyboardType="numeric"
+                    maxLength={15}
                 />
             </View>
 

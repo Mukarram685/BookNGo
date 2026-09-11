@@ -12,6 +12,7 @@ import Header from '../../../component/Header';
 import colors, { Colors } from '../../../utils/colors';
 import { BusSchedule } from '../../../interface/bus.interface';
 import { PassengerDetail } from '../../../interface/booking.interface';
+import { formatCNIC } from '../../../helpers/auth.helper';
 import { useBookSeats } from '../../../hooks/useBookSeats';
 import { useCreatePaymentIntent } from '../../../hooks/useCreatePaymentIntent';
 import {
@@ -35,7 +36,7 @@ const BookingReview = () => {
         passengers = [],
         totalAmount: passedTotalAmount,
     }: {
-        schedule: BusSchedule;
+        schedule: any;
         passengers: PassengerDetail[];
         totalAmount: number;
     } = route?.params || {};
@@ -350,7 +351,7 @@ const BookingReview = () => {
                                                     {p.passengerName || p.name || `${t('passenger_label')} ${idx + 1}`}
                                                 </AppText>
                                                 <AppText size={11} color="#64748B" weight="500" style={{ marginTop: 2 }}>
-                                                    CNIC: {p.passengerCNIC || p.cnic || '35202-1234567-1'}
+                                                    CNIC: {formatCNIC(p.passengerCNIC || p.cnic || '35202-1234567-1')}
                                                 </AppText>
                                             </View>
                                         </View>

@@ -62,14 +62,14 @@ const All = () => {
         <ScreenWrapper isScrollable={false} backgroundColor={Colors.BACKGROUND} isLoading={isLoading && !data} header={<Header title={t('all_routes_title') || "All Routes"} showBack={false} />}>
             <StatusBar barStyle="light-content" backgroundColor={Colors.PRIMARY} />
             <View style={styles.container}>
-                <View style={styles.header}>
-                    <AppText size={22} weight="800" color={Colors.PRIMARY}>
+                {/* <View style={styles.header}> */}
+                    {/* <AppText size={22} weight="800" color={Colors.PRIMARY}>
                         {t('all_available_buses') || "All Available Buses"}
-                    </AppText>
+                    </AppText> */}
                     {/* <AppText size={15} color={Colors.DARK_GRAY} weight="500">
                         {t('showing_today_onwards') || "Showing schedules from today onwards"}
                     </AppText> */}
-                </View>
+                {/* </View> */}
 
                 <FlatList
                     data={busList}

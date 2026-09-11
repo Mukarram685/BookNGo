@@ -11,7 +11,7 @@ import Header from '../../../component/Header';
 
 const Home = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const handleSearch = (params: { fromCity: string; toCity: string; date: string }) => {
     navigation.navigate('SearchResults' as never, params as never);

@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import Svg, { Defs, LinearGradient, Stop, Rect } from 'react-native-svg';
 import AppText from '../common/AppText';
 import colors from '../../utils/colors';
+import { formatCNIC } from '../../helpers/auth.helper';
 import {
     Mail as CardMailIcon,
     Phone as CardPhoneIcon,
@@ -126,7 +127,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
                                 {t('label_cnic') || 'CNIC'}
                             </AppText>
                             <AppText size={12} weight="600" color={colors.WHITE} numberOfLines={1}>
-                                {cnic || '35202-1234567-1'}
+                                {cnic ? formatCNIC(cnic) : '35202-1234567-1'}
                             </AppText>
                         </View>
                     </View>

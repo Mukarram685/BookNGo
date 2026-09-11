@@ -40,10 +40,10 @@ const OneSignalUserSync = () => {
           }
         }, 1000);
       } else {
-        if (typeof OneSignal.logout === 'function') {
-          OneSignal.logout();
-        } else if (OneSignal.User && typeof OneSignal.User.logout === 'function') {
-          OneSignal.User.logout();
+        if (typeof (OneSignal as any).logout === 'function') {
+          (OneSignal as any).logout();
+        } else if (OneSignal.User && typeof (OneSignal.User as any).logout === 'function') {
+          (OneSignal.User as any).logout();
         }
       }
     };

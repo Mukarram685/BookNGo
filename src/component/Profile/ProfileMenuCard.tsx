@@ -15,6 +15,7 @@ import {
     Headset,
     Info,
     Feedback as FeedbackIcon,
+    Bus,
 } from '../../assets/svg';
 import ProfileMenuItem, { MenuItemData } from './ProfileMenuItem';
 
@@ -71,6 +72,12 @@ const ProfileMenuCard: React.FC = () => {
             title: t('menu_feedback') || 'Share Feedback',
             icon: <FeedbackIcon width={scale(18)} height={scale(18)} />,
             onPress: () => navigation.navigate('Feedback'),
+        },
+        {
+            id: 'register_company',
+            title: t('menu_register_company') || 'Register Company',
+            icon: <Bus width={scale(18)} height={scale(18)} color={colors.BLUE_PRIMARY} />,
+            onPress: () => navigation.navigate('RegisterCompany'),
         },
         // {
         //     id: 'support',

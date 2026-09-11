@@ -10,6 +10,16 @@ export const loginSchema = Yup.object().shape({
     .required('Password is required'),
 });
 
+export const formatCNIC = (text: string): string => {
+  const cleaned = (text || '').replace(/\D/g, '').slice(0, 13);
+  if (cleaned.length > 12) {
+    return `${cleaned.slice(0, 5)}-${cleaned.slice(5, 12)}-${cleaned.slice(12)}`;
+  } else if (cleaned.length > 5) {
+    return `${cleaned.slice(0, 5)}-${cleaned.slice(5)}`;
+  }
+  return cleaned;
+};
+
 export const signupSchema = Yup.object().shape({
   name: Yup.string().required('Name is required').min(3, 'Name must be at least 3 characters'),
   email: Yup.string()
@@ -51,5 +61,19 @@ export const feedbackSchema = Yup.object().shape({
   description: Yup.string()
     .min(10, 'Feedback must be at least 10 characters')
     .required('Feedback description is required'),
+});
+
+export const companyRegistrationSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Company name must be at least 2 characters')
+    .required('Company name is required'),
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Company email is required'),
+  phone: Yup.string()
+    .required('Phone number is required'),
+  address: Yup.string()
+    .min(5, 'Address must be at least 5 characters')
+    .required('Address is required'),
 });
 

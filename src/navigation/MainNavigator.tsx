@@ -14,6 +14,7 @@ import PrivacyPolicy from '../screens/main/Profile/PrivacyPolicy';
 import TermsConditions from '../screens/main/Profile/TermsConditions';
 import GetHelp from '../screens/main/Profile/GetHelp';
 import FeedbackScreen from '../screens/main/Profile/Feedback';
+import RegisterCompany from '../screens/main/Profile/RegisterCompany';
 import Notifications from '../screens/main/Notification/Notifications';
 
 import Profile from '../screens/main/Profile/Profile';
@@ -38,6 +39,7 @@ const MainNavigator = () => {
             <Stack.Screen name="TermsConditions" component={TermsConditions} />
             <Stack.Screen name="GetHelp" component={GetHelp} />
             <Stack.Screen name="Feedback" component={FeedbackScreen} />
+            <Stack.Screen name="RegisterCompany" component={RegisterCompany} />
             <Stack.Screen name="Notifications" component={Notifications} />
         </Stack.Navigator>
     );

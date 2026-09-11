@@ -18,6 +18,7 @@ import colors, { Colors } from '../../../utils/colors';
 import Header from '../../../component/Header';
 import AppButton from '../../../component/common/AppButton';
 import { useCancelBooking } from '../../../hooks/useCancelBooking';
+import { formatCNIC } from '../../../helpers/auth.helper';
 
 type BookingDetailsRouteProp = RouteProp<
   { BookingDetails: { booking: any } },
@@ -153,13 +154,30 @@ const BookingDetails = () => {
     booking?.time || rawBooking?.schedule?.departureTime || '08:00';
 
   const passengerName =
+    rawBooking?.seats?.[0]?.passengerName ||
     rawBooking?.user?.name ||
-    rawBooking?.seats?.[0]?.passengerName
+    booking?.name ||
+    booking?.passengerName ||
+    'Passenger';
   const passengerPhone =
+    rawBooking?.seats?.[0]?.passengerPhone ||
     rawBooking?.user?.phone ||
-    rawBooking?.seats?.[0]?.passengerPhone;
+    rawBooking?.user?.phoneNumber ||
+    booking?.phone ||
+    booking?.passengerPhone ||
+    '';
   const passengerGender =
-    rawBooking?.user?.gender || rawBooking?.seats?.[0]?.gender || 'Male';
+    rawBooking?.seats?.[0]?.gender ||
+    rawBooking?.user?.gender ||
+    booking?.gender ||
+    'Male';
+  const passengerCNIC =
+    rawBooking?.seats?.[0]?.passengerCNIC ||
+    rawBooking?.user?.cnic ||
+    rawBooking?.passengerCNIC ||
+    booking?.cnic ||
+    booking?.passengerCNIC ||
+    '';
 
   const ticketPrice =
     typeof booking?.price === 'number'
@@ -357,32 +375,94 @@ const BookingDetails = () => {
             >
               {t('booking_details_passenger_info') || 'Passenger Information'}
             </AppText>
-            <View style={styles.detailCard}>
-              <View style={styles.detailRow}>
-                <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  {t('booking_details_name') || 'Name'}
-                </AppText>
-                <AppText size={14} weight="700" color={Colors.PRIMARY}>
-                  {passengerName}
-                </AppText>
+            {Array.isArray(rawBooking?.seats) && rawBooking.seats.length > 1 ? (
+              rawBooking.seats.map((seat: any, index: number) => (
+                <View
+                  key={index}
+                  style={[
+                    styles.detailCard,
+                    index > 0 && { marginTop: verticalScale(10) },
+                  ]}
+                >
+                  <View style={styles.detailRow}>
+                    <AppText size={13} color={Colors.DARK_GRAY} weight="600">
+                      {t('booking_details_name') || 'Name'}{' '}
+                      {seat.seatNumber ? `(Seat ${seat.seatNumber})` : `(${index + 1})`}
+                    </AppText>
+                    <AppText size={14} weight="700" color={Colors.PRIMARY}>
+                      {seat.passengerName || passengerName}
+                    </AppText>
+                  </View>
+                  {seat.passengerCNIC || passengerCNIC ? (
+                    <View style={styles.detailRow}>
+                      <AppText size={13} color={Colors.DARK_GRAY} weight="600">
+                        {t('label_cnic') || 'CNIC'}
+                      </AppText>
+                      <AppText size={14} weight="700" color={Colors.PRIMARY}>
+                        {formatCNIC(seat.passengerCNIC || passengerCNIC)}
+                      </AppText>
+                    </View>
+                  ) : null}
+                  {seat.passengerPhone || passengerPhone ? (
+                    <View style={styles.detailRow}>
+                      <AppText size={13} color={Colors.DARK_GRAY} weight="600">
+                        {t('booking_details_phone') || 'Phone'}
+                      </AppText>
+                      <AppText size={14} weight="700" color={Colors.PRIMARY}>
+                        {seat.passengerPhone || passengerPhone}
+                      </AppText>
+                    </View>
+                  ) : null}
+                  <View style={styles.detailRow}>
+                    <AppText size={13} color={Colors.DARK_GRAY} weight="600">
+                      {t('booking_details_gender') || 'Gender'}
+                    </AppText>
+                    <AppText size={14} weight="700" color={Colors.PRIMARY}>
+                      {seat.gender || passengerGender}
+                    </AppText>
+                  </View>
+                </View>
+              ))
+            ) : (
+              <View style={styles.detailCard}>
+                <View style={styles.detailRow}>
+                  <AppText size={13} color={Colors.DARK_GRAY} weight="600">
+                    {t('booking_details_name') || 'Name'}
+                  </AppText>
+                  <AppText size={14} weight="700" color={Colors.PRIMARY}>
+                    {passengerName}
+                  </AppText>
+                </View>
+                {passengerCNIC ? (
+                  <View style={styles.detailRow}>
+                    <AppText size={13} color={Colors.DARK_GRAY} weight="600">
+                      {t('label_cnic') || 'CNIC'}
+                    </AppText>
+                    <AppText size={14} weight="700" color={Colors.PRIMARY}>
+                      {formatCNIC(passengerCNIC)}
+                    </AppText>
+                  </View>
+                ) : null}
+                {passengerPhone ? (
+                  <View style={styles.detailRow}>
+                    <AppText size={13} color={Colors.DARK_GRAY} weight="600">
+                      {t('booking_details_phone') || 'Phone'}
+                    </AppText>
+                    <AppText size={14} weight="700" color={Colors.PRIMARY}>
+                      {passengerPhone}
+                    </AppText>
+                  </View>
+                ) : null}
+                <View style={styles.detailRow}>
+                  <AppText size={13} color={Colors.DARK_GRAY} weight="600">
+                    {t('booking_details_gender') || 'Gender'}
+                  </AppText>
+                  <AppText size={14} weight="700" color={Colors.PRIMARY}>
+                    {passengerGender}
+                  </AppText>
+                </View>
               </View>
-              <View style={styles.detailRow}>
-                <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  {t('booking_details_phone') || 'Phone'}
-                </AppText>
-                <AppText size={14} weight="700" color={Colors.PRIMARY}>
-                  {passengerPhone}
-                </AppText>
-              </View>
-              <View style={styles.detailRow}>
-                <AppText size={13} color={Colors.DARK_GRAY} weight="600">
-                  {t('booking_details_gender') || 'Gender'}
-                </AppText>
-                <AppText size={14} weight="700" color={Colors.PRIMARY}>
-                  {passengerGender}
-                </AppText>
-              </View>
-            </View>
+            )}
           </View>
 
           <View style={styles.section}>
