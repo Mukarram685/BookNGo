@@ -10,6 +10,16 @@ export const loginSchema = Yup.object().shape({
     .required('Password is required'),
 });
 
+export const formatCNIC = (text: string): string => {
+  const cleaned = (text || '').replace(/\D/g, '').slice(0, 13);
+  if (cleaned.length > 12) {
+    return `${cleaned.slice(0, 5)}-${cleaned.slice(5, 12)}-${cleaned.slice(12)}`;
+  } else if (cleaned.length > 5) {
+    return `${cleaned.slice(0, 5)}-${cleaned.slice(5)}`;
+  }
+  return cleaned;
+};
+
 export const signupSchema = Yup.object().shape({
   name: Yup.string().required('Name is required').min(3, 'Name must be at least 3 characters'),
   email: Yup.string()
