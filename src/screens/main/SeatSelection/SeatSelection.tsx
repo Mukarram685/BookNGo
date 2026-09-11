@@ -165,8 +165,17 @@ const SeatSelection = () => {
                 <View style={styles.checkoutWrapper}>
                     <View style={styles.checkoutContent}>
                         <View style={styles.selectedSeatsInfo}>
-                            <View style={styles.seatBadgeGreen}>
-                                <SeatIcon width={scale(20)} height={scale(20)} color="#16A34A" />
+                            <View
+                                style={[
+                                    styles.seatBadgeGreen,
+                                    selectedSeats.length === 0 && { backgroundColor: '#F1F5F9' },
+                                ]}
+                            >
+                                <SeatIcon
+                                    width={scale(20)}
+                                    height={scale(20)}
+                                    color={selectedSeats.length > 0 ? "#16A34A" : "#94A3B8"}
+                                />
                             </View>
                             <View>
                                 <AppText size={13} color={selectedSeats.length > 0 ? "#16A34A" : "#64748B"} weight="800">
@@ -188,16 +197,10 @@ const SeatSelection = () => {
                             title={t('seatSelection_proceed') || "Continue"}
                             onPress={() => navigation.navigate('PassengerDetails', { schedule, selectedSeats })}
                             disabled={selectedSeats.length === 0}
-                            style={styles.payButton}
-                            icon={
-                                <ArrowIcon
-                                    width={scale(13)}
-                                    height={scale(13)}
-                                    fill="#FFFFFF"
-                                    style={{ transform: [{ rotate: '180deg' }] }}
-                                />
-                            }
-                            iconPosition="right"
+                            style={[
+                                styles.payButton,
+                                selectedSeats.length === 0 && styles.disabledPayButton,
+                            ]}
                         />
                     </View>
                 </View>
@@ -294,7 +297,8 @@ const styles = StyleSheet.create({
     payButton: {
         backgroundColor: colors.BLUE_PRIMARY,
         paddingHorizontal: scale(20),
-        paddingVertical: verticalScale(11),
+        // paddingVertical: verticalScale(11),
+        height: verticalScale(36),
         borderRadius: scale(12),
         flexDirection: 'row',
         alignItems: 'center',
@@ -304,6 +308,11 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 4,
         elevation: 3,
+    },
+    disabledPayButton: {
+        backgroundColor: '#E2E8F0',
+        shadowOpacity: 0,
+        elevation: 0,
     },
 });
 

@@ -78,8 +78,8 @@ const AppButton: React.FC<AppButtonProps> = ({
       style={[
         styles.buttonBase,
         variantStyles.button,
-        disabled && styles.disabledButton,
         style,
+        disabled && styles.disabledButton,
       ]}
     >
       {loading ? (
@@ -94,8 +94,8 @@ const AppButton: React.FC<AppButtonProps> = ({
             style={StyleSheet.flatten([
               styles.textBase,
               variantStyles.text,
-              disabled && styles.disabledText,
               textStyle,
+              disabled && styles.disabledText,
             ])}
           >
             {title}

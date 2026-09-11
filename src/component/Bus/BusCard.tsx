@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
   },
   selectButton: {
     backgroundColor: colors.BLUE_PRIMARY,
-    height: verticalScale(38),
+    height: verticalScale(36),
     borderRadius: scale(10),
     paddingHorizontal: scale(10),
     paddingVertical: verticalScale(2),

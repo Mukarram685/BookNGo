@@ -84,9 +84,11 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                                 mode="date"
                                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                                 minimumDate={new Date()}
-                                textColor={Colors.BLACK}
-                                accentColor={Colors.SECONDARY}
+                                textColor={Colors.PRIMARY}
+                                accentColor={Colors.PRIMARY}
                                 themeVariant="light"
+                                positiveButton={{ textColor: Colors.PRIMARY }}
+                                negativeButton={{ textColor: Colors.PRIMARY }}
                                 onChange={(event, selectedDate) => {
                                     setShowDatePicker(
                                         Platform.OS === 'ios'
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     datePickerWrapper: {
-        backgroundColor: 'transparent',
+        backgroundColor: Colors.WHITE,
         borderRadius: 15,
         padding: 10,
         marginTop: 10,
