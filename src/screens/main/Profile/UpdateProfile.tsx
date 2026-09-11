@@ -15,6 +15,7 @@ import { OneSignal } from 'react-native-onesignal';
 import { User, Headset } from '../../../assets/svg';
 import PersonalInfoCard from '../../../component/Profile/PersonalInfoCard';
 import ChangePasswordCard from '../../../component/Profile/ChangePasswordCard';
+import { formatCNIC } from '../../../helpers/auth.helper';
 
 const UpdateProfile = () => {
   const navigation = useNavigation<any>();
@@ -36,7 +37,7 @@ const UpdateProfile = () => {
   const [phone, setPhone] = useState(
     authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber || '+92 312 3456789',
   );
-  const [cnic, setCnic] = useState(authUser?.cnic || profile?.cnic || '35202-1234567-1');
+  const [cnic, setCnic] = useState(formatCNIC(authUser?.cnic || profile?.cnic || '35202-1234567-1'));
   const [dob, setDob] = useState(authUser?.dateOfBirth || profile?.dateOfBirth || '07/15/1998');
   const [gender, setGender] = useState(authUser?.gender || profile?.gender || 'Male');
 
@@ -52,7 +53,7 @@ const UpdateProfile = () => {
       setPhone(authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber);
     }
     if (authUser?.cnic || profile?.cnic) {
-      setCnic(authUser?.cnic || profile?.cnic);
+      setCnic(formatCNIC(authUser?.cnic || profile?.cnic));
     }
   }, [authUser, profile]);
 

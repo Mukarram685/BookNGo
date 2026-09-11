@@ -14,6 +14,8 @@ import colors, { Colors } from '../../../utils/colors';
 import PassengerForm from '../../../component/Booking/PassengerForm';
 import { BusSchedule } from '../../../interface/bus.interface';
 
+import { formatCNIC } from '../../../helpers/auth.helper';
+
 const CNIC_REGEX = /^\d{5}-\d{7}-\d$/;
 
 const PassengerDetail = () => {
@@ -29,8 +31,8 @@ const PassengerDetail = () => {
     passengers: selectedSeats.map((seat, index) => ({
       seatNumber: seat,
       passengerName: index === 0 ? (user?.name || '') : '',
-      passengerCNIC: index === 0 ? (user?.cnic || '') : '',
-      passengerPhone: index === 0 ? (user?.phoneNumber?.toString() || '') : '',
+      passengerCNIC: index === 0 ? formatCNIC(user?.cnic || '') : '',
+      passengerPhone: index === 0 ? (user?.phoneNumber?.toString() || user?.phone?.toString() || '') : '',
       gender: 'Male' as const,
     })),
   };
