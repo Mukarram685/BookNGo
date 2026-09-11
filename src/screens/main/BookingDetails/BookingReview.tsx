@@ -36,7 +36,7 @@ const BookingReview = () => {
         passengers = [],
         totalAmount: passedTotalAmount,
     }: {
-        schedule: BusSchedule;
+        schedule: any;
         passengers: PassengerDetail[];
         totalAmount: number;
     } = route?.params || {};

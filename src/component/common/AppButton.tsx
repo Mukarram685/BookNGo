@@ -91,12 +91,12 @@ const AppButton: React.FC<AppButtonProps> = ({
         <View style={styles.contentContainer}>
           {icon && iconPosition === 'left' && <View style={styles.leftIconContainer}>{icon}</View>}
           <AppText
-            style={[
+            style={StyleSheet.flatten([
               styles.textBase,
               variantStyles.text,
               disabled && styles.disabledText,
               textStyle,
-            ]}
+            ])}
           >
             {title}
           </AppText>

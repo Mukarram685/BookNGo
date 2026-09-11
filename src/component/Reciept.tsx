@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function ReceiptScreen() {
   const { t } = useTranslation();
-  const receiptRef = useRef();
+  const receiptRef = useRef<any>(null);
 
   const requestPermission = async () => {
     if (Platform.OS === 'android') {

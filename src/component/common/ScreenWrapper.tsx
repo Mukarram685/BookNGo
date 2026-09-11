@@ -127,7 +127,7 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
           <View
             style={[
               styles.backgroundImageContainer,
-              { height: backgroundImageHeight, opacity: backgroundImageOpacity },
+              { height: backgroundImageHeight as any, opacity: backgroundImageOpacity },
             ]}
           >
             <Image

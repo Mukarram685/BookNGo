@@ -63,3 +63,17 @@ export const feedbackSchema = Yup.object().shape({
     .required('Feedback description is required'),
 });
 
+export const companyRegistrationSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(2, 'Company name must be at least 2 characters')
+    .required('Company name is required'),
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Company email is required'),
+  phone: Yup.string()
+    .required('Phone number is required'),
+  address: Yup.string()
+    .min(5, 'Address must be at least 5 characters')
+    .required('Address is required'),
+});
+
