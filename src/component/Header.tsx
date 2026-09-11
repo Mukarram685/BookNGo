@@ -82,7 +82,7 @@ export default function Header({
         backgroundColor,
         borderBottomLeftRadius,
         borderBottomRightRadius,
-        paddingTop: insets.top + 12,
+        // paddingTop: insets.top + 12,
         paddingBottom,
       }}
     >
@@ -126,8 +126,8 @@ export default function Header({
                   {title
                     ? title
                     : nameOnly
-                    ? resolvedDisplayName
-                    : t('hi_greeting', { name: resolvedDisplayName })}
+                      ? resolvedDisplayName
+                      : t('hi_greeting', { name: resolvedDisplayName })}
                 </Text>
                 {subtitle ? (
                   <Text style={styles.subtitle} numberOfLines={1}>
