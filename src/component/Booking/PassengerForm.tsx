@@ -191,5 +191,3 @@ const styles = StyleSheet.create({
 });
 
 export default PassengerForm;
-
-export default PassengerForm;

@@ -20,7 +20,7 @@ const DatePicker = () => {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Button title="Select Travel Date" onPress={showDatePicker} />
+      <Button title={t('select_travel_date') || "Select Travel Date"} onPress={showDatePicker} />
       <Text style={{ marginTop: 15 }}>
         {t('selected')} {date.toDateString()}
       </Text>

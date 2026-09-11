@@ -347,7 +347,7 @@ const BookingReview = () => {
                                             </View>
                                             <View style={{ marginLeft: scale(12) }}>
                                                 <AppText size={14} weight="700" color="#1E293B">
-                                                    {p.passengerName || p.name || `Passenger ${idx + 1}`}
+                                                    {p.passengerName || p.name || `${t('passenger_label')} ${idx + 1}`}
                                                 </AppText>
                                                 <AppText size={11} color="#64748B" weight="500" style={{ marginTop: 2 }}>
                                                     CNIC: {p.passengerCNIC || p.cnic || '35202-1234567-1'}
@@ -355,7 +355,7 @@ const BookingReview = () => {
                                             </View>
                                         </View>
                                         <AppText size={13} weight="800" color="#1D4ED8">
-                                            Seat {p.seatNumber}
+                                            {t('booking_details_seat')} {p.seatNumber}
                                         </AppText>
                                     </View>
                                 </React.Fragment>
@@ -375,7 +375,7 @@ const BookingReview = () => {
                         <View style={{ marginTop: verticalScale(12) }}>
                             <View style={styles.summaryRow}>
                                 <AppText size={13} color="#475569" weight="600">
-                                    Ticket Price ({passengers.length || 2} x Rs. {perSeatPrice.toLocaleString()})
+                                    {t('ticket_price')} ({passengers.length || 2} x Rs. {perSeatPrice.toLocaleString()})
                                 </AppText>
                                 <AppText size={13} weight="700" color="#1E293B">
                                     Rs. {ticketPriceTotal.toLocaleString()}
@@ -385,7 +385,7 @@ const BookingReview = () => {
                             <View style={styles.summaryRow}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <AppText size={13} color="#475569" weight="600">
-                                        Service Fee
+                                        {t('service_fee') || 'Service Fee'}
                                     </AppText>
                                     <AppText size={11} color="#94A3B8" style={{ marginLeft: 4 }}>
                                         ⓘ
@@ -398,7 +398,7 @@ const BookingReview = () => {
 
                             {/* <View style={styles.summaryRow}>
                                 <AppText size={13} color="#16A34A" weight="600">
-                                    Discount
+                                    {t('discount') || 'Discount'}
                                 </AppText>
                                 <AppText size={13} weight="700" color="#16A34A">
                                     - Rs. {discount}
@@ -457,7 +457,7 @@ const BookingReview = () => {
 
                                 <View style={styles.activeCheckBadge}>
                                     <AppText size={10} weight="800" color="#2563EB">
-                                        ✓ Selected
+                                        {t('selected_badge') || '✓ Selected'}
                                     </AppText>
                                 </View>
                             </TouchableOpacity>

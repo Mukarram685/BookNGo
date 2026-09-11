@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { createBottomTabNavigator, BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { View, TouchableOpacity, Platform, StyleSheet, LayoutAnimation, UIManager, Animated, FlatList } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
@@ -165,6 +166,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({ state, descriptors, navigat
 };
 
 const BottomTabNavigator = () => {
+    const { t } = useTranslation();
     return (
         <Tab.Navigator
             tabBar={(props) => <CustomTabBar {...props} />}
@@ -176,17 +178,17 @@ const BottomTabNavigator = () => {
             <Tab.Screen
                 name="Home"
                 component={Home}
-                options={{ tabBarLabel: 'Home' }}
+                options={{ tabBarLabel: t('tab_home') || 'Home' }}
             />
             <Tab.Screen
                 name="Bookings"
                 component={Bookings}
-                options={{ tabBarLabel: 'Booking' }}
+                options={{ tabBarLabel: t('tab_bookings') || 'Booking' }}
             />
             <Tab.Screen
                 name="All"
                 component={All}
-                options={{ tabBarLabel: 'All' }}
+                options={{ tabBarLabel: t('tab_all') || 'All' }}
             />
         </Tab.Navigator>
     );

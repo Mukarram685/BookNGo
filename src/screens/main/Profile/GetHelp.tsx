@@ -83,8 +83,8 @@ const GetHelp = () => {
         {
             id: 'msg-1',
             sender: 'agent',
-            text: 'Hello! Welcome to BookNGo Live Support. How can we assist you with your bus reservation today?',
-            time: 'Just now',
+            text: t('support_initial_greeting') || 'Hello! Welcome to BookNGo Live Support. How can we assist you with your bus reservation today?',
+            time: t('support_just_now') || 'Just now',
         },
     ]);
 
@@ -100,8 +100,8 @@ const GetHelp = () => {
                 console.error('Could not open link:', err);
                 Toast.show({
                     type: 'error',
-                    text1: 'Could not open channel',
-                    text2: 'Please try another contact method.',
+                    text1: t('toast_channel_error') || 'Could not open channel',
+                    text2: t('toast_channel_error_msg') || 'Please try another contact method.',
                     position: 'bottom',
                 });
             });
@@ -115,7 +115,7 @@ const GetHelp = () => {
             id: `msg-${Date.now()}`,
             sender: 'user',
             text: inputText.trim(),
-            time: 'Just now',
+            time: t('support_just_now') || 'Just now',
         };
 
         setChatMessages(prev => [...prev, userMsg]);
@@ -126,8 +126,8 @@ const GetHelp = () => {
             const agentReply: ChatMessage = {
                 id: `msg-${Date.now() + 1}`,
                 sender: 'agent',
-                text: 'Thank you for reaching out. Ticket #BNG-8492 has been created for your request. A live transport representative will message you shortly.',
-                time: 'Just now',
+                text: t('support_ticket_created') || 'Thank you for reaching out. Ticket #BNG-8492 has been created for your request. A live transport representative will message you shortly.',
+                time: t('support_just_now') || 'Just now',
             };
             setChatMessages(prev => [...prev, agentReply]);
         }, 800);
@@ -267,12 +267,12 @@ const GetHelp = () => {
                                         </View>
                                         <View>
                                             <AppText size={16} weight="800" color={Colors.PRIMARY}>
-                                                BookNGo Support Agent
+                                                {t('support_agent_name') || 'BookNGo Support Agent'}
                                             </AppText>
                                             <View style={styles.liveIndicatorRow}>
                                                 <View style={styles.statusDot} />
                                                 <AppText size={11} color="#059669" weight="700">
-                                                    Online • Avg. reply 2m
+                                                    {t('support_online_status') || 'Online • Avg. reply 2m'}
                                                 </AppText>
                                             </View>
                                         </View>

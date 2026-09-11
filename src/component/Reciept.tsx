@@ -12,7 +12,10 @@ import ViewShot from 'react-native-view-shot';
 import RNFS from 'react-native-fs';
 import Share from 'react-native-share';
 
+import { useTranslation } from 'react-i18next';
+
 export default function ReceiptScreen() {
+  const { t } = useTranslation();
   const receiptRef = useRef();
 
   const requestPermission = async () => {
@@ -51,16 +54,16 @@ export default function ReceiptScreen() {
     <>
       <ViewShot ref={receiptRef} style={styles.container}>
         <View style={styles.receipt}>
-          <Text style={styles.title}>Payment Successful</Text>
-          <Text>Order ID: #ORD456789</Text>
-          <Text>Amount: Rs. 3,200</Text>
-          <Text>Date: 02 Feb 2026</Text>
-          <Text>Status: Completed</Text>
+          <Text style={styles.title}>{t('payment_successful') || "Payment Successful"}</Text>
+          <Text>{t('order_id')}: #ORD456789</Text>
+          <Text>{t('amount')}: Rs. 3,200</Text>
+          <Text>{t('date')}: 02 Feb 2026</Text>
+          <Text>{t('status')}: {t('completed')}</Text>
         </View>
       </ViewShot>
 
       <TouchableOpacity style={styles.shareBtn} onPress={shareReceipt}>
-        <Text style={styles.shareText}>Share Receipt</Text>
+        <Text style={styles.shareText}>{t('share_receipt') || "Share Receipt"}</Text>
       </TouchableOpacity>
     </>
   );

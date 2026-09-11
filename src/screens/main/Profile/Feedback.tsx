@@ -66,10 +66,10 @@ const FeedbackScreen = () => {
                                 <CheckCircle width={scale(48)} height={scale(48)} />
                             </View>
                             <AppText size={22} weight="800" color={Colors.PRIMARY} style={styles.successTitle}>
-                                Thank You! 🎉
+                                {t('feedback_thank_you_title') || 'Thank You! 🎉'}
                             </AppText>
                             <AppText size={14} color="#64748B" weight="500" style={styles.successDesc}>
-                                Your feedback has been received. A confirmation has been sent to your email address, and our team will review your suggestions carefully.
+                                {t('feedback_success_desc') || 'Your feedback has been received. A confirmation has been sent to your email address, and our team will review your suggestions carefully.'}
                             </AppText>
                             {/* <AppButton
                                 title="Submit Another Response"
@@ -82,7 +82,7 @@ const FeedbackScreen = () => {
                                 onPress={() => navigation.goBack()}
                             >
                                 <AppText size={14} weight="700" color={Colors.PRIMARY}>
-                                    Go Back
+                                    {t('feedback_go_back') || 'Go Back'}
                                 </AppText>
                             </TouchableOpacity>
                         </View>
@@ -96,10 +96,10 @@ const FeedbackScreen = () => {
                                 </View>
                                 <View style={styles.headerTextWrap}>
                                     <AppText size={18} weight="800" color={Colors.PRIMARY}>
-                                        We value your feedback! 💬
+                                        {t('feedback_value_title') || 'We value your feedback! 💬'}
                                     </AppText>
                                     <AppText size={12} color="#64748B" weight="500">
-                                        Tell us about your bus travel experience or feature suggestions.
+                                        {t('feedback_value_subtitle') || 'Tell us about your bus travel experience or feature suggestions.'}
                                     </AppText>
                                 </View>
                             </View>
@@ -118,8 +118,8 @@ const FeedbackScreen = () => {
                                     <View style={styles.formContainer}>
                                         {/* Input 1: Email Field */}
                                         <AppInput
-                                            label="Your Email Address"
-                                            placeholder="Enter your email"
+                                            label={t('feedback_email_label') || 'Your Email Address'}
+                                            placeholder={t('auth_forgot_email_placeholder') || 'Enter your email'}
                                             value={values.email}
                                             onChangeText={handleChange('email')}
                                             onBlur={handleBlur('email')}
@@ -135,8 +135,8 @@ const FeedbackScreen = () => {
 
                                         {/* Input 2: Large Multiline Feedback / Description Field (3+ lines) */}
                                         <AppInput
-                                            label="Feedback / Description"
-                                            placeholder="Write your suggestions, review, or report an issue here (minimum 2-3 lines)..."
+                                            label={t('feedback_description_label') || 'Feedback / Description'}
+                                            placeholder={t('feedback_description_placeholder') || 'Write your suggestions, review, or report an issue here (minimum 2-3 lines)...'}
                                             value={values.description}
                                             onChangeText={handleChange('description')}
                                             onBlur={handleBlur('description')}
@@ -152,7 +152,7 @@ const FeedbackScreen = () => {
                                         />
 
                                         <AppButton
-                                            title="Send Feedback"
+                                            title={t('feedback_send_button') || 'Send Feedback'}
                                             onPress={handleSubmit as any}
                                             style={styles.submitBtn}
                                         />
@@ -164,7 +164,7 @@ const FeedbackScreen = () => {
 
                     <View style={styles.infoCard}>
                         <AppText size={12} color="#475569" weight="500" style={styles.infoText}>
-                            ℹ️ Every submission is automatically emailed to our customer experience team and logged for quality control. You will also receive an email confirmation.
+                            ℹ️ {t('feedback_info_footer')}
                         </AppText>
                     </View>
             </KeyboardAvoidingView>

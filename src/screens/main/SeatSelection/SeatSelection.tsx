@@ -171,13 +171,15 @@ const SeatSelection = () => {
                             <View>
                                 <AppText size={13} color={selectedSeats.length > 0 ? "#16A34A" : "#64748B"} weight="800">
                                     {selectedSeats.length === 0
-                                        ? "No Seat Selected"
-                                        : `${selectedSeats.length} Seat${selectedSeats.length > 1 ? 's' : ''} Selected`}
+                                        ? t('no_seat_selected')
+                                        : selectedSeats.length === 1
+                                        ? t('seats_selected_count', { count: selectedSeats.length })
+                                        : t('seats_selected_count_other', { count: selectedSeats.length })}
                                 </AppText>
                                 <AppText size={12} color="#334155" weight="600" style={{ marginTop: 1 }}>
                                     {selectedSeats.length === 0
-                                        ? "Tap a seat to select"
-                                        : `Seat ${selectedSeats.join(', ')}`}
+                                        ? t('tap_seat_to_select')
+                                        : t('selected_seats_label', { seats: selectedSeats.join(', ') })}
                                 </AppText>
                             </View>
                         </View>

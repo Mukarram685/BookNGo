@@ -21,6 +21,7 @@ interface OtpInputBoxesProps {
 }
 
 const OtpInputBoxes: React.FC<OtpInputBoxesProps> = ({ value, onChange, error }) => {
+  const { t } = useTranslation();
   const inputsRef = useRef<Array<any>>([]);
   const digits = Array.from({ length: 6 }, (_, i) => (value && value[i]) || '');
 
@@ -65,7 +66,7 @@ const OtpInputBoxes: React.FC<OtpInputBoxesProps> = ({ value, onChange, error })
   return (
     <View style={styles.otpSectionContainer}>
       <AppText size={12} weight="700" color={Colors.PRIMARY} style={{ marginBottom: verticalScale(6) }}>
-        6-Digit Verification Code
+        {t('auth_verify_code_label')}
       </AppText>
       <View style={styles.otpBoxesRow}>
         {Array.from({ length: 6 }).map((_, i) => {
@@ -73,7 +74,9 @@ const OtpInputBoxes: React.FC<OtpInputBoxesProps> = ({ value, onChange, error })
           return (
             <TextInput
               key={i}
-              ref={(el) => (inputsRef.current[i] = el)}
+              ref={(el) => {
+                inputsRef.current[i] = el;
+              }}
               style={[
                 styles.otpBox,
                 hasVal && styles.otpBoxActive,
@@ -92,7 +95,7 @@ const OtpInputBoxes: React.FC<OtpInputBoxesProps> = ({ value, onChange, error })
         })}
       </View>
       {Boolean(error) && (
-        <AppText size={11} color={Colors.ERROR || '#EF4444'} style={styles.otpErrorText}>
+        <AppText size={11} color="#EF4444" style={styles.otpErrorText}>
           {error}
         </AppText>
       )}
@@ -192,7 +195,7 @@ const ForgotPassword = () => {
         >
           <Arrow width={scale(18)} height={scale(18)} fill={Colors.PRIMARY} />
           <AppText size={14} weight="700" color={Colors.PRIMARY} style={styles.backText}>
-            {step === 'reset' ? 'Back to Verify' : step === 'verify' ? 'Change Email' : 'Back to Login'}
+            {step === 'reset' ? t('back_to_verify') : step === 'verify' ? t('change_email') : t('back_to_login')}
           </AppText>
         </TouchableOpacity>
 
@@ -215,16 +218,16 @@ const ForgotPassword = () => {
               <View style={styles.card}>
                 <View style={styles.titleContainer}>
                   <AppText size={22} weight="800" color={Colors.PRIMARY} style={styles.welcomeText}>
-                    Forgot Password? 🔐
+                    {t('auth_forgot_title')}
                   </AppText>
                   <AppText size={13} color={Colors.DARK_GRAY} weight="500" style={styles.subtitleText}>
-                    Enter your registered email address and we'll send you a 6-digit verification code to reset your password.
+                    {t('auth_forgot_subtitle')}
                   </AppText>
                 </View>
 
                 <AppInput
-                  label="Email Address"
-                  placeholder="Enter your email"
+                  label={t('auth_forgot_email_label')}
+                  placeholder={t('auth_forgot_email_placeholder')}
                   value={values.email}
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
@@ -238,18 +241,18 @@ const ForgotPassword = () => {
                 />
 
                 <AppButton
-                  title="Send Verification Code"
+                  title={t('auth_forgot_send_code')}
                   onPress={handleSubmit as any}
                   style={styles.button}
                 />
 
                 <View style={styles.footer}>
                   <AppText size={13} color={Colors.DARK_GRAY}>
-                    Remember your password?{' '}
+                    {t('auth_forgot_remember')}{' '}
                   </AppText>
                   <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate('Signin')}>
                     <AppText size={13} weight="700" color={Colors.PRIMARY}>
-                      Sign In
+                      {t('auth_forgot_sign_in')}
                     </AppText>
                   </TouchableOpacity>
                 </View>
@@ -262,8 +265,8 @@ const ForgotPassword = () => {
             initialValues={{ otp: '' }}
             validationSchema={Yup.object().shape({
               otp: Yup.string()
-                .length(6, 'Verification code must be 6 digits')
-                .required('Verification code is required'),
+                .length(6, t('val_otp_length'))
+                .required(t('val_otp_required')),
             })}
             onSubmit={handleVerifyOtp}
           >
@@ -271,14 +274,10 @@ const ForgotPassword = () => {
               <View style={styles.card}>
                 <View style={styles.titleContainer}>
                   <AppText size={22} weight="800" color={Colors.PRIMARY} style={styles.welcomeText}>
-                    Verify Code 🔑
+                    {t('auth_verify_title')}
                   </AppText>
                   <AppText size={13} color={Colors.DARK_GRAY} weight="500" style={styles.subtitleText}>
-                    We sent a 6-digit code to{' '}
-                    <AppText size={13} weight="700" color={Colors.PRIMARY}>
-                      {targetEmail}
-                    </AppText>
-                    . Enter the code below to verify your identity.
+                    {t('auth_verify_subtitle', { email: targetEmail })}
                   </AppText>
                 </View>
 
@@ -290,7 +289,7 @@ const ForgotPassword = () => {
 
                 <View style={styles.resendRow}>
                   <AppText size={12} color={Colors.DARK_GRAY}>
-                    Didn't get the code?{' '}
+                    {t('auth_verify_didnt_get')}{' '}
                   </AppText>
                   <TouchableOpacity
                     activeOpacity={0.7}
@@ -302,13 +301,13 @@ const ForgotPassword = () => {
                       weight="700"
                       color={resendTimer > 0 ? Colors.TEXT_GREY : Colors.SECONDARY}
                     >
-                      {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend Code'}
+                      {resendTimer > 0 ? t('auth_verify_resend_in', { seconds: resendTimer }) : t('auth_verify_resend')}
                     </AppText>
                   </TouchableOpacity>
                 </View>
 
                 <AppButton
-                  title="Verify Code"
+                  title={t('auth_verify_button')}
                   onPress={handleSubmit as any}
                   style={styles.button}
                 />
@@ -321,11 +320,11 @@ const ForgotPassword = () => {
             initialValues={{ newPassword: '', confirmPassword: '' }}
             validationSchema={Yup.object().shape({
               newPassword: Yup.string()
-                .min(6, 'Password must be at least 6 characters')
-                .required('New password is required'),
+                .min(6, t('val_password_min'))
+                .required(t('val_new_password_required')),
               confirmPassword: Yup.string()
-                .oneOf([Yup.ref('newPassword')], 'Passwords must match')
-                .required('Please confirm your new password'),
+                .oneOf([Yup.ref('newPassword')], t('val_passwords_match'))
+                .required(t('val_confirm_password_required')),
             })}
             onSubmit={handleResetPassword}
           >
@@ -333,16 +332,16 @@ const ForgotPassword = () => {
               <View style={styles.card}>
                 <View style={styles.titleContainer}>
                   <AppText size={22} weight="800" color={Colors.PRIMARY} style={styles.welcomeText}>
-                    Reset Password 🔑
+                    {t('auth_reset_title')}
                   </AppText>
                   <AppText size={13} color={Colors.DARK_GRAY} weight="500" style={styles.subtitleText}>
-                    Your identity has been verified. Please choose your new password.
+                    {t('auth_reset_subtitle')}
                   </AppText>
                 </View>
 
                 <AppInput
-                  label="New Password"
-                  placeholder="At least 6 characters"
+                  label={t('auth_reset_new_password')}
+                  placeholder={t('auth_reset_new_password_placeholder')}
                   isPassword
                   value={values.newPassword}
                   onChangeText={handleChange('newPassword')}
@@ -355,8 +354,8 @@ const ForgotPassword = () => {
                 />
 
                 <AppInput
-                  label="Confirm New Password"
-                  placeholder="Re-type new password"
+                  label={t('auth_reset_confirm_password')}
+                  placeholder={t('auth_reset_confirm_password_placeholder')}
                   isPassword
                   value={values.confirmPassword}
                   onChangeText={handleChange('confirmPassword')}
@@ -369,7 +368,7 @@ const ForgotPassword = () => {
                 />
 
                 <AppButton
-                  title="Reset Password"
+                  title={t('auth_reset_button')}
                   onPress={handleSubmit as any}
                   style={styles.button}
                 />
