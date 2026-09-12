@@ -16,6 +16,7 @@ import GetHelp from '../screens/main/Profile/GetHelp';
 import FeedbackScreen from '../screens/main/Profile/Feedback';
 import RegisterCompany from '../screens/main/Profile/RegisterCompany';
 import Notifications from '../screens/main/Notification/Notifications';
+import RescheduleTrip from '../screens/main/BookingDetails/RescheduleTrip';
 
 import Profile from '../screens/main/Profile/Profile';
 
@@ -33,6 +34,7 @@ const MainNavigator = () => {
             <Stack.Screen name="BookingReview" component={BookingReview} />
             <Stack.Screen name="BookingSuccess" component={BookingSuccess} />
             <Stack.Screen name="BookingDetails" component={BookingDetails} />
+            <Stack.Screen name="RescheduleTrip" component={RescheduleTrip} />
             <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
             <Stack.Screen name="Language" component={Language} />
             <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />

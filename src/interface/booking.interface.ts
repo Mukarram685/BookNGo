@@ -37,3 +37,18 @@ export interface BookingResponse {
     message: string;
     ticket: TicketDetails;
 }
+
+export interface RescheduleRequest {
+    bookingId: string;
+    newScheduleId: string;
+    newSeats: number[];
+}
+
+export interface RescheduleResponse {
+    success: boolean;
+    message: string;
+    fareDifference: number;
+    ticket: TicketDetails;
+    booking: any;
+}
+

@@ -85,7 +85,17 @@ const BookingSuccess = () => {
     console.log('Total Amount:', totalAmount);
 
     return (
-        <ScreenWrapper backgroundColor={Colors.BACKGROUND} header={<Header title={t('payment_success_title') || "Payment Success"} showBack={false} />}>
+        <ScreenWrapper
+            backgroundColor={Colors.BACKGROUND}
+            header={
+                <Header
+                    title={t('payment_success_title') || "Payment Success"}
+                    showBack={false}
+                    showShareButton={true}
+                    onShare={shareTicket}
+                />
+            }
+        >
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
                     <ViewShot ref={viewShotRef} options={{ format: 'png', quality: 0.9 }}>
@@ -126,15 +136,8 @@ const BookingSuccess = () => {
 
                     <View style={styles.buttonContainer}>
                         <AppButton
-                            title={t('share_receipt') || "Share Receipt"}
-                            onPress={shareTicket}
-                            style={styles.shareBtn}
-                        />
-
-                        <AppButton
                             title={t('back_to_home') || "Back to Home"}
                             onPress={() => navigation.navigate('BottomTabs')}
-                            variant="outline"
                             style={styles.homeBtn}
                         />
                     </View>
@@ -170,9 +173,9 @@ const styles = StyleSheet.create({
         paddingBottom: verticalScale(50),
     },
     receiptCard: {
-        backgroundColor: Colors.SURFACE,
-        borderRadius: scale(24),
-        padding: scale(24),
+        backgroundColor: '#FFFFFF',
+        borderRadius: scale(20),
+        padding: scale(20),
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,
         shadowColor: '#000',
@@ -189,7 +192,7 @@ const styles = StyleSheet.create({
     },
     dashedLine: {
         borderWidth: 1,
-        borderColor: Colors.BORDER_GREY,
+        borderColor: '#CBD5E1',
         borderStyle: 'dashed',
         marginVertical: verticalScale(20),
     },
@@ -203,22 +206,22 @@ const styles = StyleSheet.create({
     },
     notchLeft: {
         position: 'absolute',
-        left: -10,
+        left: -scale(12),
         top: '40%',
-        width: 20,
-        height: 20,
-        borderRadius: 10,
+        width: scale(20),
+        height: scale(20),
+        borderRadius: scale(10),
         backgroundColor: Colors.BACKGROUND,
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,
     },
     notchRight: {
         position: 'absolute',
-        right: -10,
+        right: -scale(12),
         top: '40%',
-        width: 20,
-        height: 20,
-        borderRadius: 10,
+        width: scale(20),
+        height: scale(20),
+        borderRadius: scale(10),
         backgroundColor: Colors.BACKGROUND,
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,
