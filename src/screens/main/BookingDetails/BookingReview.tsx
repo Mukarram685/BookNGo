@@ -34,10 +34,12 @@ const BookingReview = () => {
     const {
         schedule,
         passengers = [],
+        isGroupBooking,
         totalAmount: passedTotalAmount,
     }: {
         schedule: any;
         passengers: PassengerDetail[];
+        isGroupBooking?: boolean;
         totalAmount: number;
     } = route?.params || {};
 
@@ -68,6 +70,16 @@ const BookingReview = () => {
 
     const seatsList = (passengers || []).map((p) => p.seatNumber);
     const formattedSeatsList = seatsList.length > 0 ? seatsList.join(', ') : '12, 13';
+
+    const isGroup =
+        isGroupBooking !== undefined
+            ? isGroupBooking
+            : passengers.length > 1 &&
+              passengers.every(
+                  (p) =>
+                      (p.passengerName || '') === (passengers[0]?.passengerName || '') &&
+                      (p.passengerCNIC || '') === (passengers[0]?.passengerCNIC || '')
+              );
 
     // Pricing calculation
     const perSeatPrice = schedule?.fare || schedule?.price || 2500;
@@ -327,40 +339,88 @@ const BookingReview = () => {
                             <AppText size={12} weight="800" color="#1E293B" style={{ marginLeft: scale(6), letterSpacing: 0.5 }}>
                                 {t('passenger_details_title') || 'PASSENGER DETAILS'}
                             </AppText>
+                            {isGroup && (
+                                <View style={styles.groupHeaderBadge}>
+                                    <AppText size={10} weight="700" color="#2563EB">
+                                        {t('group_booking') || 'Group'} ({passengers.length} {t('seats_unit') || 'Seats'})
+                                    </AppText>
+                                </View>
+                            )}
                         </View>
 
                         <View style={{ marginTop: verticalScale(10) }}>
-                            {(passengers.length > 0
-                                ? passengers
-                                : [
-                                      { passengerName: 'Muhammad Ali', passengerCNIC: '35202-1234567-1', seatNumber: '12' },
-                                      { passengerName: 'Ahmad Raza', passengerCNIC: '35202-7654321-9', seatNumber: '13' },
-                                  ]
-                            ).map((p: any, idx: number) => (
-                                <React.Fragment key={idx}>
-                                    {idx > 0 && <View style={styles.divider} />}
+                            {isGroup ? (
+                                <View style={styles.groupPassengerContainer}>
                                     <View style={styles.passengerRow}>
                                         <View style={styles.passengerLeft}>
                                             <View style={styles.numBadge}>
                                                 <AppText size={12} weight="800" color="#1D4ED8">
-                                                    {idx + 1}
+                                                    ★
                                                 </AppText>
                                             </View>
                                             <View style={{ marginLeft: scale(12) }}>
                                                 <AppText size={14} weight="700" color="#1E293B">
-                                                    {p.passengerName || p.name || `${t('passenger_label')} ${idx + 1}`}
+                                                    {passengers[0]?.passengerName || 'Primary Passenger'}
                                                 </AppText>
                                                 <AppText size={11} color="#64748B" weight="500" style={{ marginTop: 2 }}>
-                                                    CNIC: {formatCNIC(p.passengerCNIC || p.cnic || '35202-1234567-1')}
+                                                    CNIC: {formatCNIC(passengers[0]?.passengerCNIC || '')}
                                                 </AppText>
+                                                {passengers[0]?.passengerPhone ? (
+                                                    <AppText size={11} color="#64748B" weight="500" style={{ marginTop: 2 }}>
+                                                        {t('booking_details_phone') || 'Phone'}: {passengers[0]?.passengerPhone}
+                                                    </AppText>
+                                                ) : null}
                                             </View>
                                         </View>
-                                        <AppText size={13} weight="800" color="#1D4ED8">
-                                            {t('booking_details_seat')} {p.seatNumber}
-                                        </AppText>
                                     </View>
-                                </React.Fragment>
-                            ))}
+                                    <View style={styles.groupSeatsRow}>
+                                        <AppText size={11} color="#64748B" weight="600" style={{ marginRight: scale(4) }}>
+                                            {t('seats_label') || 'Seats'}:
+                                        </AppText>
+                                        <View style={styles.groupSeatsPills}>
+                                            {passengers.map((p: any, idx: number) => (
+                                                <View key={idx} style={styles.seatPill}>
+                                                    <AppText size={11} weight="800" color="#1D4ED8">
+                                                        {t('booking_details_seat')} {p.seatNumber}
+                                                    </AppText>
+                                                </View>
+                                            ))}
+                                        </View>
+                                    </View>
+                                </View>
+                            ) : (
+                                (passengers.length > 0
+                                    ? passengers
+                                    : [
+                                          { passengerName: 'Muhammad Ali', passengerCNIC: '35202-1234567-1', seatNumber: '12' },
+                                          { passengerName: 'Ahmad Raza', passengerCNIC: '35202-7654321-9', seatNumber: '13' },
+                                      ]
+                                ).map((p: any, idx: number) => (
+                                    <React.Fragment key={idx}>
+                                        {idx > 0 && <View style={styles.divider} />}
+                                        <View style={styles.passengerRow}>
+                                            <View style={styles.passengerLeft}>
+                                                <View style={styles.numBadge}>
+                                                    <AppText size={12} weight="800" color="#1D4ED8">
+                                                        {idx + 1}
+                                                    </AppText>
+                                                </View>
+                                                <View style={{ marginLeft: scale(12) }}>
+                                                    <AppText size={14} weight="700" color="#1E293B">
+                                                        {p.passengerName || p.name || `${t('passenger_label')} ${idx + 1}`}
+                                                    </AppText>
+                                                    <AppText size={11} color="#64748B" weight="500" style={{ marginTop: 2 }}>
+                                                        CNIC: {formatCNIC(p.passengerCNIC || p.cnic || '35202-1234567-1')}
+                                                    </AppText>
+                                                </View>
+                                            </View>
+                                            <AppText size={13} weight="800" color="#1D4ED8">
+                                                {t('booking_details_seat')} {p.seatNumber}
+                                            </AppText>
+                                        </View>
+                                    </React.Fragment>
+                                ))
+                            )}
                         </View>
                     </View>
 
@@ -673,6 +733,44 @@ const styles = StyleSheet.create({
         backgroundColor: '#EFF6FF',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    groupHeaderBadge: {
+        marginLeft: 'auto',
+        backgroundColor: '#EFF6FF',
+        paddingHorizontal: scale(8),
+        paddingVertical: verticalScale(2),
+        borderRadius: scale(6),
+        borderWidth: 1,
+        borderColor: '#DBEAFE',
+    },
+    groupPassengerContainer: {
+        backgroundColor: '#F8FAFC',
+        borderRadius: scale(12),
+        padding: scale(10),
+        borderWidth: 1,
+        borderColor: '#F1F5F9',
+    },
+    groupSeatsRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: verticalScale(8),
+        paddingTop: verticalScale(8),
+        borderTopWidth: 1,
+        borderTopColor: '#E2E8F0',
+    },
+    groupSeatsPills: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: scale(6),
+        flex: 1,
+    },
+    seatPill: {
+        backgroundColor: '#EFF6FF',
+        paddingHorizontal: scale(8),
+        paddingVertical: verticalScale(3),
+        borderRadius: scale(6),
+        borderWidth: 1,
+        borderColor: '#BFDBFE',
     },
     summaryRow: {
         flexDirection: 'row',

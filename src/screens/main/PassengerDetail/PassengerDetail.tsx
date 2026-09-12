@@ -80,7 +80,8 @@ const PassengerDetail = () => {
     navigation.navigate('BookingReview', {
       schedule,
       passengers: finalPassengers,
-      totalAmount: schedule.price * selectedSeats.length
+      isGroupBooking,
+      totalAmount: schedule.price * selectedSeats.length,
     });
   };
 

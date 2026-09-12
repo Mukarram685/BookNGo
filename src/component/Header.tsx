@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { scale, verticalScale } from 'react-native-size-matters';
-import { Back, Hamburger } from '../assets/svg';
+import { Arrow, Back, Hamburger } from '../assets/svg';
 import colors from '../utils/colors';
 import SideMenuModal from './common/SideMenuModal';
 
@@ -28,6 +28,7 @@ interface AppHeaderProps {
   displayName?: string;
   displayLocation?: string;
   showBack?: boolean;
+  onBack?: () => void;
 }
 
 const COLOR_TITLE = '#1A1A1A';
@@ -49,6 +50,7 @@ export default function Header({
   avatarUrl,
   displayName,
   showBack = false,
+  onBack,
 }: AppHeaderProps) {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
@@ -82,14 +84,21 @@ export default function Header({
         backgroundColor,
         borderBottomLeftRadius,
         borderBottomRightRadius,
-        // paddingTop: insets.top + 12,
+        paddingTop: Platform.OS === 'ios' ? insets.top : insets.top + 12,
         paddingBottom,
       }}
     >
       <View style={styles.container}>
         <View style={styles.rowContainer}>
           {showBack ? (
-            <Back />
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={onBack || (() => navigation.goBack())}
+              style={styles.backButton}
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+            >
+              <Arrow width={scale(18)} height={scale(18)} color={colors.PRIMARY} />
+            </TouchableOpacity>
           ) : (
             showAvatar && (
               <TouchableOpacity
