@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { signupSchema } from '../../helpers/auth.helper';
+import { signupSchema, formatCNIC, cleanPhoneNumber } from '../../helpers/auth.helper';
 import AppText from '../../component/common/AppText';
 import AppInput from '../../component/TextInput/TextInput';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
@@ -17,16 +17,6 @@ const Signup = () => {
     const navigation = useNavigation<any>();
     const { t } = useTranslation();
     const { mutate: register, isPending } = useRegister();
-
-    const formatCNIC = (text: string) => {
-        const cleaned = text.replace(/\D/g, '').slice(0, 13);
-        if (cleaned.length > 12) {
-            return `${cleaned.slice(0, 5)}-${cleaned.slice(5, 12)}-${cleaned.slice(12)}`;
-        } else if (cleaned.length > 5) {
-            return `${cleaned.slice(0, 5)}-${cleaned.slice(5)}`;
-        }
-        return cleaned;
-    };
 
     return (
         <ScreenWrapper backgroundColor={Colors.BACKGROUND} isLoading={isPending}>
@@ -116,9 +106,10 @@ const Signup = () => {
                                 label={t('auth_signup_phoneLabel')}
                                 placeholder={t('auth_signup_phonePlaceholder')}
                                 value={values.phoneNumber}
-                                onChangeText={handleChange('phoneNumber')}
+                                onChangeText={(text) => setFieldValue('phoneNumber', cleanPhoneNumber(text))}
                                 onBlur={handleBlur('phoneNumber')}
                                 keyboardType="phone-pad"
+                                maxLength={10}
                                 error={touched.phoneNumber ? errors.phoneNumber : undefined}
                                 LeftIcon={Phone}
                                 placeholderTextColor={Colors.TEXT_GREY}

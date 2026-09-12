@@ -4,7 +4,7 @@ import { scale, verticalScale } from 'react-native-size-matters';
 import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
 import colors from '../../utils/colors';
-import { formatCNIC } from '../../helpers/auth.helper';
+import { formatCNIC, cleanPhoneNumber } from '../../helpers/auth.helper';
 
 interface PersonalInfoCardProps {
     firstName: string;
@@ -106,10 +106,11 @@ const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
                 <TextInput
                     style={styles.textInput}
                     value={phone}
-                    onChangeText={setPhone}
-                    placeholder="+92 3XX XXXXXXX"
+                    onChangeText={(text) => setPhone(cleanPhoneNumber(text))}
+                    placeholder="3001234567"
                     placeholderTextColor={colors.SLATE_MUTED}
                     keyboardType="phone-pad"
+                    maxLength={10}
                 />
             </View>
 

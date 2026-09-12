@@ -14,7 +14,7 @@ import colors, { Colors } from '../../../utils/colors';
 import PassengerForm from '../../../component/Booking/PassengerForm';
 import { BusSchedule } from '../../../interface/bus.interface';
 
-import { formatCNIC } from '../../../helpers/auth.helper';
+import { formatCNIC, cleanPhoneNumber } from '../../../helpers/auth.helper';
 
 const CNIC_REGEX = /^\d{5}-\d{7}-\d$/;
 
@@ -32,17 +32,19 @@ const PassengerDetail = () => {
       seatNumber: seat,
       passengerName: index === 0 ? (user?.name || '') : '',
       passengerCNIC: index === 0 ? formatCNIC(user?.cnic || '') : '',
-      passengerPhone: index === 0 ? (user?.phoneNumber?.toString() || user?.phone?.toString() || '') : '',
+      passengerPhone: index === 0 ? cleanPhoneNumber(user?.phoneNumber?.toString() || user?.phone?.toString() || '') : '',
       gender: 'Male' as const,
     })),
   };
 
   const individualPassengerSchema = Yup.object().shape({
-    passengerName: Yup.string().required('Name is required'),
+    passengerName: Yup.string().trim().min(3, 'Name must be at least 3 characters').required('Name is required'),
     passengerCNIC: Yup.string()
       .matches(CNIC_REGEX, 'Format: 00000-0000000-0')
       .required('CNIC is required'),
-    passengerPhone: Yup.string().required('Phone is required'),
+    passengerPhone: Yup.string()
+      .matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits (e.g. 3001234567)')
+      .required('Phone is required'),
     gender: Yup.string().oneOf(['Male', 'Female']).required('Gender is required'),
   });
 

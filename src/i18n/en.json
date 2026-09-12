@@ -412,7 +412,7 @@
   "val_password_min": "Password must be at least 6 characters",
   "val_password_required": "Password is required",
   "val_passwords_match": "Passwords must match",
-  "val_phone_digits": "Phone number must be 10 or 11 digits",
+  "val_phone_digits": "Phone number must be 10 digits (e.g. 3001234567)",
   "val_phone_required": "Phone number is required",
   "value_individual": "Individual",
   "value_loyalty_points": "1,250 Points",

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import AppInput from '../TextInput/TextInput';
 import colors from '../../utils/colors';
 import { User, Phone, Cnic } from '../../assets/svg';
-import { formatCNIC } from '../../helpers/auth.helper';
+import { formatCNIC, cleanPhoneNumber } from '../../helpers/auth.helper';
 
 interface PassengerFormProps {
     seatNumber: number;
@@ -61,12 +61,13 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
             />
 
             <AppInput
-                placeholder={t('passenger_phone_placeholder') || "Phone Number"}
+                placeholder={t('passenger_phone_placeholder') || "Phone Number (e.g. 3001234567)"}
                 value={values.passengerPhone}
-                onChangeText={(val) => onChange('passengerPhone', val)}
+                onChangeText={(val) => onChange('passengerPhone', cleanPhoneNumber(val))}
                 error={touched?.passengerPhone ? errors?.passengerPhone : undefined}
                 LeftIcon={Phone}
                 keyboardType="phone-pad"
+                maxLength={10}
                 containerStyle={styles.input}
             />
 

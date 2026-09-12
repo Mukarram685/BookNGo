@@ -15,7 +15,7 @@ import { OneSignal } from 'react-native-onesignal';
 import { User, Headset } from '../../../assets/svg';
 import PersonalInfoCard from '../../../component/Profile/PersonalInfoCard';
 import ChangePasswordCard from '../../../component/Profile/ChangePasswordCard';
-import { formatCNIC } from '../../../helpers/auth.helper';
+import { formatCNIC, cleanPhoneNumber } from '../../../helpers/auth.helper';
 
 const UpdateProfile = () => {
   const navigation = useNavigation<any>();
@@ -64,10 +64,21 @@ const UpdateProfile = () => {
       return;
     }
 
+    const cleanPhone = cleanPhoneNumber(phone);
+    if (phone && cleanPhone.length !== 10) {
+      Alert.alert(t('error') || 'Error', t('val_phone_digits') || 'Phone number must be 10 digits (e.g. 3001234567)');
+      return;
+    }
+
+    if (cnic && !/^\d{5}-\d{7}-\d$/.test(cnic)) {
+      Alert.alert(t('error') || 'Error', t('auth_signup_cnicInvalid') || 'CNIC must be in format 00000-0000000-0');
+      return;
+    }
+
     updateProfileMutation.mutate(
       {
         id: authUser?.id || authUser?._id,
-        data: { name: combinedName, phoneNumber: phone, cnic, dateOfBirth: dob, gender },
+        data: { name: combinedName, phoneNumber: cleanPhone, cnic, dateOfBirth: dob, gender },
       },
       {
         onSuccess: () => {
@@ -80,6 +91,10 @@ const UpdateProfile = () => {
   const handlePasswordChange = ({ currentPass, newPass, confirmPass }: { currentPass: string; newPass: string; confirmPass: string }) => {
     if (!currentPass || !newPass || !confirmPass) {
       Alert.alert(t('error') || 'Error', t('fill_all_password_fields') || 'Please fill all password fields');
+      return;
+    }
+    if (newPass.length < 6) {
+      Alert.alert(t('error') || 'Error', t('auth_signup_passwordMin') || 'Password must be at least 6 characters');
       return;
     }
     if (newPass !== confirmPass) {

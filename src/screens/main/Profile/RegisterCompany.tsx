@@ -18,7 +18,7 @@ import AppButton from '../../../component/common/AppButton';
 import Header from '../../../component/Header';
 import colors, { Colors } from '../../../utils/colors';
 import { Bus, Mail, Phone, MapPin, CheckCircle } from '../../../assets/svg';
-import { companyRegistrationSchema } from '../../../helpers/auth.helper';
+import { companyRegistrationSchema, cleanPhoneNumber } from '../../../helpers/auth.helper';
 import { useRegisterCompany } from '../../../hooks/useCompany';
 
 const RegisterCompany = () => {
@@ -115,7 +115,7 @@ const RegisterCompany = () => {
                             validationSchema={companyRegistrationSchema}
                             onSubmit={handleSubmitRegistration}
                         >
-                            {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                            {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, touched }) => (
                                 <View style={styles.formContainer}>
                                     {/* Company Name */}
                                     <AppInput
@@ -152,11 +152,12 @@ const RegisterCompany = () => {
                                     {/* Phone / Helpline */}
                                     <AppInput
                                         label={t('company_phone_label') || 'Phone / Helpline'}
-                                        placeholder={t('company_phone_placeholder') || 'e.g. 042-111-222-333'}
+                                        placeholder={t('company_phone_placeholder') || 'e.g. 3001234567'}
                                         value={values.phone}
-                                        onChangeText={handleChange('phone')}
+                                        onChangeText={(text) => setFieldValue('phone', cleanPhoneNumber(text))}
                                         onBlur={handleBlur('phone')}
                                         keyboardType="phone-pad"
+                                        maxLength={10}
                                         required={true}
                                         error={touched.phone && errors.phone ? String(errors.phone) : undefined}
                                         LeftIcon={Phone}

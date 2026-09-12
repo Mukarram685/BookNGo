@@ -20,16 +20,21 @@ export const formatCNIC = (text: string): string => {
   return cleaned;
 };
 
+export const cleanPhoneNumber = (text: string): string => {
+  return (text || '').replace(/\D/g, '').slice(0, 10);
+};
+
 export const signupSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required').min(3, 'Name must be at least 3 characters'),
+  name: Yup.string().trim().required('Name is required').min(3, 'Name must be at least 3 characters'),
   email: Yup.string()
+    .trim()
     .email('Invalid email address')
     .required('Email is required'),
   cnic: Yup.string()
     .matches(/^[0-9]{5}[-\/]?[0-9]{7}[-\/]?[0-9]{1}$/, 'Invalid CNIC format (e.g. 12345-1234567-1)')
     .required('CNIC is required'),
   phoneNumber: Yup.string()
-    .matches(/^[0-9]{10,11}$/, 'Phone number must be 10 or 11 digits')
+    .matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits (e.g. 3001234567)')
     .required('Phone number is required'),
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
@@ -38,13 +43,14 @@ export const signupSchema = Yup.object().shape({
 
 export const forgotPasswordEmailSchema = Yup.object().shape({
   email: Yup.string()
+    .trim()
     .email('Invalid email address')
     .required('Email is required'),
 });
 
 export const resetPasswordSchema = Yup.object().shape({
   otp: Yup.string()
-    .length(6, 'Verification code must be 6 digits')
+    .matches(/^[0-9]{6}$/, 'Verification code must be 6 digits')
     .required('Verification code is required'),
   newPassword: Yup.string()
     .min(6, 'Password must be at least 6 characters')
@@ -56,23 +62,29 @@ export const resetPasswordSchema = Yup.object().shape({
 
 export const feedbackSchema = Yup.object().shape({
   email: Yup.string()
+    .trim()
     .email('Invalid email address')
     .required('Email is required'),
   description: Yup.string()
+    .trim()
     .min(10, 'Feedback must be at least 10 characters')
     .required('Feedback description is required'),
 });
 
 export const companyRegistrationSchema = Yup.object().shape({
   name: Yup.string()
+    .trim()
     .min(2, 'Company name must be at least 2 characters')
     .required('Company name is required'),
   email: Yup.string()
+    .trim()
     .email('Invalid email address')
     .required('Company email is required'),
   phone: Yup.string()
+    .matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits')
     .required('Phone number is required'),
   address: Yup.string()
+    .trim()
     .min(5, 'Address must be at least 5 characters')
     .required('Address is required'),
 });
