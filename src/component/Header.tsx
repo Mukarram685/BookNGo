@@ -5,7 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { scale, verticalScale } from 'react-native-size-matters';
-import { Arrow, Back, Hamburger } from '../assets/svg';
+import { Arrow, Back, Hamburger, ShareIcon } from '../assets/svg';
 import colors from '../utils/colors';
 import SideMenuModal from './common/SideMenuModal';
 
@@ -17,6 +17,8 @@ interface AppHeaderProps {
   showMenuButton?: boolean;
   showNotificationButton?: boolean;
   showSettingsButton?: boolean;
+  showShareButton?: boolean;
+  onShare?: () => void;
   title?: string;
   subtitle?: string;
   nameOnly?: boolean;
@@ -40,6 +42,8 @@ export default function Header({
   showMenuButton,
   showNotificationButton = false,
   showSettingsButton = false,
+  showShareButton = false,
+  onShare,
   title,
   subtitle,
   nameOnly = false,
@@ -149,6 +153,17 @@ export default function Header({
         </View>
 
         <View style={styles.actionsRow}>
+          {showShareButton && onShare && (
+            <TouchableOpacity
+              style={styles.shareButton}
+              activeOpacity={0.7}
+              hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+              onPress={onShare}
+            >
+              <ShareIcon width={scale(18)} height={scale(18)} color={colors.PRIMARY} />
+            </TouchableOpacity>
+          )}
+
           {shouldShowMenu && (
             <TouchableOpacity
               style={styles.menuButton}
@@ -177,6 +192,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     columnGap: scale(8),
     flexDirection: 'row',
+  },
+  shareButton: {
+    alignItems: 'center',
+    backgroundColor: colors.WHITE,
+    borderColor: colors.BORDER_GREY,
+    borderRadius: scale(20),
+    borderWidth: 1,
+    height: scale(40),
+    justifyContent: 'center',
+    shadowColor: colors.BLACK,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
+    elevation: 2,
+    width: scale(40),
   },
   avatar: {
     borderColor: colors.WHITE,
