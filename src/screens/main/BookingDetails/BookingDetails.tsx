@@ -265,11 +265,11 @@ const BookingDetails = () => {
                     {pnr}
                   </AppText>
                 </View>
-                <View style={styles.pnrBadgePill}>
+                {/* <View style={styles.pnrBadgePill}>
                   <AppText size={10} weight="800" color="#1D4ED8">
                     VERIFIED TICKET
                   </AppText>
-                </View>
+                </View> */}
               </View>
 
               <View style={styles.pnrDivider} />
@@ -580,15 +580,34 @@ const styles = StyleSheet.create({
   },
   pnrBanner: {
     backgroundColor: '#F8FAFC',
-    borderRadius: scale(10),
-    paddingHorizontal: scale(12),
-    paddingVertical: verticalScale(8),
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    borderRadius: scale(12),
+    paddingHorizontal: scale(14),
+    paddingVertical: verticalScale(10),
     marginVertical: verticalScale(8),
     borderWidth: 1,
     borderColor: '#E2E8F0',
+  },
+  pnrTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  pnrBadgePill: {
+    backgroundColor: '#EFF6FF',
+    paddingHorizontal: scale(8),
+    paddingVertical: verticalScale(3),
+    borderRadius: scale(6),
+    borderWidth: 1,
+    borderColor: '#BFDBFE',
+  },
+  pnrDivider: {
+    height: 1,
+    backgroundColor: '#E2E8F0',
+    marginVertical: verticalScale(8),
+  },
+  pnrBottomRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   routeSection: {
     flexDirection: 'row',
