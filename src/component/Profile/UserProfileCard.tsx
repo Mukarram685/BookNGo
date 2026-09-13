@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
         borderRadius: scale(22),
         paddingHorizontal: scale(12),
         paddingTop: verticalScale(10),
+        marginTop: verticalScale(10),
         paddingBottom: verticalScale(12),
         marginBottom: verticalScale(12),
         overflow: 'hidden',

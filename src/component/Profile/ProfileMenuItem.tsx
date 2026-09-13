@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
         width: scale(36),
         height: scale(36),
         borderRadius: scale(18),
-        backgroundColor: colors.SLATE_LIGHT,
+        backgroundColor: colors.BLUE_LIGHT_BG,
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: scale(12),

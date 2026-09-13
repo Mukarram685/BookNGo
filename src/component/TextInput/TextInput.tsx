@@ -21,6 +21,7 @@ type AppInputProps = TextInputProps & {
     labelStyle?: any;
     isPassword?: boolean;
     LeftIcon?: React.FC<any>;
+    leftIconColor?: string;
 };
 
 const AppInput: React.FC<AppInputProps> = ({
@@ -34,6 +35,7 @@ const AppInput: React.FC<AppInputProps> = ({
     isPassword = false,
     secureTextEntry,
     LeftIcon,
+    leftIconColor,
     onFocus,
     onBlur,
     value,
@@ -101,7 +103,7 @@ const AppInput: React.FC<AppInputProps> = ({
                         <LeftIcon
                             width={scale(18)}
                             height={scale(18)}
-                            color={isFocused ? Colors.PRIMARY : Colors.TEXT_GREY}
+                            color={leftIconColor || (isFocused ? Colors.PRIMARY : Colors.TEXT_GREY)}
                         />
                     </View>
                 )}

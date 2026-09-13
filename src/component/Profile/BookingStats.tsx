@@ -48,12 +48,6 @@ const BookingStats: React.FC<BookingStatsProps> = (counts) => {
                     <AppText size={13} weight="600" color="#1D4ED8" style={{ marginRight: scale(4) }}>
                         {t('view_all_bookings') || 'View All Bookings'}
                     </AppText>
-                    <Arrow
-                        width={scale(13)}
-                        height={scale(13)}
-                        style={{ transform: [{ rotate: '180deg' }] }}
-                        fill="#1D4ED8"
-                    />
                 </TouchableOpacity>
             </View>
 

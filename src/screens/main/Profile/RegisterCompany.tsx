@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     Platform,
+    Image,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +18,7 @@ import AppInput from '../../../component/TextInput/TextInput';
 import AppButton from '../../../component/common/AppButton';
 import Header from '../../../component/Header';
 import colors, { Colors } from '../../../utils/colors';
-import { Bus, Mail, Phone, MapPin, CheckCircle } from '../../../assets/svg';
+import { Mail, Phone, MapPin, CheckCircle, Company } from '../../../assets/svg';
 import { companyRegistrationSchema, cleanPhoneNumber } from '../../../helpers/auth.helper';
 import { useRegisterCompany } from '../../../hooks/useCompany';
 
@@ -66,7 +67,7 @@ const RegisterCompany = () => {
                     /* Success Confirmation Card */
                     <View style={styles.successCard}>
                         <View style={styles.successIconCircle}>
-                            <CheckCircle width={scale(48)} height={scale(48)} />
+                            <CheckCircle width={scale(48)} height={scale(48)} color={colors.BLUE_PRIMARY} />
                         </View>
                         <AppText size={22} weight="800" color={Colors.PRIMARY} style={styles.successTitle}>
                             {t('company_reg_success_title') || 'Request Submitted! 🎉'}
@@ -91,11 +92,11 @@ const RegisterCompany = () => {
                         {/* Banner Header */}
                         <View style={styles.bannerHeader}>
                             <View style={styles.iconCircle}>
-                                <Bus width={scale(24)} height={scale(24)} color={colors.BLUE_PRIMARY} />
+                                <Company width={scale(24)} height={scale(24)} color={colors.BLUE_PRIMARY} />
                             </View>
                             <View style={styles.headerTextWrap}>
                                 <AppText size={18} weight="800" color={Colors.PRIMARY}>
-                                    {t('company_reg_title') || 'Register Transport Company 🚍'}
+                                    {t('company_reg_title') || 'Register Transport Company'}
                                 </AppText>
                                 <AppText size={12} color="#64748B" weight="500">
                                     {t('company_reg_subtitle') ||
@@ -126,7 +127,8 @@ const RegisterCompany = () => {
                                         onBlur={handleBlur('name')}
                                         required={true}
                                         error={touched.name && errors.name ? String(errors.name) : undefined}
-                                        LeftIcon={Bus}
+                                        LeftIcon={Company}
+                                        leftIconColor={colors.BLUE_PRIMARY}
                                         placeholderTextColor={Colors.TEXT_GREY}
                                         inputStyle={styles.inputStyle}
                                         containerStyle={styles.inputContainer}
@@ -144,6 +146,7 @@ const RegisterCompany = () => {
                                         required={true}
                                         error={touched.email && errors.email ? String(errors.email) : undefined}
                                         LeftIcon={Mail}
+                                        leftIconColor={colors.BLUE_PRIMARY}
                                         placeholderTextColor={Colors.TEXT_GREY}
                                         inputStyle={styles.inputStyle}
                                         containerStyle={styles.inputContainer}
@@ -161,6 +164,7 @@ const RegisterCompany = () => {
                                         required={true}
                                         error={touched.phone && errors.phone ? String(errors.phone) : undefined}
                                         LeftIcon={Phone}
+                                        leftIconColor={colors.BLUE_PRIMARY}
                                         placeholderTextColor={Colors.TEXT_GREY}
                                         inputStyle={styles.inputStyle}
                                         containerStyle={styles.inputContainer}
@@ -176,6 +180,7 @@ const RegisterCompany = () => {
                                         required={true}
                                         error={touched.address && errors.address ? String(errors.address) : undefined}
                                         LeftIcon={MapPin}
+                                        leftIconColor={colors.BLUE_PRIMARY}
                                         placeholderTextColor={Colors.TEXT_GREY}
                                         inputStyle={styles.inputStyle}
                                         containerStyle={styles.inputContainer}

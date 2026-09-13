@@ -69,6 +69,7 @@ import TotalFareTag from './total_fare_tag.svg';
 import PaymentCard from './payment_card.svg';
 import Back from './arrow-circle-right.svg';
 import ShareIcon from './share.svg';
+import Company from './company.svg';
 
 export {
     Radio,
@@ -141,5 +142,6 @@ export {
     TotalFareTag,
     PaymentCard,
     Back,
-    ShareIcon
+    ShareIcon,
+    Company
 };
