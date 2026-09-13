@@ -7,10 +7,12 @@ import AppText from '../../../component/common/AppText';
 import  { Colors } from '../../../utils/colors';
 import Header from '../../../component/Header';
 import { Privacy } from '../../../assets/svg';
-import { PRIVACY_POLICY_SECTIONS, POLICY_LAST_UPDATED } from '../../../data/privacyPolicy.data';
+import { getPrivacyPolicySections, POLICY_LAST_UPDATED } from '../../../data/privacyPolicy.data';
 
 const PrivacyPolicy = () => {
     const { t } = useTranslation();
+    const sections = getPrivacyPolicySections(t);
+    const lastUpdated = t('privacy_last_updated_val') || POLICY_LAST_UPDATED;
 
     return (
         <ScreenWrapper 
@@ -32,45 +34,35 @@ const PrivacyPolicy = () => {
                             {t('privacy_policy_header') || 'BookNGo Privacy Policy'}
                         </AppText>
                         <AppText size={12} color={Colors.TEXT_GREY} weight="600" style={styles.dateText}>
-                            {t('privacy_last_updated', { date: POLICY_LAST_UPDATED }) || `Last Updated: ${POLICY_LAST_UPDATED}`}
+                            {t('privacy_last_updated', { date: lastUpdated }) || `Last Updated: ${lastUpdated}`}
                         </AppText>
                     </View>
                 </View>
 
                 {/* Policy Sections */}
-                <FlatList
-                    data={PRIVACY_POLICY_SECTIONS}
-                    scrollEnabled={false}
-                    keyExtractor={(section) => section.id}
-                    renderItem={({ item: section }) => (
-                        <View style={styles.sectionCard}>
-                            <AppText size={16} weight="800" color={Colors.PRIMARY} style={styles.sectionTitle}>
-                                {section.title}
-                            </AppText>
-                            <AppText size={14} color="#334155" weight="500" style={styles.paragraph}>
-                                {section.content}
-                            </AppText>
+                {sections.map((section) => (
+                    <View key={section.id} style={styles.sectionCard}>
+                        <AppText size={16} weight="800" color={Colors.PRIMARY} style={styles.sectionTitle}>
+                            {section.title}
+                        </AppText>
+                        <AppText size={14} color="#334155" weight="500" style={styles.paragraph}>
+                            {section.content}
+                        </AppText>
 
-                            {section.points && section.points.length > 0 && (
-                                <View style={styles.pointsList}>
-                                    <FlatList
-                                        data={section.points}
-                                        scrollEnabled={false}
-                                        keyExtractor={(point, index) => index.toString()}
-                                        renderItem={({ item: point }) => (
-                                            <View style={styles.pointRow}>
-                                                <View style={styles.bulletDot} />
-                                                <AppText size={13} color="#475569" weight="500" style={styles.pointText}>
-                                                    {point}
-                                                </AppText>
-                                            </View>
-                                        )}
-                                    />
-                                </View>
-                            )}
-                        </View>
-                    )}
-                />
+                        {section.points && section.points.length > 0 && (
+                            <View style={styles.pointsList}>
+                                {section.points.map((point, index) => (
+                                    <View key={index} style={styles.pointRow}>
+                                        <View style={styles.bulletDot} />
+                                        <AppText size={13} color="#475569" weight="500" style={styles.pointText}>
+                                            {point}
+                                        </AppText>
+                                    </View>
+                                ))}
+                            </View>
+                        )}
+                    </View>
+                ))}
 
                 <View style={styles.footerNote}>
                     <AppText size={12} color={Colors.TEXT_GREY} align="center" weight="500">
