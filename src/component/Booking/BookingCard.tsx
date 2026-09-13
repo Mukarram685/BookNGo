@@ -252,7 +252,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
                 </View>
 
                 {/* 4. Payment */}
-                <View style={styles.gridColumn}>
+                {/* <View style={styles.gridColumn}>
                     <View style={styles.iconWrap}>
                         <PaymentCard width={scale(14)} height={scale(14)} />
                     </View>
@@ -264,7 +264,7 @@ const BookingCard: React.FC<BookingCardProps> = ({
                             {booking.paymentStatus || 'Paid'}
                         </AppText>
                     </View>
-                </View>
+                </View> */}
             </View>
 
             {/* Bottom Action Buttons Row */}

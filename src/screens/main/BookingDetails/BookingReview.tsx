@@ -535,8 +535,8 @@ const BookingReview = () => {
                         disabled={isBooking || loading}
                     >
                         <View style={styles.confirmBtnLeft}>
-                            <ShieldCheck width={scale(18)} height={scale(18)} color="#FFF" />
-                            <AppText size={15} weight="800" color="#FFF" style={{ marginLeft: scale(8) }}>
+                            <ShieldCheck width={scale(18)} height={scale(18)} />
+                                <AppText size={15} weight="800" color="#FFF" style={{ marginLeft: scale(8) }}>
                                 {isBooking || loading
                                     ? t('bookingReview_processing') || 'Processing...'
                                     : t('bookingReview_confirmButton') || 'Confirm Booking'}
@@ -845,21 +845,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     footerContainer: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: colors.WHITE,
-        paddingHorizontal: scale(16),
         paddingTop: verticalScale(12),
         paddingBottom: Platform.OS === 'ios' ? verticalScale(24) : verticalScale(16),
-        borderTopWidth: 1,
-        borderTopColor: '#F1F5F9',
-        elevation: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: -4 },
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
     },
     confirmBtn: {
         backgroundColor: '#1D4ED8',

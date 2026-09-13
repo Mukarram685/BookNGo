@@ -270,11 +270,8 @@ const RescheduleTrip = () => {
             backgroundColor={Colors.BACKGROUND}
             header={<Header title="Reschedule Trip" showBack={true} />}
         >
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
-                {/* Single Consolidated Card Container */}
                 <View style={styles.unifiedCard}>
                     
-                    {/* Header: Current Trip Info */}
                     <View style={styles.currentTripHeader}>
                         <View style={styles.headerTopRow}>
                             <AppText size={11} weight="800" color={Colors.TEXT_GREY}>
@@ -340,7 +337,6 @@ const RescheduleTrip = () => {
 
                     <View style={styles.divider} />
 
-                    {/* Step 2: Choose Departure Schedule */}
                     <View style={styles.sectionBlock}>
                         <AppText size={14} weight="800" color={Colors.PRIMARY} style={styles.sectionHeader}>
                             2. Choose Departure Schedule
@@ -517,7 +513,6 @@ const RescheduleTrip = () => {
                     />
 
                 </View>
-            </ScrollView>
         </ScreenWrapper>
     );
 };
