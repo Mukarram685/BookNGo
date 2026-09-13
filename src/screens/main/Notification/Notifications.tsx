@@ -37,8 +37,6 @@ const Notifications = () => {
             backgroundColor={Colors.BACKGROUND}
             header={<Header title={t('notifications_title') || 'Notifications'} showBack={true} />}
         >
-            <StatusBar barStyle="dark-content" backgroundColor={Colors.BACKGROUND} />
-
             <FlatList
                 data={notifications}
                 keyExtractor={item => (item.id || item._id || String(Math.random()))}

@@ -36,7 +36,7 @@ export const SIDE_MENU_ITEMS: MenuItemData[] = [
     {
         id: 'notifications',
         titleKey: 'menu_notifications',
-        defaultTitle: 'Notifications (2)',
+        defaultTitle: 'Notifications',
         Icon: Notification,
         actionType: 'navigate',
         targetScreen: 'Notifications',

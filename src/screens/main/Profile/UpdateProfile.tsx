@@ -137,18 +137,6 @@ const UpdateProfile = () => {
       }
     >
       <View style={styles.container}>
-        {/* Top Profile Summary Header */}
-        {/* <View style={styles.profileHeaderCard}> */}
-          {/* <View style={styles.avatarCircle}>
-            <User width={scale(32)} height={scale(32)} fill={colors.BLUE_PRIMARY} />
-          </View> */}
-          {/* <AppText size={20} weight="800" color={colors.SLATE_DARK} style={styles.displayName}> */}
-            {/* {`${firstName} ${lastName}`.trim() || 'Haider Iftikhar'} */}
-          {/* </AppText> */}
-          {/* <AppText size={12} weight="500" color={colors.SLATE_MEDIUM}>
-            {t('user_account_subtitle') || 'User Account • Pakistan'}
-          </AppText> */}
-        {/* </View> */}
 
         <PersonalInfoCard
           firstName={firstName}
@@ -190,7 +178,6 @@ export default UpdateProfile;
 
 const styles = StyleSheet.create({
   container: {
-    // paddingHorizontal: scale(16),
     paddingTop: verticalScale(10),
     paddingBottom: verticalScale(40),
   },

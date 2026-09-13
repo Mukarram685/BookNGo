@@ -5,7 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { scale, verticalScale } from 'react-native-size-matters';
-import { Arrow, Back, Hamburger, ShareIcon } from '../assets/svg';
+import { Back, Hamburger, ShareIcon } from '../assets/svg';
 import colors from '../utils/colors';
 import SideMenuModal from './common/SideMenuModal';
 
@@ -98,10 +98,9 @@ export default function Header({
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={onBack || (() => navigation.goBack())}
-              style={styles.backButton}
               hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
             >
-              <Arrow width={scale(18)} height={scale(18)} color={colors.PRIMARY} />
+              <Back color={colors.PRIMARY} />
             </TouchableOpacity>
           ) : (
             showAvatar && (
@@ -233,17 +232,6 @@ const styles = StyleSheet.create({
     color: colors.WHITE,
     fontSize: scale(18),
     fontWeight: '800',
-  },
-  backButton: {
-    alignItems: 'center',
-    backgroundColor: colors.WHITE,
-    borderColor: colors.BORDER_GREY,
-    borderRadius: scale(20),
-    borderWidth: 1,
-    height: scale(40),
-    justifyContent: 'center',
-    marginRight: scale(10),
-    width: scale(40),
   },
   container: {
     alignItems: 'center',

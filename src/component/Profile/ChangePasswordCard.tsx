@@ -44,7 +44,7 @@ const ChangePasswordCard: React.FC<ChangePasswordCardProps> = ({ onSavePress, is
                         onChangeText={setCurrentPass}
                         secureTextEntry={!showCurrent}
                         placeholder="••••••••••••••••"
-                        placeholderTextColor={colors.SLATE_MUTED}
+                        placeholderTextColor={colors.BORDER_GREY}
                     />
                     <TouchableOpacity
                         style={styles.eyeButton}
@@ -72,7 +72,7 @@ const ChangePasswordCard: React.FC<ChangePasswordCardProps> = ({ onSavePress, is
                         onChangeText={setNewPass}
                         secureTextEntry={!showNew}
                         placeholder="••••••••••••••••"
-                        placeholderTextColor={colors.SLATE_MUTED}
+                        placeholderTextColor={colors.BORDER_GREY}
                     />
                     <TouchableOpacity
                         style={styles.eyeButton}
@@ -100,7 +100,7 @@ const ChangePasswordCard: React.FC<ChangePasswordCardProps> = ({ onSavePress, is
                         onChangeText={setConfirmPass}
                         secureTextEntry={!showConfirm}
                         placeholder="••••••••••••••••"
-                        placeholderTextColor={colors.SLATE_MUTED}
+                        placeholderTextColor={colors.BORDER_GREY}
                     />
                     <TouchableOpacity
                         style={styles.eyeButton}
