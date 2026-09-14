@@ -88,7 +88,7 @@ export default function Header({
         backgroundColor,
         borderBottomLeftRadius,
         borderBottomRightRadius,
-        paddingTop: Platform.OS === 'ios' ? insets.top : insets.top + 10,
+        paddingTop: Platform.OS === 'ios' ? 0 : insets.top + 10,
         paddingBottom,
       }}
     >
