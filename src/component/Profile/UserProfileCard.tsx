@@ -87,7 +87,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
                     <View style={styles.verifiedBadgePill}>
                         <VerifiedBadgeIcon width={scale(14)} height={scale(14)} />
                         <AppText size={11} weight="600" color={colors.WHITE} style={{ marginLeft: scale(5) }}>
-                            {t('verified_user') || 'Verified User'}
+                            {t('verified_user') || 'Verified'}
                         </AppText>
                     </View>
                 </View>
@@ -107,7 +107,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
             <View style={styles.gridContainer}>
                 <View style={styles.gridColumn}>
                     <View style={styles.gridItem}>
-                        <CardMailIcon width={scale(14)} height={scale(14)} />
+                        <CardMailIcon width={scale(14)} height={scale(14)} color="#8F9BB3" />
                         <View style={styles.itemTextWrapper}>
                             <AppText size={11} weight="500" color="#BFDBFE">
                                 {t('label_email') || 'Email'}
@@ -149,7 +149,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
 
                 <View style={styles.gridColumn}>
                     <View style={styles.gridItem}>
-                        <CardPhoneIcon width={scale(14)} height={scale(14)}  />
+                        <CardPhoneIcon width={scale(14)} height={scale(14)} color="#8F9BB3" />
                         <View style={styles.itemTextWrapper}>
                             <AppText size={11} weight="500" color="#BFDBFE">
                                 {t('label_phone') || 'Phone Number'}
@@ -163,7 +163,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({
                     <View style={styles.itemDivider} />
 
                     <View style={styles.gridItem}>
-                        <CardUserIcon width={scale(14)} height={scale(14)}  />
+                        <CardUserIcon width={scale(14)} height={scale(14)} />
                         <View style={styles.itemTextWrapper}>
                             <AppText size={11} weight="500" color="#BFDBFE">
                                 {t('label_account_type') || 'Account Type'}

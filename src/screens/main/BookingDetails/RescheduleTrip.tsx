@@ -431,7 +431,6 @@ const RescheduleTrip = () => {
                         </>
                     )}
 
-                    {/* Step 4: Fare Review & Summary */}
                     {selectedSchedule && (
                         <>
                             <View style={styles.divider} />
@@ -464,7 +463,6 @@ const RescheduleTrip = () => {
 
                     <View style={styles.divider} />
 
-                    {/* Reschedule Terms & Policies */}
                     <View style={styles.termsBox}>
                         <View style={styles.termsHeaderRow}>
                             <ShieldCheck width={scale(16)} height={scale(16)} color="#1E40AF" />
@@ -504,7 +502,6 @@ const RescheduleTrip = () => {
                         </View>
                     </View>
 
-                    {/* Confirm Button inside the card */}
                     <AppButton
                         title={rescheduleMutation.isPending ? 'Rescheduling...' : 'Confirm & Reschedule Trip'}
                         onPress={handleConfirmReschedule}

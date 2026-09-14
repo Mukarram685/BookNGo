@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         elevation: 2,
         marginBottom: verticalScale(14),
-        paddingHorizontal: scale(14),
+        // paddingHorizontal: scale(12),
         paddingVertical: verticalScale(14),
         shadowColor: colors.BLACK,
         shadowOffset: { width: 0, height: 2 },
