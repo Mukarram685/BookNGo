@@ -29,6 +29,7 @@ const getTabIcon = (routeName: string) => {
         case 'Bookings':
         case 'Booking':
             return BookingsIcon;
+        case 'Explore':
         case 'All':
             return AllIcon;
         case 'Profile':
@@ -186,9 +187,9 @@ const BottomTabNavigator = () => {
                 options={{ tabBarLabel: t('tab_bookings') || 'Booking' }}
             />
             <Tab.Screen
-                name="All"
+                name="Explore"
                 component={All}
-                options={{ tabBarLabel: t('tab_all') || 'All' }}
+                options={{ tabBarLabel: t('tab_explore') || t('tab_all') || 'Explore' }}
             />
         </Tab.Navigator>
     );

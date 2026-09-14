@@ -96,7 +96,7 @@ const ProfileMenuCard: React.FC = () => {
 
     return (
         <View style={styles.cardContainer}>
-            {/* Header */}
+
             <AppText size={15} weight="800" color={colors.SLATE_DARK} style={styles.cardTitle}>
                 {t('app_settings') || 'App Settings'}
             </AppText>

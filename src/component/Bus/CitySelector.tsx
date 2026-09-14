@@ -33,18 +33,30 @@ interface CitySelectorProps {
     value: string;
     onSelect: (city: string) => void;
     placeholder: string;
+    label?: string;
     LeftIcon?: React.FC<any>;
     error?: string;
     touched?: boolean;
+    onClear?: () => void;
+    containerStyle?: any;
+    selectorStyle?: any;
+    iconColor?: string;
+    modalTitle?: string;
 }
 
 const CitySelector: React.FC<CitySelectorProps> = ({
     value,
     onSelect,
     placeholder,
+    label,
     LeftIcon,
     error,
     touched,
+    onClear,
+    containerStyle,
+    selectorStyle,
+    iconColor,
+    modalTitle,
 }) => {
     const { t } = useTranslation();
     const [modalVisible, setModalVisible] = useState(false);
@@ -64,29 +76,57 @@ const CitySelector: React.FC<CitySelectorProps> = ({
         setSearchQuery('');
     };
 
+    const handleClear = (e: any) => {
+        e?.stopPropagation?.();
+        if (onClear) {
+            onClear();
+        }
+    };
+
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, containerStyle]}>
+            {label ? (
+                <AppText size={12} weight="700" color={Colors.DARK_GRAY} style={styles.label}>
+                    {label}
+                </AppText>
+            ) : null}
             <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => setModalVisible(true)}
                 style={[
                     styles.selectorTrigger,
+                    selectorStyle,
                     error && touched && styles.errorBorder,
                 ]}
             >
                 {LeftIcon && (
                     <View style={styles.leftIconContainer}>
-                        <LeftIcon width={scale(20)} height={scale(20)} color={value ? Colors.PRIMARY : Colors.TEXT_GREY} />
+                        <LeftIcon
+                            width={scale(18)}
+                            height={scale(18)}
+                            color={iconColor || (value ? Colors.PRIMARY : Colors.TEXT_GREY)}
+                        />
                     </View>
                 )}
                 <AppText
-                    size={14}
+                    size={13}
                     color={value ? Colors.PRIMARY : Colors.TEXT_GREY}
-                    weight={value ? "600" : "500"}
+                    weight={value ? "700" : "500"}
+                    numberOfLines={1}
                     style={styles.valueText}
                 >
                     {value || placeholder}
                 </AppText>
+                {value && onClear ? (
+                    <TouchableOpacity
+                        onPress={handleClear}
+                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                        style={styles.clearBtn}
+                        activeOpacity={0.7}
+                    >
+                        <CloseIcon color={Colors.TEXT_GREY} size={scale(12)} />
+                    </TouchableOpacity>
+                ) : null}
             </TouchableOpacity>
 
             {error && touched && (
@@ -110,7 +150,7 @@ const CitySelector: React.FC<CitySelectorProps> = ({
                             <CloseIcon color={Colors.PRIMARY} size={scale(20)} />
                         </TouchableOpacity>
                         <AppText size={18} weight="700" color={Colors.PRIMARY}>
-                            {t('select_city_title') || "Select City"}
+                            {modalTitle || t('select_city_title') || "Select City"}
                         </AppText>
                         <View style={{ width: scale(24) }} />
                     </View>
@@ -167,6 +207,14 @@ const CitySelector: React.FC<CitySelectorProps> = ({
 const styles = StyleSheet.create({
     container: {
         marginBottom: verticalScale(14),
+    },
+    label: {
+        marginBottom: verticalScale(4),
+        paddingLeft: scale(2),
+    },
+    clearBtn: {
+        padding: scale(4),
+        marginLeft: scale(6),
     },
     selectorTrigger: {
         flexDirection: 'row',

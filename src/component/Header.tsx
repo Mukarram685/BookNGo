@@ -78,7 +78,7 @@ export default function Header({
 
   const routeName = route?.name;
   const isAllowedMenuScreen =
-    routeName === 'Home' || routeName === 'Bookings' || routeName === 'All';
+    routeName === 'Home' || routeName === 'Bookings' || routeName === 'All' || routeName === 'Explore';
   const shouldShowMenu =
     showMenuButton !== undefined ? showMenuButton : isAllowedMenuScreen;
 

@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import AppText from '../common/AppText';
 import colors from '../../utils/colors';
-import { Arrow } from '../../assets/svg';
 import BookingStatCard, { BookingStatData } from './BookingStatCard';
 import { BOOKING_STATS_DATA } from '../../data/bookingStats.data';
 
@@ -22,19 +21,23 @@ const BookingStats: React.FC<BookingStatsProps> = (counts) => {
 
     const statsList: BookingStatData[] = BOOKING_STATS_DATA.map((item) => {
         const Icon = item.IconComponent;
+        const tabTarget = item.id === 'total' ? 'upcoming' : item.id;
         return {
             id: item.id,
             title: t(item.titleKey) || item.fallbackTitle,
             count: counts[item.countKey] || 0,
             bgColor: item.bgColor,
             icon: <Icon width={scale(24)} height={scale(24)} />,
-            onPress: () => navigation.navigate('Bookings'),
+            onPress: () => navigation.navigate('BottomTabs', {
+                screen: 'Bookings',
+                params: { initialTab: tabTarget },
+            }),
         };
     });
 
     return (
         <View style={styles.cardContainer}>
-            {/* Card Header Row */}
+
             <View style={styles.headerRow}>
                 <AppText size={17} weight="800" color={colors.SLATE_DARK}>
                     {t('booking_stats') || 'Booking Stats'}
@@ -42,7 +45,7 @@ const BookingStats: React.FC<BookingStatsProps> = (counts) => {
 
                 <TouchableOpacity
                     activeOpacity={0.7}
-                    onPress={() => navigation.navigate('Bookings')}
+                    onPress={() => navigation.navigate('BottomTabs', { screen: 'Bookings' })}
                     style={styles.viewAllButton}
                 >
                     <AppText size={13} weight="600" color="#1D4ED8" style={{ marginRight: scale(4) }}>
@@ -51,7 +54,6 @@ const BookingStats: React.FC<BookingStatsProps> = (counts) => {
                 </TouchableOpacity>
             </View>
 
-            {/* Dynamic FlatList Component */}
             <FlatList
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}

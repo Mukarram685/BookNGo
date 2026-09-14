@@ -2,8 +2,8 @@
   "about_bookngo": "About BookNGo",
   "active_filters": "Active Filters",
   "add_new_address": "Add New Address",
-  "all_available_buses": "All Available Buses",
-  "all_routes_title": "All Routes",
+  "all_available_buses": "Explore Buses",
+  "all_routes_title": "Explore Routes",
   "amount": "Amount",
   "app_name": "BOOKNGO",
   "app_settings": "App Settings",
@@ -367,7 +367,7 @@
   "support_ticket_created": "Thank you for reaching out. Ticket #BNG-8492 has been created for your request. A live transport representative will message you shortly.",
   "support_ticket_success": "Support session started. Ticket #BNG-8492 assigned.",
   "swap_cities": "Swap Cities",
-  "tab_all": "All",
+  "tab_all": "Explore",
   "tab_bookings": "Booking",
   "tab_home": "Home",
   "tab_profile": "Profile",
@@ -454,5 +454,12 @@
   "wallet_title": "BookNGo Wallet",
   "wallet_top_up": "Top Up Wallet +",
   "welcome": "Welcome to BookNGo",
-  "yes_cancel": "Yes, Cancel"
+  "yes_cancel": "Yes, Cancel",
+  "search_routes_title": "Search Routes",
+  "select_departure_city": "Select Departure City",
+  "select_arrival_city": "Select Arrival City",
+  "all_available_routes": "Explore All Routes",
+  "tab_explore": "Explore",
+  "explore_routes_title": "Explore Routes",
+  "explore_all_routes": "Explore All Routes"
 }

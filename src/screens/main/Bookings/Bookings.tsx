@@ -33,11 +33,33 @@ const TABS: TabItem[] = [
     { id: 'cancelled', titleKey: 'stat_cancelled', fallbackTitle: 'Cancelled', IconComponent: CrossStat },
 ];
 
-const Bookings = () => {
+interface BookingsProps {
+    route?: {
+        params?: {
+            initialTab?: TabType;
+            tab?: TabType;
+        };
+    };
+}
+
+const Bookings: React.FC<BookingsProps> = ({ route }) => {
     const { t } = useTranslation();
     const navigation = useNavigation<any>();
     const { data, isLoading, refetch } = useMyBookings();
-    const [activeTab, setActiveTab] = useState<TabType>('upcoming');
+    
+    const targetInitialTab = route?.params?.initialTab || route?.params?.tab || 'upcoming';
+    const [activeTab, setActiveTab] = useState<TabType>(
+        targetInitialTab === 'completed' || targetInitialTab === 'cancelled' || targetInitialTab === 'upcoming'
+            ? targetInitialTab
+            : 'upcoming'
+    );
+
+    React.useEffect(() => {
+        const paramTab = route?.params?.initialTab || route?.params?.tab;
+        if (paramTab && (paramTab === 'completed' || paramTab === 'cancelled' || paramTab === 'upcoming')) {
+            setActiveTab(paramTab);
+        }
+    }, [route?.params?.initialTab, route?.params?.tab]);
 
     const handleView = (booking: any) => {
         navigation.navigate('BookingDetails', { booking });

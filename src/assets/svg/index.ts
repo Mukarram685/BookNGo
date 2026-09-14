@@ -70,6 +70,7 @@ import PaymentCard from './payment_card.svg';
 import Back from './arrow-circle-right.svg';
 import ShareIcon from './share.svg';
 import Company from './company.svg';
+import Swap from './swap.svg';
 
 export {
     Radio,
@@ -143,5 +144,6 @@ export {
     PaymentCard,
     Back,
     ShareIcon,
-    Company
+    Company,
+    Swap,
 };
