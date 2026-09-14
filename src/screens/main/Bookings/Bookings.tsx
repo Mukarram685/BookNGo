@@ -45,7 +45,7 @@ interface BookingsProps {
 const Bookings: React.FC<BookingsProps> = ({ route }) => {
     const { t } = useTranslation();
     const navigation = useNavigation<any>();
-    const { data, isLoading, refetch } = useMyBookings();
+    const { data, isLoading, isFetching, refetch } = useMyBookings();
     
     const targetInitialTab = route?.params?.initialTab || route?.params?.tab || 'upcoming';
     const [activeTab, setActiveTab] = useState<TabType>(
@@ -65,11 +65,11 @@ const Bookings: React.FC<BookingsProps> = ({ route }) => {
         navigation.navigate('BookingDetails', { booking });
     };
 
-    if (isLoading && !data) {
+    const rawBookings = ((data as any)?.bookings as any[]) || (Array.isArray(data) ? data : []);
+
+    if (isLoading && !data && rawBookings.length === 0) {
         return <AppLoader />;
     }
-
-    const rawBookings = ((data as any)?.bookings as any[]) || [];
 
     const mappedBookings: BookingCardItem[] = rawBookings.map((b: any) => {
         const pnr = b.pnrNumber || (b._id ? `BNG-${b._id.slice(-6).toUpperCase()}` : 'BNG-784512');
@@ -170,7 +170,7 @@ const Bookings: React.FC<BookingsProps> = ({ route }) => {
                 contentContainerStyle={styles.listContainer}
                 showsVerticalScrollIndicator={false}
                 onRefresh={refetch}
-                refreshing={isLoading}
+                refreshing={isFetching && Boolean(data)}
                 ListEmptyComponent={() => (
                     <EmptyCard
                         title={t('no_bookings_title') || 'No Bookings Yet'}
