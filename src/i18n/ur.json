@@ -187,6 +187,7 @@
   "terminal_departure": "روانگی کا ٹرمینل",
   "terminal_arrival": "آمد کا ٹرمینل",
   "booking_confirmed_title": "بکنگ مکمل اور ادائیگی کامیاب!",
+  "booking_time": "بکنگ کا وقت",
   "greetingWithName": "سلام، {{name}}",
   "group_booking": "گروپ بکنگ",
   "group_booking_desc": "تمام {{count}} نشستوں کے لیے ایک ہی تفصیلات استعمال کریں",

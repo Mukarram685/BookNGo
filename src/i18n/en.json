@@ -187,6 +187,7 @@
   "terminal_departure": "Departure Terminal",
   "terminal_arrival": "Arrival Terminal",
   "booking_confirmed_title": "Booking Confirmed & Paid!",
+  "booking_time": "Booking Time",
   "greetingWithName": "Hello, {{name}}",
   "group_booking": "Group Booking",
   "group_booking_desc": "Use same details for all {{count}} seats",
