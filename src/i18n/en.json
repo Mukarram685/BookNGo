@@ -179,7 +179,7 @@
   "guideline_id_desc": "Original CNIC or Government ID is required for verification at boarding.",
   "guideline_eticket": "Digital Pass",
   "guideline_eticket_desc": "Present this digital boarding pass or your PNR at the counter.",
-  "view_my_bookings": "View in My Bookings",
+  "view_my_bookings": "View Bookings",
   "copy_pnr": "Copy PNR",
   "pnr_copied": "PNR copied to clipboard",
   "operator_label": "Bus Operator",

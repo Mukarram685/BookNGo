@@ -97,7 +97,7 @@ const BookingSuccess = () => {
     const toCity = ticket?.toCity || 'Karachi';
     const travelDate = ticket?.travelDate || '20 May 2025';
     const departureTime = ticket?.departureTime || '08:00';
-    
+
     const bookedSeats = Array.isArray(ticket?.passengers) && ticket.passengers.length > 0
         ? ticket.passengers.map(p => p.seatNumber).filter(Boolean).join(', ')
         : '12';
@@ -208,15 +208,9 @@ const BookingSuccess = () => {
                     {/* Action Buttons */}
                     <View style={styles.buttonContainer}>
                         <AppButton
-                            title={t('view_my_bookings') || 'View in My Bookings'}
+                            title={t('view_my_bookings') || 'View Bookings'}
                             onPress={() => navigation.navigate('BottomTabs', { screen: 'Bookings' })}
                             style={styles.bookingsBtn}
-                        />
-                        <AppButton
-                            title={t('back_to_home') || 'Back to Home'}
-                            variant="outline"
-                            onPress={() => navigation.navigate('BottomTabs', { screen: 'Home' })}
-                            style={styles.homeBtn}
                         />
                     </View>
                 </ScrollView>
