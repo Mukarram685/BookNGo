@@ -14,28 +14,22 @@ import { useTranslation } from 'react-i18next';
 import ViewShot from 'react-native-view-shot';
 import Share from 'react-native-share';
 import Svg, { Path, Circle } from 'react-native-svg';
-import Clipboard from '@react-native-clipboard/clipboard';
-import Toast from 'react-native-toast-message';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import AppText from '../../../component/common/AppText';
-import AppButton from '../../../component/common/AppButton';
 import Header from '../../../component/Header';
 import colors, { Colors } from '../../../utils/colors';
 import { TicketDetails, PassengerDetail } from '../../../interface/booking.interface';
 import { formatCNIC } from '../../../helpers/auth.helper';
 import {
-    LocationB,
     Bus as BusIcon,
     Clock,
     JourneyCalendar,
     BusSeatOutline,
-    Copy,
     Download,
     Bookings as BookingsIcon,
     Home as HomeIcon,
     ShieldCheck,
     Info,
-    TotalFareTag,
 } from '../../../assets/svg';
 
 const SuccessTickIcon = () => (
@@ -142,16 +136,6 @@ const BookingSuccess = () => {
     const seatNumbers = rawPassengers.map((p: any) => p.seatNumber).filter(Boolean).join(', ') || '12';
     const totalSeats = ticket?.totalSeats || rawPassengers.length || 1;
 
-    const handleCopyPNR = () => {
-        Clipboard.setString(pnr);
-        Toast.show({
-            type: 'success',
-            text1: t('pnr_copied') || 'PNR Copied',
-            text2: `${pnr} ${t('pnr_copied') || 'copied to clipboard'}`,
-            visibilityTime: 2000,
-        });
-    };
-
     return (
         <ScreenWrapper
             backgroundColor={Colors.BACKGROUND}
@@ -214,16 +198,11 @@ const BookingSuccess = () => {
                                             {pnr}
                                         </AppText>
                                     </View>
-                                    <TouchableOpacity
-                                        style={styles.copyButton}
-                                        onPress={handleCopyPNR}
-                                        activeOpacity={0.7}
-                                    >
-                                        <Copy width={scale(13)} height={scale(13)} color="#2563EB" />
-                                        <AppText size={11} weight="700" color="#2563EB" style={{ marginLeft: scale(4) }}>
-                                            {t('copy_pnr') || 'Copy'}
+                                    <View style={styles.verifiedTicketPill}>
+                                        <AppText size={10} weight="800" color="#1D4ED8">
+                                            VERIFIED
                                         </AppText>
-                                    </TouchableOpacity>
+                                    </View>
                                 </View>
 
                                 <View style={styles.pnrDivider} />
@@ -617,13 +596,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    copyButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
+    verifiedTicketPill: {
         backgroundColor: '#EFF6FF',
-        paddingHorizontal: scale(10),
-        paddingVertical: verticalScale(4),
-        borderRadius: scale(8),
+        paddingHorizontal: scale(8),
+        paddingVertical: verticalScale(3),
+        borderRadius: scale(6),
         borderWidth: 1,
         borderColor: '#BFDBFE',
     },
