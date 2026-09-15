@@ -49,7 +49,7 @@ const BookingStats: React.FC<BookingStatsProps> = (counts) => {
                     style={styles.viewAllButton}
                 >
                     <AppText size={13} weight="600" color="#1D4ED8" style={{ marginRight: scale(4) }}>
-                        {t('view_all_bookings') || 'View All Bookings'}
+                        {t('view_booking') || 'View Booking'}
                     </AppText>
                 </TouchableOpacity>
             </View>
