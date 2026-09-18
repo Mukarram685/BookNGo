@@ -186,6 +186,7 @@ const BusCard = ({ item }: BusCardProps) => {
             title={t('select_seat') || 'Select Seat'}
             onPress={handleBookPress}
             style={styles.selectButton}
+            textStyle={{ fontSize: scale(12.5), includeFontPadding: false }}
             iconPosition="right"
           />
         </View>
@@ -330,10 +331,10 @@ const styles = StyleSheet.create({
   },
   selectButton: {
     backgroundColor: colors.BLUE_PRIMARY,
-    height: verticalScale(36),
+    minHeight: scale(38),
     borderRadius: scale(10),
-    paddingHorizontal: scale(10),
-    paddingVertical: verticalScale(2),
+    paddingHorizontal: scale(12),
+    paddingVertical: verticalScale(6),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',

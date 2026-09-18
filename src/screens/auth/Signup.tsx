@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, StatusBar, Image } from 'react-native';
 import { Formik } from 'formik';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useNavigation } from '@react-navigation/native';
@@ -10,7 +10,7 @@ import AppInput from '../../component/TextInput/TextInput';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
 import AppButton from '../../component/common/AppButton';
 import colors, { Colors } from '../../utils/colors';
-import { Bus, Lock, User, Mail, Phone, Cnic } from '../../assets/svg';
+import { Lock, User, Mail, Phone, Cnic } from '../../assets/svg';
 import { useRegister } from '../../hooks/useSignUp';
 
 const Signup = () => {
@@ -43,9 +43,13 @@ const Signup = () => {
                 }) => (
                     <View style={styles.container}>
                         <View style={styles.headerContainer}>
-                            <Bus width={scale(44)} height={scale(44)} color={Colors.PRIMARY} />
-                            <AppText size={30} weight="700" color={Colors.PRIMARY} style={styles.brandName}>
-                                {t('app_name')}
+                            <Image
+                                source={require('../../assets/png/app.png')}
+                                style={styles.logoImage}
+                                resizeMode="contain"
+                            />
+                            <AppText size={30} weight="800" color={Colors.PRIMARY} style={styles.brandName}>
+                                {t('app_name') || 'BookNGo'}
                             </AppText>
                         </View>
 
@@ -167,11 +171,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: verticalScale(24),
+        marginBottom: verticalScale(20),
+    },
+    logoImage: {
+        width: scale(60),
+        height: scale(60),
+        borderRadius: scale(10),
     },
     brandName: {
         marginLeft: scale(10),
-        letterSpacing: 1,
+        letterSpacing: 0.5,
     },
     card: {
         backgroundColor: Colors.WHITE,

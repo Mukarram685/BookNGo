@@ -91,6 +91,8 @@ const AppButton: React.FC<AppButtonProps> = ({
         <View style={styles.contentContainer}>
           {icon && iconPosition === 'left' && <View style={styles.leftIconContainer}>{icon}</View>}
           <AppText
+            size={14.5}
+            weight="700"
             style={StyleSheet.flatten([
               styles.textBase,
               variantStyles.text,
@@ -109,7 +111,9 @@ const AppButton: React.FC<AppButtonProps> = ({
 
 const styles = StyleSheet.create({
   buttonBase: {
-    height: verticalScale(48),
+    minHeight: scale(48),
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: scale(16),
     borderRadius: scale(12),
     justifyContent: 'center',
     alignItems: 'center',
@@ -119,10 +123,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    flexShrink: 1,
   },
   textBase: {
-    fontSize: scale(15),
     fontWeight: 'bold',
+    textAlignVertical: 'center',
+    includeFontPadding: false,
+    lineHeight: scale(20),
   },
   leftIconContainer: {
     marginRight: scale(8),
@@ -171,6 +178,7 @@ const styles = StyleSheet.create({
   textButton: {
     backgroundColor: 'transparent',
     height: 'auto',
+    minHeight: 'auto' as any,
     paddingVertical: verticalScale(8),
   },
   textText: {

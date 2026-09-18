@@ -7,17 +7,56 @@
         <item name="android:datePickerDialogTheme">@style/CustomDatePickerDialog</item>
     </style>
 
-    <style name="CustomDatePickerDialog" parent="Theme.AppCompat.Light.Dialog">
+    <style name="CustomDatePickerDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">#172C6B</item>
         <item name="colorPrimary">#172C6B</item>
-        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="colorPrimaryDark">#0F1D4A</item>
+        <item name="android:windowBackground">@drawable/custom_dialog_background</item>
         <item name="android:colorBackground">#FFFFFF</item>
+        <item name="android:datePickerStyle">@style/CustomDatePicker</item>
+        <item name="android:textColorPrimaryInverse">#FFFFFF</item>
+        <item name="android:textColorSecondaryInverse">#BFDBFE</item>
+        <item name="android:textColorPrimary">#1E293B</item>
+        <item name="android:textColorSecondary">#64748B</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerButtonStyle</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButtonStyle</item>
     </style>
 
+    <style name="CustomDatePicker" parent="@android:style/Widget.Material.Light.DatePicker">
+        <item name="android:headerBackground">#172C6B</item>
+        <item name="android:calendarTextColor">#1E293B</item>
+        <item name="android:dayOfWeekTextAppearance">@style/DatePickerDayOfWeek</item>
+        <item name="android:headerYearTextAppearance">@style/DatePickerHeaderYear</item>
+        <item name="android:headerMonthTextAppearance">@style/DatePickerHeaderMonth</item>
+        <item name="android:headerDayOfMonthTextAppearance">@style/DatePickerHeaderDay</item>
+    </style>
+
+    <style name="DatePickerHeaderYear" parent="@android:style/TextAppearance.Material.Caption">
+        <item name="android:textColor">#BFDBFE</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DatePickerHeaderMonth" parent="@android:style/TextAppearance.Material.Headline">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DatePickerHeaderDay" parent="@android:style/TextAppearance.Material.Headline">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DatePickerDayOfWeek" parent="@android:style/TextAppearance.Material.Caption">
+        <item name="android:textColor">#64748B</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="DatePickerButtonStyle" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">#172C6B</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

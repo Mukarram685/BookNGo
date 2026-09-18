@@ -1,11 +1,23 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import {
+    View,
+    StyleSheet,
+    FlatList,
+    TouchableOpacity,
+    Platform,
+    PermissionsAndroid,
+    ActivityIndicator,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import ViewShot from 'react-native-view-shot';
+import Share from 'react-native-share';
+import Toast from 'react-native-toast-message';
 import ScreenWrapper from '../../../component/common/ScreenWrapper';
 import Header from '../../../component/Header';
 import AppText from '../../../component/common/AppText';
 import BookingCard, { BookingCardItem } from '../../../component/Booking/BookingCard';
+import TicketCard from '../../../component/Booking/TicketCard';
 import EmptyCard from '../../../component/common/EmptyCard';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useMyBookings } from '../../../hooks/useMyBookings';
@@ -27,7 +39,6 @@ interface TabItem {
 }
 
 const TABS: TabItem[] = [
-    // { id: 'all', titleKey: 'filter_all', fallbackTitle: 'All', IconComponent: TicketStat },
     { id: 'upcoming', titleKey: 'stat_upcoming', fallbackTitle: 'Upcoming', IconComponent: CalendarStat },
     { id: 'completed', titleKey: 'stat_completed', fallbackTitle: 'Completed', IconComponent: CheckStat },
     { id: 'cancelled', titleKey: 'stat_cancelled', fallbackTitle: 'Cancelled', IconComponent: CrossStat },
@@ -54,6 +65,10 @@ const Bookings: React.FC<BookingsProps> = ({ route }) => {
             : 'upcoming'
     );
 
+    const [downloadingBooking, setDownloadingBooking] = useState<BookingCardItem | null>(null);
+    const [isCapturing, setIsCapturing] = useState(false);
+    const viewShotRef = useRef<any>(null);
+
     React.useEffect(() => {
         const paramTab = route?.params?.initialTab || route?.params?.tab;
         if (paramTab && (paramTab === 'completed' || paramTab === 'cancelled' || paramTab === 'upcoming')) {
@@ -64,6 +79,58 @@ const Bookings: React.FC<BookingsProps> = ({ route }) => {
     const handleView = (booking: any) => {
         navigation.navigate('BookingDetails', { booking });
     };
+
+    const handleDownloadTicket = (booking: BookingCardItem) => {
+        if (isCapturing) return;
+        setIsCapturing(true);
+        setDownloadingBooking(booking);
+    };
+
+    useEffect(() => {
+        if (downloadingBooking && isCapturing) {
+            const timer = setTimeout(async () => {
+                try {
+                    if (Platform.OS === 'android') {
+                        try {
+                            await PermissionsAndroid.request(
+                                PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+                            );
+                        } catch (err) {
+                            console.warn(err);
+                        }
+                    }
+
+                    if (viewShotRef.current && viewShotRef.current.capture) {
+                        const uri = await viewShotRef.current.capture();
+                        await Share.open({
+                            title: 'BookNGo Ticket Details',
+                            url: uri,
+                            type: 'image/png',
+                        });
+                    }
+                } catch (error: any) {
+                    if (
+                        error?.message &&
+                        !error.message.includes('dismissed') &&
+                        !error.message.includes('User did not share') &&
+                        !error.message.includes('cancel')
+                    ) {
+                        console.log('Error sharing/downloading ticket:', error);
+                        Toast.show({
+                            type: 'error',
+                            text1: 'Download Failed',
+                            text2: 'Could not generate ticket image. Please try again.',
+                        });
+                    }
+                } finally {
+                    setIsCapturing(false);
+                    setDownloadingBooking(null);
+                }
+            }, 350);
+
+            return () => clearTimeout(timer);
+        }
+    }, [downloadingBooking, isCapturing]);
 
     const rawBookings = ((data as any)?.bookings as any[]) || (Array.isArray(data) ? data : []);
 
@@ -123,7 +190,6 @@ const Bookings: React.FC<BookingsProps> = ({ route }) => {
             <View style={styles.tabsRow}>
                 {TABS.map((item, index) => {
                     const isActive = activeTab === item.id;
-                    const Icon = item.IconComponent;
                     const isLast = index === TABS.length - 1;
 
                     return (
@@ -133,13 +199,12 @@ const Bookings: React.FC<BookingsProps> = ({ route }) => {
                                 onPress={() => setActiveTab(item.id)}
                                 activeOpacity={0.8}
                             >
-
                                 <AppText
-                                    size={10.5}
+                                    size={11}
                                     weight={isActive ? '700' : '600'}
                                     color={isActive ? colors.WHITE : '#475569'}
                                     numberOfLines={1}
-                                    style={{ marginLeft: scale(3) }}
+                                    style={{ marginLeft: scale(3), includeFontPadding: false }}
                                 >
                                     {t(item.titleKey) || item.fallbackTitle}
                                 </AppText>
@@ -164,7 +229,7 @@ const Bookings: React.FC<BookingsProps> = ({ route }) => {
                     <BookingCard
                         booking={item}
                         onView={() => handleView(item)}
-                        onDownload={() => handleView(item)}
+                        onDownload={() => handleDownloadTicket(item)}
                     />
                 )}
                 contentContainerStyle={styles.listContainer}
@@ -181,6 +246,31 @@ const Bookings: React.FC<BookingsProps> = ({ route }) => {
                     />
                 )}
             />
+
+            {/* Offscreen hidden ViewShot for capturing the ticket */}
+            {downloadingBooking && (
+                <View style={styles.offscreenContainer} pointerEvents="none">
+                    <ViewShot
+                        ref={viewShotRef}
+                        options={{ format: 'png', quality: 0.95 }}
+                        style={styles.viewShotCard}
+                    >
+                        <TicketCard booking={downloadingBooking} />
+                    </ViewShot>
+                </View>
+            )}
+
+            {/* Capturing loading overlay */}
+            {isCapturing && (
+                <View style={styles.capturingOverlay}>
+                    <View style={styles.capturingDialog}>
+                        <ActivityIndicator size="large" color="#0D57D0" />
+                        <AppText size={13} weight="700" color={colors.SLATE_DARK} style={{ marginTop: verticalScale(10) }}>
+                            {t('generating_ticket') || 'Generating Ticket...'}
+                        </AppText>
+                    </View>
+                </View>
+            )}
         </ScreenWrapper>
     );
 };
@@ -224,11 +314,12 @@ const styles = StyleSheet.create({
     },
     tabButton: {
         flex: 1,
+        minHeight: scale(34),
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         paddingVertical: verticalScale(7),
-        paddingHorizontal: scale(2),
+        paddingHorizontal: scale(3),
         borderRadius: scale(14),
     },
     tabButtonActive: {
@@ -239,5 +330,36 @@ const styles = StyleSheet.create({
         height: verticalScale(14),
         backgroundColor: '#E2E8F0',
         alignSelf: 'center',
+    },
+    offscreenContainer: {
+        position: 'absolute',
+        left: -9999,
+        top: 0,
+        width: scale(340),
+        opacity: 1,
+        zIndex: -9999,
+    },
+    viewShotCard: {
+        backgroundColor: colors.WHITE,
+        width: '100%',
+    },
+    capturingOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'rgba(0, 0, 0, 0.35)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 9999,
+    },
+    capturingDialog: {
+        backgroundColor: colors.WHITE,
+        borderRadius: scale(16),
+        paddingHorizontal: scale(24),
+        paddingVertical: verticalScale(18),
+        alignItems: 'center',
+        shadowColor: colors.BLACK,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 10,
+        elevation: 6,
     },
 });

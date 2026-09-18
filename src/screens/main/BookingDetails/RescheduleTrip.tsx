@@ -330,6 +330,11 @@ const RescheduleTrip = () => {
                                 mode="date"
                                 display={Platform.OS === 'ios' ? 'spinner' : 'default'}
                                 minimumDate={new Date()}
+                                textColor={Colors.PRIMARY}
+                                accentColor={Colors.PRIMARY}
+                                themeVariant="light"
+                                positiveButton={{ textColor: Colors.PRIMARY }}
+                                negativeButton={{ textColor: Colors.PRIMARY }}
                                 onChange={handleDateChange}
                             />
                         )}

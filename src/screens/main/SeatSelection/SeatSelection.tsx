@@ -197,6 +197,7 @@ const SeatSelection = () => {
                             title={t('seatSelection_proceed') || "Continue"}
                             onPress={() => navigation.navigate('PassengerDetails', { schedule, selectedSeats })}
                             disabled={selectedSeats.length === 0}
+                            textStyle={{ fontSize: scale(13.5), includeFontPadding: false }}
                             style={[
                                 styles.payButton,
                                 selectedSeats.length === 0 && styles.disabledPayButton,
@@ -296,9 +297,9 @@ const styles = StyleSheet.create({
     },
     payButton: {
         backgroundColor: colors.BLUE_PRIMARY,
-        paddingHorizontal: scale(20),
-        // paddingVertical: verticalScale(11),
-        height: verticalScale(36),
+        paddingHorizontal: scale(18),
+        paddingVertical: verticalScale(8),
+        minHeight: scale(40),
         borderRadius: scale(12),
         flexDirection: 'row',
         alignItems: 'center',

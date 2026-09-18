@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity, StatusBar, ScrollView, TextInput } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, StatusBar, ScrollView, TextInput, Image } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { scale, verticalScale } from 'react-native-size-matters';
@@ -11,7 +11,7 @@ import AppInput from '../../component/TextInput/TextInput';
 import ScreenWrapper from '../../component/common/ScreenWrapper';
 import AppButton from '../../component/common/AppButton';
 import colors, { Colors } from '../../utils/colors';
-import { Bus, Lock, Mail, Arrow, ShieldCheck } from '../../assets/svg';
+import { Lock, Mail, Arrow, ShieldCheck } from '../../assets/svg';
 import { useForgotPassword, useVerifyOTP, useResetPassword } from '../../hooks/useForgotPassword';
 
 interface OtpInputBoxesProps {
@@ -201,8 +201,12 @@ const ForgotPassword = () => {
 
         {/* Brand Header */}
         <View style={styles.headerContainer}>
-          <Bus width={scale(40)} height={scale(40)} color={Colors.PRIMARY} />
-          <AppText size={28} weight="700" color={Colors.PRIMARY} style={styles.brandName}>
+          <Image
+            source={require('../../assets/png/app_icon.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
+          <AppText size={28} weight="800" color={Colors.PRIMARY} style={styles.brandName}>
             {t('app_name') || 'BookNGo'}
           </AppText>
         </View>
@@ -406,9 +410,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: verticalScale(20),
   },
+  logoImage: {
+    width: scale(44),
+    height: scale(44),
+    borderRadius: scale(10),
+  },
   brandName: {
     marginLeft: scale(10),
-    letterSpacing: 0.8,
+    letterSpacing: 0.5,
   },
   card: {
     backgroundColor: Colors.WHITE,

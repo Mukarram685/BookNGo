@@ -12,11 +12,11 @@ type AppTextProps = TextProps & {
   color?: string;
   weight?: TextStyle['fontWeight'];
   align?: TextStyle['textAlign'];
-  style?: TextStyle;
+  style?: TextStyle | TextStyle[];
 };
 
 const AppText: React.FC<AppTextProps> = ({
-  size = scale(14),
+  size = 14,
   color = colors.BLACK,
   weight = 'normal',
   align = 'left',
@@ -24,15 +24,19 @@ const AppText: React.FC<AppTextProps> = ({
   children,
   ...props
 }) => {
+  const scaledFontSize = scale(size);
+
   return (
     <Text
       {...props}
       style={[
         {
-          fontSize: scale(size),
+          fontSize: scaledFontSize,
           color,
           fontWeight: weight,
           textAlign: align,
+          includeFontPadding: false,
+          textAlignVertical: 'center',
         },
         style,
       ]}
@@ -43,4 +47,3 @@ const AppText: React.FC<AppTextProps> = ({
 };
 
 export default AppText;
-

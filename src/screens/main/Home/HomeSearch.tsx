@@ -78,11 +78,30 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                     )}
 
                     {showDatePicker && (
-                        <View style={styles.datePickerWrapper}>
+                        Platform.OS === 'ios' ? (
+                            <View style={styles.datePickerWrapper}>
+                                <DateTimePicker
+                                    value={values.date}
+                                    mode="date"
+                                    display="spinner"
+                                    minimumDate={new Date()}
+                                    textColor={Colors.PRIMARY}
+                                    accentColor={Colors.PRIMARY}
+                                    themeVariant="light"
+                                    positiveButton={{ textColor: Colors.PRIMARY }}
+                                    negativeButton={{ textColor: Colors.PRIMARY }}
+                                    onChange={(event, selectedDate) => {
+                                        if (selectedDate) {
+                                            setFieldValue('date', selectedDate);
+                                        }
+                                    }}
+                                />
+                            </View>
+                        ) : (
                             <DateTimePicker
                                 value={values.date}
                                 mode="date"
-                                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                                display="default"
                                 minimumDate={new Date()}
                                 textColor={Colors.PRIMARY}
                                 accentColor={Colors.PRIMARY}
@@ -90,18 +109,13 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                                 positiveButton={{ textColor: Colors.PRIMARY }}
                                 negativeButton={{ textColor: Colors.PRIMARY }}
                                 onChange={(event, selectedDate) => {
-                                    setShowDatePicker(
-                                        Platform.OS === 'ios'
-                                    );
+                                    setShowDatePicker(false);
                                     if (selectedDate) {
-                                        setFieldValue(
-                                            'date',
-                                            selectedDate
-                                        );
+                                        setFieldValue('date', selectedDate);
                                     }
                                 }}
                             />
-                        </View>
+                        )
                     )}
 
                     <AppButton

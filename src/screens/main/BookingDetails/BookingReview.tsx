@@ -850,7 +850,8 @@ const styles = StyleSheet.create({
     },
     confirmBtn: {
         backgroundColor: '#1D4ED8',
-        height: verticalScale(48),
+        minHeight: scale(48),
+        paddingVertical: verticalScale(10),
         borderRadius: scale(14),
         flexDirection: 'row',
         alignItems: 'center',
