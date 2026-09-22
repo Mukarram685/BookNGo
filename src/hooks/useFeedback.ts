@@ -19,7 +19,7 @@ export const useSubmitFeedback = () => {
             Toast.show({
                 type: 'success',
                 text1: 'Feedback Submitted',
-                text2: data?.message || 'Thank you for helping us improve BookNGo!',
+                text2: data?.message || 'Thank you for helping us improve Book&Go!',
                 position: 'bottom',
             });
         },

@@ -108,7 +108,7 @@ const BookingReview = () => {
 
                 const { error: initError } = await initPaymentSheet({
                     paymentIntentClientSecret: clientSecret,
-                    merchantDisplayName: 'BookNGo',
+                    merchantDisplayName: 'Book&Go',
                     returnURL: 'bookngo://stripe-redirect',
                     defaultBillingDetails: {
                         name: passengers[0]?.passengerName || 'Passenger',

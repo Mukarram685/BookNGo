@@ -42,8 +42,8 @@ const SideMenuModal: React.FC<SideMenuModalProps> = ({ visible, onClose }) => {
         onClose();
         try {
             await Share.share({
-                title: 'BookNGo Bus Booking App',
-                message: 'Book bus tickets across Pakistan easily and safely with BookNGo! Download the app today.',
+                title: 'Book&Go Bus Booking App',
+                message: 'Book bus tickets across Pakistan easily and safely with Book&Go! Download the app today.',
             });
         } catch (error) {
             console.error('Share error:', error);

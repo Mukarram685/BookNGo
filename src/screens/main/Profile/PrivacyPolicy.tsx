@@ -31,7 +31,7 @@ const PrivacyPolicy = () => {
                     </View>
                     <View style={styles.bannerTextContainer}>
                         <AppText size={18} weight="900" color={Colors.PRIMARY}>
-                            {t('privacy_policy_header') || 'BookNGo Privacy Policy'}
+                            {t('privacy_policy_header') || 'Book&Go Privacy Policy'}
                         </AppText>
                         <AppText size={12} color={Colors.TEXT_GREY} weight="600" style={styles.dateText}>
                             {t('privacy_last_updated', { date: lastUpdated }) || `Last Updated: ${lastUpdated}`}
@@ -66,7 +66,7 @@ const PrivacyPolicy = () => {
 
                 <View style={styles.footerNote}>
                     <AppText size={12} color={Colors.TEXT_GREY} align="center" weight="500">
-                        {t('privacy_thank_you_footer') || 'Thank you for trusting BookNGo with your travel reservations.'}
+                        {t('privacy_thank_you_footer') || 'Thank you for trusting Book&Go with your travel reservations.'}
                     </AppText>
                 </View>
             </ScrollView>

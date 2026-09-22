@@ -78,7 +78,7 @@ const BookingSuccess = () => {
             const uri = await viewShotRef.current.capture();
 
             const options = {
-                title: 'BookNGo Ticket',
+                title: 'Book&Go Ticket',
                 url: uri,
                 type: 'image/png',
             };
@@ -89,7 +89,7 @@ const BookingSuccess = () => {
     };
 
     const totalAmount = ticket?.totalFare || 0;
-    const companyName = ticket?.companyName || 'BookNGo Express';
+    const companyName = ticket?.companyName || 'Book&Go Express';
     const busType = ticket?.busType || 'Luxury';
     const busNumber = ticket?.busNumber || 'BS-4592';
     const pnr = ticket?.pnr || 'BNG-784512';
@@ -139,7 +139,7 @@ const BookingSuccess = () => {
                                     PKR {totalAmount.toLocaleString()}
                                 </AppText>
                                 <AppText size={12} color={Colors.TEXT_GREY} weight="600" style={{ marginTop: 2 }}>
-                                    {t('paid_to') || 'Paid to BookNGo Bus Service'}
+                                    {t('paid_to') || 'Paid to Book&Go Bus Service'}
                                 </AppText>
                             </View>
 

@@ -100,7 +100,7 @@ const RegisterCompany = () => {
                                 </AppText>
                                 <AppText size={12} color="#64748B" weight="500">
                                     {t('company_reg_subtitle') ||
-                                        'Submit your transport company details for registration and partner with BookNGo.'}
+                                        'Submit your transport company details for registration and partner with Book&Go.'}
                                 </AppText>
                             </View>
                         </View>

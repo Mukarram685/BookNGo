@@ -144,7 +144,7 @@ const TicketCard: React.FC<TicketCardProps> = ({ booking }) => {
             <View style={styles.ticketHeader}>
                 <View>
                     <AppText size={18} weight="900" color="#172C6B">
-                        BookNGo
+                        Book&Go
                     </AppText>
                     <AppText size={10} weight="700" color={Colors.TEXT_GREY} style={{ letterSpacing: 0.5 }}>
                         OFFICIAL E-TICKET / BOARDING PASS
@@ -406,7 +406,7 @@ const TicketCard: React.FC<TicketCardProps> = ({ booking }) => {
                     ))}
                 </View>
                 <AppText size={10} color={Colors.TEXT_GREY} weight="600" style={{ marginTop: verticalScale(6) }}>
-                    ✓ Verified Digital Boarding Pass • BookNGo Bus Service
+                    ✓ Verified Digital Boarding Pass • Book&Go Bus Service
                 </AppText>
             </View>
         </View>

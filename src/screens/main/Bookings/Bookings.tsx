@@ -103,7 +103,7 @@ const Bookings: React.FC<BookingsProps> = ({ route }) => {
                     if (viewShotRef.current && viewShotRef.current.capture) {
                         const uri = await viewShotRef.current.capture();
                         await Share.open({
-                            title: 'BookNGo Ticket Details',
+                            title: 'Book&Go Ticket Details',
                             url: uri,
                             type: 'image/png',
                         });

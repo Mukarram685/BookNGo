@@ -87,10 +87,10 @@ const ProfileMenuCard: React.FC = () => {
         // },
         {
             id: 'about',
-            title: t('about_bookngo') || 'About BookNGo',
+            title: t('about_bookngo') || 'About Book&Go',
             icon: <Info width={scale(18)} height={scale(18)} color={colors.BLUE_PRIMARY} />,
             rightText: 'Version 1.0.0',
-            onPress: () => showComingSoonToast(t('about_bookngo') || 'About BookNGo'),
+            onPress: () => showComingSoonToast(t('about_bookngo') || 'About Book&Go'),
         },
     ];
 

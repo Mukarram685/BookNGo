@@ -24,7 +24,7 @@ const TermsConditions = () => {
                     </AppText>
 
                     <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.paragraph}>
-                        {t('terms_intro') || 'By using the BookNGo mobile application, you agree to comply with and be bound by the following terms and conditions. Please read these terms carefully before accessing or using our services.'}
+                        {t('terms_intro') || 'By using the Book&Go mobile application, you agree to comply with and be bound by the following terms and conditions. Please read these terms carefully before accessing or using our services.'}
                     </AppText>
 
                     <AppText size={16} weight="800" color={Colors.PRIMARY} style={styles.sectionTitle}>
@@ -45,14 +45,14 @@ const TermsConditions = () => {
                         {t('terms_cancellations_refunds_title') || '3. Cancellations & Refunds'}
                     </AppText>
                     <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.paragraph}>
-                        {t('terms_cancellations_refunds_desc') || 'Cancellation and refund policies are determined by the respective transit providers. BookNGo acts as an intermediary agent and does not guarantee refunds outside of provider policies.'}
+                        {t('terms_cancellations_refunds_desc') || 'Cancellation and refund policies are determined by the respective transit providers. Book&Go acts as an intermediary agent and does not guarantee refunds outside of provider policies.'}
                     </AppText>
 
                     <AppText size={16} weight="800" color={Colors.PRIMARY} style={styles.sectionTitle}>
                         {t('terms_liability_title') || '4. Limitation of Liability'}
                     </AppText>
                     <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.paragraph}>
-                        {t('terms_liability_desc') || 'BookNGo shall not be liable for any indirect, incidental, or consequential damages resulting from the use of, or inability to use, our services or transport delays.'}
+                        {t('terms_liability_desc') || 'Book&Go shall not be liable for any indirect, incidental, or consequential damages resulting from the use of, or inability to use, our services or transport delays.'}
                     </AppText>
                 </View>
         </ScreenWrapper>

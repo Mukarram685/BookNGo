@@ -9,7 +9,7 @@ export const getPrivacyPolicySections = (t: (key: string) => string): PolicySect
     {
         id: 'intro',
         title: t('privacy_intro_title') || 'Introduction & Scope',
-        content: t('privacy_intro_desc') || 'Welcome to BookNGo. We respect your privacy and are committed to protecting your personal data. This privacy policy describes how we collect, handle, process, and safeguard your personal information when using our mobile bus ticketing application and associated travel services across Pakistan.',
+        content: t('privacy_intro_desc') || 'Welcome to Book&Go. We respect your privacy and are committed to protecting your personal data. This privacy policy describes how we collect, handle, process, and safeguard your personal information when using our mobile bus ticketing application and associated travel services across Pakistan.',
     },
     {
         id: 'collection',

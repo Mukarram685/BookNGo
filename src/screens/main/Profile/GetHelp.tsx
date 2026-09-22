@@ -83,7 +83,7 @@ const GetHelp = () => {
         {
             id: 'msg-1',
             sender: 'agent',
-            text: t('support_initial_greeting') || 'Hello! Welcome to BookNGo Live Support. How can we assist you with your bus reservation today?',
+            text: t('support_initial_greeting') || 'Hello! Welcome to Book&Go Live Support. How can we assist you with your bus reservation today?',
             time: t('support_just_now') || 'Just now',
         },
     ]);
@@ -267,7 +267,7 @@ const GetHelp = () => {
                                         </View>
                                         <View>
                                             <AppText size={16} weight="800" color={Colors.PRIMARY}>
-                                                {t('support_agent_name') || 'BookNGo Support Agent'}
+                                                {t('support_agent_name') || 'Book&Go Support Agent'}
                                             </AppText>
                                             <View style={styles.liveIndicatorRow}>
                                                 <View style={styles.statusDot} />

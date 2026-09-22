@@ -49,7 +49,7 @@ const Signup = () => {
                                 resizeMode="contain"
                             />
                             <AppText size={30} weight="800" color={Colors.PRIMARY} style={styles.brandName}>
-                                {t('app_name') || 'BookNGo'}
+                                {t('app_name') || 'Book&Go'}
                             </AppText>
                         </View>
 

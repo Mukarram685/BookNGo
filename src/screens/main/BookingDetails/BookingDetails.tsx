@@ -101,7 +101,7 @@ const BookingDetails = () => {
       const uri = await viewShotRef.current.capture();
 
       const options = {
-        title: 'BookNGo Ticket Details',
+        title: 'Book&Go Ticket Details',
         url: uri,
         type: 'image/png',
       };
