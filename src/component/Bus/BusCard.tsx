@@ -17,6 +17,7 @@ import {
   Drink,
   TV,
   LocationB,
+  Calendar,
 } from '../../assets/svg';
 import colors from '../../utils/colors';
 
@@ -24,6 +25,55 @@ interface BusCardProps {
   item: BusSchedule;
   onBookPress?: (item: BusSchedule) => void;
 }
+
+const formatScheduleDate = (dateStr?: string) => {
+  if (!dateStr) return '';
+  try {
+    const cleaned = String(dateStr).trim();
+    if (!cleaned) return '';
+
+    // Handle YYYY-MM-DD or ISO string without timezone shifts
+    const datePart = cleaned.split('T')[0];
+    const ymdMatch = datePart.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (ymdMatch) {
+      const year = parseInt(ymdMatch[1], 10);
+      const month = parseInt(ymdMatch[2], 10) - 1;
+      const day = parseInt(ymdMatch[3], 10);
+      const d = new Date(year, month, day);
+      return d.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+    }
+
+    const dmyMatch = datePart.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
+    if (dmyMatch) {
+      const day = parseInt(dmyMatch[1], 10);
+      const month = parseInt(dmyMatch[2], 10) - 1;
+      const year = parseInt(dmyMatch[3], 10);
+      const d = new Date(year, month, day);
+      return d.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+    }
+
+    const parsed = new Date(cleaned);
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+    }
+
+    return cleaned;
+  } catch (e) {
+    return String(dateStr);
+  }
+};
 
 const getAmenityIcon = (name: string) => {
   if (!name) return null;
@@ -49,6 +99,8 @@ const BusCard = ({ item }: BusCardProps) => {
   const formattedPrice = (item.price || 0).toLocaleString();
   const amenitiesList = Array.isArray(item.amenities) ? item.amenities : [];
   const seatLayoutText = item.seatLayout ? `${item.seatLayout} Seats` : '2x2 Seats';
+  const rawDate = item.date || (item as any).departureDate || (item as any).journeyDate || (item as any).scheduleDate || (item as any).travelDate;
+  const formattedScheduleDate = formatScheduleDate(rawDate);
 
   return (
     <View style={styles.cardContainer}>
@@ -78,6 +130,14 @@ const BusCard = ({ item }: BusCardProps) => {
         </View>
 
         <View style={styles.priceContainer}>
+          {formattedScheduleDate ? (
+            <View style={styles.topRightDateBadge}>
+              <Calendar width={scale(11)} height={scale(11)} color={colors.BLUE_PRIMARY} />
+              <AppText size={11} weight="800" color={colors.BLUE_PRIMARY} style={{ marginLeft: scale(4) }}>
+                {formattedScheduleDate}
+              </AppText>
+            </View>
+          ) : null}
           <AppText size={18} weight="900" color={colors.BLUE_PRIMARY} numberOfLines={1}>
             Rs. {formattedPrice}
           </AppText>
@@ -216,7 +276,7 @@ const styles = StyleSheet.create({
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginBottom: verticalScale(12),
   },
   companyInfoContainer: {
@@ -254,6 +314,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'flex-start',
     marginTop: verticalScale(3),
+  },
+  topRightDateBadge: {
+    backgroundColor: '#EFF6FF',
+    paddingHorizontal: scale(8),
+    paddingVertical: verticalScale(3),
+    borderRadius: scale(8),
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#BFDBFE',
+    marginBottom: verticalScale(4),
+    shadowColor: colors.BLUE_PRIMARY,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
   },
   priceContainer: {
     alignItems: 'flex-end',

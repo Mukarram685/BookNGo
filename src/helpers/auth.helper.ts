@@ -21,7 +21,14 @@ export const formatCNIC = (text: string): string => {
 };
 
 export const cleanPhoneNumber = (text: string): string => {
-  return (text || '').replace(/\D/g, '').slice(0, 10);
+  let cleaned = (text || '').replace(/\D/g, '');
+  if (cleaned.startsWith('92') && cleaned.length > 10) {
+    cleaned = cleaned.slice(2);
+  }
+  if (cleaned.startsWith('0')) {
+    cleaned = cleaned.slice(1);
+  }
+  return cleaned.slice(0, 10);
 };
 
 export const signupSchema = Yup.object().shape({
@@ -34,7 +41,7 @@ export const signupSchema = Yup.object().shape({
     .matches(/^[0-9]{5}[-\/]?[0-9]{7}[-\/]?[0-9]{1}$/, 'Invalid CNIC format (e.g. 12345-1234567-1)')
     .required('CNIC is required'),
   phoneNumber: Yup.string()
-    .matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits (e.g. 3001234567)')
+    .matches(/^3[0-9]{9}$/, 'Phone number must be 10 digits starting with 3 (e.g. 3001234567)')
     .required('Phone number is required'),
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')

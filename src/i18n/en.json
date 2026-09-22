@@ -44,7 +44,7 @@
   "auth_signup_passwordLabel": "Password",
   "auth_signup_passwordPlaceholder": "Enter your password",
   "auth_signup_phoneLabel": "Phone Number",
-  "auth_signup_phonePlaceholder": "Enter your phone number",
+  "auth_signup_phonePlaceholder": "300 1234567",
   "auth_signup_subtitle": "Create an account to start your journey",
   "auth_signup_title": "Sign Up",
   "auth_verify_button": "Verify Code",

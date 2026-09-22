@@ -61,7 +61,8 @@ const PassengerForm: React.FC<PassengerFormProps> = ({
             />
 
             <AppInput
-                placeholder={t('passenger_phone_placeholder') || "Phone Number (e.g. 3001234567)"}
+                placeholder={t('passenger_phone_placeholder') || "300 1234567"}
+                prefix="+92"
                 value={values.passengerPhone}
                 onChangeText={(val) => onChange('passengerPhone', cleanPhoneNumber(val))}
                 error={touched?.passengerPhone ? errors?.passengerPhone : undefined}

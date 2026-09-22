@@ -52,7 +52,7 @@ const SearchResults = () => {
                 departureTime: item.departureTime,
                 arrivalTime: item.arrivalTime,
                 duration: item.route?.duration || item.duration || '0h 0m',
-                date: item.departureDate || item.date,
+                date: item.departureDate || item.date || item.journeyDate || item.scheduleDate || item.travelDate || date,
                 price: item.fare || item.price || 0,
                 seatsAvailable: item.availableSeats || 0,
                 totalSeats: item.bus?.totalSeats || 0,

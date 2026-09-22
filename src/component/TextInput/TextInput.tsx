@@ -22,6 +22,8 @@ type AppInputProps = TextInputProps & {
     isPassword?: boolean;
     LeftIcon?: React.FC<any>;
     leftIconColor?: string;
+    prefix?: string;
+    prefixStyle?: any;
 };
 
 const AppInput: React.FC<AppInputProps> = ({
@@ -36,6 +38,8 @@ const AppInput: React.FC<AppInputProps> = ({
     secureTextEntry,
     LeftIcon,
     leftIconColor,
+    prefix,
+    prefixStyle,
     onFocus,
     onBlur,
     value,
@@ -105,6 +109,15 @@ const AppInput: React.FC<AppInputProps> = ({
                             height={scale(18)}
                             color={leftIconColor || (isFocused ? Colors.PRIMARY : Colors.TEXT_GREY)}
                         />
+                    </View>
+                )}
+
+                {prefix && (
+                    <View style={styles.prefixContainer} pointerEvents="none">
+                        <Text style={[styles.prefixText, isFocused && styles.prefixTextFocused, prefixStyle]}>
+                            {prefix}
+                        </Text>
+                        <View style={styles.prefixDivider} />
                     </View>
                 )}
 
@@ -190,6 +203,26 @@ const styles = StyleSheet.create({
     },
     leftIconContainer: {
         paddingRight: scale(10),
+    },
+    prefixContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingRight: scale(6),
+    },
+    prefixText: {
+        fontSize: scale(14),
+        fontWeight: '700',
+        color: Colors.DARK_GRAY,
+        letterSpacing: 0.5,
+    },
+    prefixTextFocused: {
+        color: Colors.PRIMARY,
+    },
+    prefixDivider: {
+        width: 1,
+        height: verticalScale(18),
+        backgroundColor: Colors.BORDER_GREY,
+        marginLeft: scale(8),
     },
     iconContainer: {
         paddingLeft: scale(8),

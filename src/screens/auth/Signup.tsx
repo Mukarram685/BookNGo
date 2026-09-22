@@ -108,7 +108,8 @@ const Signup = () => {
 
                             <AppInput
                                 label={t('auth_signup_phoneLabel')}
-                                placeholder={t('auth_signup_phonePlaceholder')}
+                                placeholder={t('auth_signup_phonePlaceholder') || '300 1234567'}
+                                prefix="+92"
                                 value={values.phoneNumber}
                                 onChangeText={(text) => setFieldValue('phoneNumber', cleanPhoneNumber(text))}
                                 onBlur={handleBlur('phoneNumber')}
