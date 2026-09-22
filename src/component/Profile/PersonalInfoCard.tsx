@@ -6,24 +6,33 @@ import AppText from '../common/AppText';
 import colors from '../../utils/colors';
 import { formatCNIC, cleanPhoneNumber } from '../../helpers/auth.helper';
 
+import AppButton from '../common/AppButton';
+
 interface PersonalInfoCardProps {
-    firstName: string;
-    setFirstName: (val: string) => void;
-    lastName: string;
-    setLastName: (val: string) => void;
+    name?: string;
+    setName?: (val: string) => void;
+    firstName?: string;
+    setFirstName?: (val: string) => void;
+    lastName?: string;
+    setLastName?: (val: string) => void;
     email: string;
     phone: string;
     setPhone: (val: string) => void;
     cnic: string;
     setCnic: (val: string) => void;
-    dob: string;
-    setDob: (val: string) => void;
-    gender: string;
-    setGender: (val: string) => void;
+    dob?: string;
+    setDob?: (val: string) => void;
+    gender?: string;
+    setGender?: (val: string) => void;
     isVerified?: boolean;
+    onSavePress: () => void;
+    isSaveDisabled?: boolean;
+    isLoading?: boolean;
 }
 
 const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
+    name,
+    setName,
     firstName,
     setFirstName,
     lastName,
@@ -38,8 +47,13 @@ const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
     gender,
     setGender,
     isVerified = true,
+    onSavePress,
+    isSaveDisabled = true,
+    isLoading = false,
 }) => {
     const { t } = useTranslation();
+
+    const displayNameValue = name !== undefined ? name : (firstName || '');
 
     return (
         <View style={styles.cardContainer}>
@@ -47,33 +61,22 @@ const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
                 {t('personal_info_title') || 'Personal Information'}
             </AppText>
 
-            {/* First Name */}
+            {/* Name */}
             <View style={styles.inputGroup}>
                 <AppText size={12} weight="700" color={colors.SLATE_MEDIUM} style={styles.label}>
-                    {t('first_name') || 'First Name'} *
+                    {t('auth_signup_nameLabel') || 'Name'} *
                 </AppText>
                 <TextInput
                     style={styles.textInput}
-                    value={firstName}
-                    onChangeText={setFirstName}
-                    placeholder={t('enter_first_name') || 'Enter first name'}
+                    value={displayNameValue}
+                    onChangeText={(val) => {
+                        if (setName) setName(val);
+                        if (setFirstName) setFirstName(val);
+                    }}
+                    placeholder={t('auth_signup_namePlaceholder') || 'Enter your name'}
                     placeholderTextColor={colors.SLATE_MUTED}
                 />
             </View>
-
-            {/* Last Name */}
-            {/* <View style={styles.inputGroup}>
-                <AppText size={12} weight="700" color={colors.SLATE_MEDIUM} style={styles.label}>
-                    {t('last_name') || 'Last Name'} *
-                </AppText>
-                <TextInput
-                    style={styles.textInput}
-                    value={lastName}
-                    onChangeText={setLastName}
-                    placeholder={t('enter_last_name') || 'Enter last name'}
-                    placeholderTextColor={colors.SLATE_MUTED}
-                />
-            </View> */}
 
             {/* Email Address with Verified Badge */}
             <View style={styles.inputGroup}>
@@ -103,15 +106,20 @@ const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
                 <AppText size={12} weight="700" color={colors.SLATE_MEDIUM} style={styles.label}>
                     {t('phone_number') || 'Phone Number'}
                 </AppText>
-                <TextInput
-                    style={styles.textInput}
-                    value={phone}
-                    onChangeText={(text) => setPhone(cleanPhoneNumber(text))}
-                    placeholder="3001234567"
-                    placeholderTextColor={colors.SLATE_MUTED}
-                    keyboardType="phone-pad"
-                    maxLength={10}
-                />
+                <View style={styles.phoneInputWrapper}>
+                    <View style={styles.prefixBox}>
+                        <AppText size={13} weight="700" color={colors.SLATE_DARK}>+92</AppText>
+                    </View>
+                    <TextInput
+                        style={styles.phoneTextInput}
+                        value={phone}
+                        onChangeText={(text) => setPhone(cleanPhoneNumber(text))}
+                        placeholder="3001234567"
+                        placeholderTextColor={colors.SLATE_MUTED}
+                        keyboardType="phone-pad"
+                        maxLength={10}
+                    />
+                </View>
             </View>
 
             {/* CNIC */}
@@ -130,47 +138,14 @@ const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({
                 />
             </View>
 
-            {/* Date of Birth */}
-            {/* <View style={styles.inputGroup}>
-                <AppText size={12} weight="700" color={colors.SLATE_MEDIUM} style={styles.label}>
-                    {t('date_of_birth') || 'Date of Birth'} *
-                </AppText>
-                <TextInput
-                    style={styles.textInput}
-                    value={dob}
-                    onChangeText={setDob}
-                    placeholder="MM/DD/YYYY"
-                    placeholderTextColor={colors.SLATE_MUTED}
-                />
-            </View> */}
-
-            {/* Gender */}
-            {/* <View style={styles.inputGroup}>
-                <AppText size={12} weight="700" color={colors.SLATE_MEDIUM} style={styles.label}>
-                    {t('gender_label') || 'Gender'} *
-                </AppText>
-                <View style={styles.genderRow}>
-                    {['Male', 'Female'].map((g) => {
-                        const selected = gender.toLowerCase() === g.toLowerCase();
-                        return (
-                            <TouchableOpacity
-                                key={g}
-                                style={[styles.genderChip, selected && styles.genderChipSelected]}
-                                onPress={() => setGender(g)}
-                                activeOpacity={0.8}
-                            >
-                                <AppText
-                                    size={13}
-                                    weight="700"
-                                    color={selected ? colors.WHITE : colors.SLATE_DARK}
-                                >
-                                    {g}
-                                </AppText>
-                            </TouchableOpacity>
-                        );
-                    })}
-                </View>
-            </View> */}
+            {/* Save Changes Button */}
+            <AppButton
+                title={t('save_changes') || 'Save Changes'}
+                onPress={onSavePress}
+                disabled={isSaveDisabled || isLoading}
+                loading={isLoading}
+                style={[styles.saveButton, isSaveDisabled && styles.saveButtonDisabled]}
+            />
         </View>
     );
 };
@@ -228,6 +203,43 @@ const styles = StyleSheet.create({
         borderRadius: scale(8),
         borderWidth: 1,
         borderColor: '#BBF7D0',
+    },
+    phoneInputWrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#F8FAFC',
+        borderWidth: 1,
+        borderColor: colors.BORDER_GREY,
+        borderRadius: scale(12),
+        height: verticalScale(44),
+        overflow: 'hidden',
+    },
+    prefixBox: {
+        paddingHorizontal: scale(12),
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F1F5F9',
+        borderRightWidth: 1,
+        borderRightColor: colors.BORDER_GREY,
+    },
+    phoneTextInput: {
+        flex: 1,
+        paddingHorizontal: scale(12),
+        height: '100%',
+        fontSize: scale(13),
+        color: colors.SLATE_DARK,
+        fontWeight: '600',
+    },
+    saveButton: {
+        marginTop: verticalScale(6),
+        backgroundColor: colors.BLUE_PRIMARY,
+        borderRadius: scale(12),
+    },
+    saveButtonDisabled: {
+        backgroundColor: '#CBD5E1',
+        shadowOpacity: 0,
+        elevation: 0,
     },
     genderRow: {
         flexDirection: 'row',

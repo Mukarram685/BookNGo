@@ -9,10 +9,9 @@ import AppText from '../../../component/common/AppText';
 import AppButton from '../../../component/common/AppButton';
 import colors from '../../../utils/colors';
 import Header from '../../../component/Header';
-import { useGetProfile, useUpdateProfile } from '../../../hooks/useProfile';
+import { useGetProfile, useUpdateProfile, useChangePassword } from '../../../hooks/useProfile';
 import { logout } from '../../../store/slice/auth.slice';
 import { OneSignal } from 'react-native-onesignal';
-import { User, Headset } from '../../../assets/svg';
 import PersonalInfoCard from '../../../component/Profile/PersonalInfoCard';
 import ChangePasswordCard from '../../../component/Profile/ChangePasswordCard';
 import { formatCNIC, cleanPhoneNumber } from '../../../helpers/auth.helper';
@@ -25,42 +24,66 @@ const UpdateProfile = () => {
   const authUser = useSelector((state: any) => state.auth.user);
   const { data: profile } = useGetProfile(authUser?.id || authUser?._id);
   const updateProfileMutation = useUpdateProfile();
+  const changePasswordMutation = useChangePassword();
 
-  // Name splitting into First Name and Last Name
-  const fullName = authUser?.name || profile?.name || 'Haider Iftikhar';
-  const nameParts = fullName.trim().split(' ');
-  const initialFirstName = nameParts[0] || 'Haider';
-  const initialLastName = nameParts.slice(1).join(' ') || 'Iftikhar';
+  const currentName = (authUser?.name || profile?.name || '').trim();
+  const currentPhone = cleanPhoneNumber(authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber || '');
+  const currentCnic = formatCNIC(authUser?.cnic || profile?.cnic || '');
 
-  const [firstName, setFirstName] = useState(initialFirstName);
-  const [lastName, setLastName] = useState(initialLastName);
-  const [phone, setPhone] = useState(
-    authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber || '+92 312 3456789',
-  );
-  const [cnic, setCnic] = useState(formatCNIC(authUser?.cnic || profile?.cnic || '35202-1234567-1'));
-  const [dob, setDob] = useState(authUser?.dateOfBirth || profile?.dateOfBirth || '07/15/1998');
-  const [gender, setGender] = useState(authUser?.gender || profile?.gender || 'Male');
+  const [name, setName] = useState(currentName);
+  const [phone, setPhone] = useState(currentPhone);
+  const [cnic, setCnic] = useState(currentCnic);
 
-  const email = authUser?.email || profile?.email || 'haider@example.com';
+  const [initialValues, setInitialValues] = useState({
+    name: currentName,
+    phone: currentPhone,
+    cnic: currentCnic,
+  });
+
+  const email = authUser?.email || profile?.email || '';
 
   useEffect(() => {
-    if (authUser?.name || profile?.name) {
-      const parts = (authUser?.name || profile?.name || '').trim().split(' ');
-      setFirstName(parts[0] || '');
-      setLastName(parts.slice(1).join(' ') || '');
-    }
-    if (authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber) {
-      setPhone(authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber);
-    }
-    if (authUser?.cnic || profile?.cnic) {
-      setCnic(formatCNIC(authUser?.cnic || profile?.cnic));
-    }
-  }, [authUser, profile]);
+    const loadedName = (authUser?.name || profile?.name || '').trim();
+    const loadedPhone = cleanPhoneNumber(authUser?.phone || authUser?.phoneNumber || profile?.phone || profile?.phoneNumber || '');
+    const loadedCnic = formatCNIC(authUser?.cnic || profile?.cnic || '');
+
+    setName(loadedName);
+    setPhone(loadedPhone);
+    setCnic(loadedCnic);
+    setInitialValues({
+      name: loadedName,
+      phone: loadedPhone,
+      cnic: loadedCnic,
+    });
+  }, [
+    authUser?.name,
+    authUser?.phone,
+    authUser?.phoneNumber,
+    authUser?.cnic,
+    profile?.name,
+    profile?.phone,
+    profile?.phoneNumber,
+    profile?.cnic,
+  ]);
+
+  // Check if any personal info field has changed compared to saved values
+  const isProfileChanged =
+    name.trim() !== initialValues.name.trim() ||
+    cleanPhoneNumber(phone) !== cleanPhoneNumber(initialValues.phone) ||
+    cnic.trim() !== initialValues.cnic.trim();
+
+  // Validate fields for enabling / disabling save button
+  const isProfileValid = name.trim().length >= 3;
+  const isSaveDisabled = !isProfileChanged || !isProfileValid;
 
   const handleSaveProfile = () => {
-    const combinedName = `${firstName} ${lastName}`.trim();
-    if (!combinedName) {
+    const trimmedName = name.trim();
+    if (!trimmedName) {
       Alert.alert(t('error') || 'Error', t('enter_name_error') || 'Please enter your name');
+      return;
+    }
+    if (trimmedName.length < 3) {
+      Alert.alert(t('error') || 'Error', t('val_name_min') || 'Name must be at least 3 characters');
       return;
     }
 
@@ -78,17 +101,24 @@ const UpdateProfile = () => {
     updateProfileMutation.mutate(
       {
         id: authUser?.id || authUser?._id,
-        data: { name: combinedName, phoneNumber: cleanPhone, cnic, dateOfBirth: dob, gender },
+        data: { name: trimmedName, phoneNumber: cleanPhone, cnic },
       },
       {
         onSuccess: () => {
-          Alert.alert(t('success') || 'Success', t('profile_updated_successfully') || 'Profile updated successfully');
+          setInitialValues({
+            name: trimmedName,
+            phone: cleanPhone,
+            cnic,
+          });
         },
       },
     );
   };
 
-  const handlePasswordChange = ({ currentPass, newPass, confirmPass }: { currentPass: string; newPass: string; confirmPass: string }) => {
+  const handlePasswordChange = (
+    { currentPass, newPass, confirmPass }: { currentPass: string; newPass: string; confirmPass: string },
+    onSuccess: () => void,
+  ) => {
     if (!currentPass || !newPass || !confirmPass) {
       Alert.alert(t('error') || 'Error', t('fill_all_password_fields') || 'Please fill all password fields');
       return;
@@ -102,8 +132,17 @@ const UpdateProfile = () => {
       return;
     }
 
-    // Call update profile / password mutation
-    handleSaveProfile();
+    changePasswordMutation.mutate(
+      {
+        id: authUser?.id || authUser?._id,
+        data: { currentPassword: currentPass, newPassword: newPass },
+      },
+      {
+        onSuccess: () => {
+          onSuccess();
+        },
+      },
+    );
   };
 
   const handleLogout = () => {
@@ -137,27 +176,23 @@ const UpdateProfile = () => {
       }
     >
       <View style={styles.container}>
-
         <PersonalInfoCard
-          firstName={firstName}
-          setFirstName={setFirstName}
-          lastName={lastName}
-          setLastName={setLastName}
+          name={name}
+          setName={setName}
           email={email}
           phone={phone}
           setPhone={setPhone}
           cnic={cnic}
           setCnic={setCnic}
-          dob={dob}
-          setDob={setDob}
-          gender={gender}
-          setGender={setGender}
           isVerified={true}
+          onSavePress={handleSaveProfile}
+          isSaveDisabled={isSaveDisabled}
+          isLoading={updateProfileMutation.isPending}
         />
 
         <ChangePasswordCard
           onSavePress={handlePasswordChange}
-          isLoading={updateProfileMutation.isPending}
+          isLoading={changePasswordMutation.isPending}
         />
 
         <TouchableOpacity

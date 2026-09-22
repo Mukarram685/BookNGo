@@ -8,7 +8,10 @@ import colors from '../../utils/colors';
 import { Eye, EyeOff } from '../../assets/svg';
 
 interface ChangePasswordCardProps {
-    onSavePress: (passwords: { currentPass: string; newPass: string; confirmPass: string }) => void;
+    onSavePress: (
+        passwords: { currentPass: string; newPass: string; confirmPass: string },
+        onSuccess: () => void,
+    ) => void;
     isLoading?: boolean;
 }
 
@@ -22,8 +25,14 @@ const ChangePasswordCard: React.FC<ChangePasswordCardProps> = ({ onSavePress, is
     const [showNew, setShowNew] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
+    const isPasswordFilled = Boolean(currentPass.trim() && newPass.trim() && confirmPass.trim());
+
     const handleSave = () => {
-        onSavePress({ currentPass, newPass, confirmPass });
+        onSavePress({ currentPass, newPass, confirmPass }, () => {
+            setCurrentPass('');
+            setNewPass('');
+            setConfirmPass('');
+        });
     };
 
     return (
@@ -116,12 +125,13 @@ const ChangePasswordCard: React.FC<ChangePasswordCardProps> = ({ onSavePress, is
                 </View>
             </View>
 
-            {/* Save Changes AppButton */}
+            {/* Change Password AppButton */}
             <AppButton
-                title={t('save_changes') || 'Save Changes'}
+                title={t('change_password_title') || 'Change Password'}
                 onPress={handleSave}
+                disabled={!isPasswordFilled || isLoading}
                 loading={isLoading}
-                style={styles.saveButton}
+                style={[styles.saveButton, !isPasswordFilled && styles.saveButtonDisabled]}
             />
         </View>
     );
@@ -177,5 +187,10 @@ const styles = StyleSheet.create({
         marginTop: verticalScale(6),
         backgroundColor: colors.BLUE_PRIMARY,
         borderRadius: scale(12),
+    },
+    saveButtonDisabled: {
+        backgroundColor: '#CBD5E1',
+        shadowOpacity: 0,
+        elevation: 0,
     },
 });
