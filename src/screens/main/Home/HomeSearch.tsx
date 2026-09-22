@@ -48,6 +48,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         LeftIcon={From}
                         error={touched.from && errors.from ? errors.from : ''}
                         touched={touched.from}
+                        containerStyle={styles.inputContainer}
                     />
 
                     <CitySelector
@@ -57,6 +58,7 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         LeftIcon={To}
                         error={touched.to && errors.to ? errors.to : ''}
                         touched={touched.to}
+                        containerStyle={styles.inputContainer}
                     />
 
                     <TouchableOpacity
@@ -65,14 +67,14 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
                         style={[styles.inputContainer, styles.dateInputContainer]}
                     >
                         <View style={styles.leftIconContainer}>
-                             <Calendar width={scale(20)} height={scale(20)} />
+                             <Calendar width={scale(18)} height={scale(18)} color={Colors.PRIMARY} />
                         </View>
-                        <AppText size={14} color={Colors.PRIMARY} weight="500" style={styles.dateText}>
+                        <AppText size={13} color={Colors.PRIMARY} weight="700" style={styles.dateText}>
                             {values.date.toDateString()}
                         </AppText>
                     </TouchableOpacity>
                     {(touched.date && errors.date) && (
-                        <AppText size={12} color={Colors.RED} style={{ marginTop: -10, marginBottom: 10 }}>
+                        <AppText size={11} color={Colors.RED} style={styles.errorText}>
                             {errors.date as string}
                         </AppText>
                     )}
@@ -131,51 +133,47 @@ const HomeSearch = ({ onSearch }: HomeSearchProps) => {
 
 const styles = StyleSheet.create({
     searchContainer: {
-        marginVertical: scale(1),
-        padding: scale(24),
-        borderRadius: scale(24),
+        marginTop: verticalScale(6),
+        marginBottom: verticalScale(16),
+        padding: scale(18),
+        borderRadius: scale(20),
         borderWidth: 1,
-        borderColor: Colors.BORDER_GREY,
-        backgroundColor: 'transparent',
+        borderColor: 'rgba(219, 234, 254, 0.9)',
+        backgroundColor: Colors.TRANSPARENT,
         shadowColor: Colors.PRIMARY,
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.05,
-        shadowRadius: 15,
-        elevation: 5,
+        shadowOpacity: 0.08,
+        shadowRadius: 12,
+        elevation: 4,
     },
     datePickerWrapper: {
         backgroundColor: Colors.WHITE,
-        borderRadius: 15,
-        padding: 10,
-        marginTop: 10,
+        borderRadius: scale(14),
+        padding: scale(10),
+        marginTop: verticalScale(6),
+        marginBottom: verticalScale(12),
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,
-        elevation: 20,
+        elevation: 10,
     },
     inputContainer: {
-        marginBottom: verticalScale(18),
-    },
-    inputStyle: {
-        borderColor: Colors.BORDER_GREY,
-        backgroundColor: Colors.INPUT_BG,
-        color: Colors.PRIMARY,
+        marginBottom: verticalScale(12),
     },
     dateInputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderRadius: scale(14),
-        height: verticalScale(52),
-        paddingHorizontal: scale(15),
+        borderRadius: scale(12),
+        height: verticalScale(48),
+        paddingHorizontal: scale(14),
         borderWidth: 1,
         borderColor: Colors.BORDER_GREY,
         backgroundColor: Colors.INPUT_BG,
     },
     dateText: {
         flex: 1,
-        paddingLeft: scale(8),
+        paddingLeft: scale(4),
     },
     leftIconContainer: {
-        paddingRight: scale(10),
+        paddingRight: scale(8),
     },
     searchButton: {
         backgroundColor: Colors.PRIMARY,
@@ -184,7 +182,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: verticalScale(10),
         shadowColor: Colors.SECONDARY,
-        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 6,
         elevation: 8,
