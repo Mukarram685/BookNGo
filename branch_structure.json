@@ -1,0 +1,33 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "02-recipe-make",
+    "14-01",
+    "17-10-2025",
+    "design-change",
+    "main",
+    "origin",
+    "update_project",
+    "voice-agent"
+  ],
+  "parent": {
+    "02-recipe-make": "main",
+    "14-01": "main",
+    "17-10-2025": "main",
+    "design-change": "main",
+    "main": null,
+    "origin": "main",
+    "update_project": "main",
+    "voice-agent": "main"
+  },
+  "order": [
+    "main",
+    "02-recipe-make",
+    "14-01",
+    "17-10-2025",
+    "design-change",
+    "origin",
+    "update_project",
+    "voice-agent"
+  ]
+}
