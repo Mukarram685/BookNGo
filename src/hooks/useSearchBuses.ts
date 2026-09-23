@@ -17,7 +17,10 @@ const searchBuses = async (cleanedParams: Record<string, string>) => {
     return response;
 };
 
-export const useSearchBuses = (params?: SearchParams) => {
+export const useSearchBuses = (
+    params?: SearchParams,
+    options?: { enabled?: boolean }
+) => {
     const cleanedParams: Record<string, string> = {};
 
     if (params) {
@@ -31,6 +34,7 @@ export const useSearchBuses = (params?: SearchParams) => {
     return useQuery({
         queryKey: ['schedules', 'search', cleanedParams],
         queryFn: () => searchBuses(cleanedParams),
+        enabled: options?.enabled !== undefined ? options.enabled : true,
         staleTime: 5 * 60 * 1000, // Cache results for 5 minutes (5 * 60 * 1000 ms)
         gcTime: 10 * 60 * 1000,    // Keep cache in memory for 10 minutes
         refetchOnWindowFocus: false,

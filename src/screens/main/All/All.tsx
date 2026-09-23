@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { View, StyleSheet, StatusBar, FlatList, TouchableOpacity } from 'react-native';
 import { scale, verticalScale } from 'react-native-size-matters';
 import { useTranslation } from 'react-i18next';
@@ -18,13 +18,39 @@ const All = () => {
     const [fromCity, setFromCity] = useState<string>('');
     const [toCity, setToCity] = useState<string>('');
 
-    const { data, isLoading, isFetching, refetch } = useSearchBuses({
-        fromCity: fromCity.trim() || undefined,
-        toCity: toCity.trim() || undefined,
-    });
+    const trimmedFrom = fromCity.trim();
+    const trimmedTo = toCity.trim();
+    const isBothSelected = Boolean(trimmedFrom && trimmedTo);
+    const isNeitherSelected = Boolean(!trimmedFrom && !trimmedTo);
+    const isFilterActive = Boolean(trimmedFrom || trimmedTo);
+
+    // API is hit ONLY when:
+    // 1. Initial / default state (neither city selected -> loads all routes)
+    // 2. Both fromCity AND toCity are selected by the user
+    const shouldFetch = isBothSelected || isNeitherSelected;
+
+    const queryParams = useMemo(() => {
+        if (isBothSelected) {
+            return {
+                fromCity: trimmedFrom,
+                toCity: trimmedTo,
+            };
+        }
+        return {};
+    }, [trimmedFrom, trimmedTo, isBothSelected]);
+
+    const { data, isLoading, isFetching, refetch } = useSearchBuses(
+        shouldFetch ? queryParams : undefined,
+        { enabled: shouldFetch }
+    );
     const [busList, setBusList] = useState<BusSchedule[]>([]);
 
     useEffect(() => {
+        if (!shouldFetch) {
+            setBusList([]);
+            return;
+        }
+
         const searchData = data as any;
         let rawData: any[] = [];
 
@@ -60,7 +86,7 @@ const All = () => {
         } else {
             setBusList([]);
         }
-    }, [data]);
+    }, [data, shouldFetch]);
 
     const handleSwapCities = () => {
         const temp = fromCity;
@@ -77,8 +103,6 @@ const All = () => {
         console.log('Book Pressed', item);
     };
 
-    const isFilterActive = Boolean(fromCity || toCity);
-
     return (
         <ScreenWrapper
             isScrollable={false}
@@ -90,20 +114,19 @@ const All = () => {
             <View style={styles.container}>
 
                 <View style={styles.filterCard}>
-                    <View style={styles.filterHeader}>
-
-                        {isFilterActive ? (
+                    {isFilterActive ? (
+                        <View style={styles.filterHeader}>
                             <TouchableOpacity
                                 onPress={handleClearFilter}
                                 activeOpacity={0.7}
                                 style={styles.clearBtn}
                             >
-                                <AppText size={12} weight="700" color={colors.RED}>
+                                <AppText size={13} weight="800" color={colors.RED}>
                                     {t('clear_filters') || "Clear Filters"}
                                 </AppText>
                             </TouchableOpacity>
-                        ) : null}
-                    </View>
+                        </View>
+                    ) : null}
 
                     <View style={styles.inputsRow}>
                         <View style={styles.selectorsColumn}>
@@ -153,11 +176,19 @@ const All = () => {
                         (!isLoading) ? (
                             <View style={styles.emptyWrap}>
                                 <EmptyCard
-                                    title={t('no_routes_found') || "No Routes Available"}
+                                    title={
+                                        (!isBothSelected && isFilterActive)
+                                            ? (!trimmedTo ? (t('select_arrival_city') || "Select Arrival City") : (t('select_departure_city') || "Select Departure City"))
+                                            : (t('no_routes_found') || "No Routes Available")
+                                    }
                                     message={
-                                        isFilterActive
-                                            ? `No active bus routes found for ${fromCity ? fromCity : ''}${fromCity && toCity ? ' to ' : ''}${toCity ? toCity : ''}. Try searching different cities or clear your filter.`
-                                            : (t('no_routes_desc') || "There are no active bus routes available right now.")
+                                        (!isBothSelected && isFilterActive)
+                                            ? (!trimmedTo
+                                                ? `Please select your destination / arrival city to view available bus routes from ${trimmedFrom}.`
+                                                : `Please select your departure city to view available bus routes to ${trimmedTo}.`)
+                                            : isBothSelected
+                                                ? `No active bus routes found for ${trimmedFrom} to ${trimmedTo}. Try searching different cities or clear your filter.`
+                                                : (t('no_routes_desc') || "There are no active bus routes available right now.")
                                     }
                                     containerStyle={styles.emptyContainer}
                                 />
@@ -167,7 +198,7 @@ const All = () => {
                                         onPress={handleClearFilter}
                                         activeOpacity={0.8}
                                     >
-                                        <AppText size={13} weight="700" color={colors.BLUE_PRIMARY}>
+                                        <AppText size={13} weight="800" color={colors.RED}>
                                             {t('clear_filters') || "Clear Filters"}
                                         </AppText>
                                     </TouchableOpacity>
@@ -192,12 +223,13 @@ const styles = StyleSheet.create({
     filterHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: verticalScale(10),
+        justifyContent: 'flex-end',
+        marginBottom: verticalScale(6),
+        paddingHorizontal: scale(2),
     },
     clearBtn: {
         paddingVertical: verticalScale(2),
-        paddingHorizontal: scale(6),
+        paddingHorizontal: scale(4),
     },
     inputsRow: {
         flexDirection: 'row',

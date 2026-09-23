@@ -177,14 +177,21 @@ const styles = StyleSheet.create({
     },
     searchButton: {
         backgroundColor: Colors.PRIMARY,
-        paddingVertical: verticalScale(16),
-        borderRadius: scale(14),
+        height: verticalScale(48),
+        borderRadius: scale(12),
         alignItems: 'center',
-        marginTop: verticalScale(10),
-        shadowColor: Colors.SECONDARY,
-        shadowOpacity: 0.3,
+        justifyContent: 'center',
+        marginTop: verticalScale(4),
+        shadowColor: Colors.PRIMARY,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.25,
         shadowRadius: 6,
-        elevation: 8,
+        elevation: 4,
+    },
+    errorText: {
+        marginTop: -verticalScale(6),
+        marginBottom: verticalScale(8),
+        paddingLeft: scale(4),
     },
 });
 
